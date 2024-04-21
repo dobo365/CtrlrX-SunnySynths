@@ -1,12 +1,13 @@
-CtrlrX
+CtrlrX-SunnySynths
 =====
 
-CtlrX is an alternative fork of Roman Kubiak's Ctrlr.
-This project is ONLY aimed at delivering updates, a wiki, documentation, tutorials or anything that the community cannot share on the original Ctrlr github due to credential restrictions. 
+CtrlrX-SunnySynths is an alternative fork of CtrlrX done by Damien Selleier which is itself an alternative fork of Roman Kubiak's Ctrlr.
+It contains some updates and serves as my test bench (Github / Juce / Visual Studio syncs), Wiki draft... for CtrlrX.
+The CtrlrX project is ONLY aimed at delivering updates, a wiki, documentation, tutorials or anything that the community cannot share on the original Ctrlr github due to credential restrictions. 
 Let's keep the Ctrlr github alive and keep up with what we were all doing there. But for anything that deserves special credentials unavailable there, just let's do it here on CtrlrX.
 
 
-ToDo
+CtrlrX ToDo
 ----
 
 * VST Host must get the panel name while exported as VST3 plugin (currently always named as Ctrlr | Instigator)
@@ -21,10 +22,10 @@ ToDo
 * Update to the latest version of JUCE 7
 
 
-Changelog
+CtrlrX Changelog (only the last version)
 ---------
 
-#### Version 5.6.30
+#### Version 5.6.30.1
 * Missing JUCE File Class definitions bound to LUA
 * New LookAndFeel_V4 colourScheme added (V4 JetBlack, V4 YamDX, V4 AkAPC, V4 AkMPC, V4 LexiBlue, V4 KurzGreen, V4 KorGrey, V4 KorGold, V4 ArturOrange, V4 AiraGreen).
 * Colours fixed in the LUA Method Editor and LUA Console
@@ -35,34 +36,6 @@ Changelog
 * LUA Method Editor Tabs won't shrink and will show a + sign if the TabBar exceeds the window W
 * Close button added to Panel Editor Tabs (as in 5.1.198, 5.2 & 5.3 versions)
 * Panel Editor Tabs won't shrink and will show a + sign if the TabBar exceeds the window W
-
-#### Version 5.6.29
-
-* Implementation of the entire JUCE LookAndFeel_V4 design with all color schemes
-* Panels designed on previous versions (5.3.198 & 5.3.220) are compatible and will automatically use LookAndFeel_V2/V3
-* Implementation of the JUCE ColourSelector popup for every coloUr properties
-* Description/ID in the property pane switches without selecting other tabs to update
-* Overall improvement of Ctrlr GUI, component settings and functionalities
-
-#### Version 5.6.28
-*  Added support for scalable UI for responsive design via callback on APP/Plugin viewport resize and viewport resize parameters.
-*  Fixed menuBar not showing up issue for non-restricted exported instance.
-
-#### Version 5.6.27
-*  uiPanelViewPortBackgroundColour property added in the global properties to change the background color of the ViewPort, parent of the Panel canvas.
-
-#### Version 5.6.26
-*  setChangeNotificationOnlyOnRelease added in the component section for all types of sliders. When enabled, it sends the Value only when the mouse button is released.
-
-#### Version 5.6.25
-* mouseUp, mouseEnter, mouseExit callbacks added in for Generic Components (buttons, sliders etc)
-
-#### Version 5.6.24
-* ctrlrEditor window showing scrollbars over canvas in Cubase has been fixed
-
-#### Version 0.0.0
-* Current version is forked from Ctrlr 5.6.23
-* Requires unified versioning pattern
 
 
 
