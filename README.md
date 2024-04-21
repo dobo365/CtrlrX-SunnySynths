@@ -2,7 +2,9 @@ CtrlrX-SunnySynths
 =====
 
 CtrlrX-SunnySynths is an alternative fork of CtrlrX done by Damien Selleier which is itself an alternative fork of Roman Kubiak's Ctrlr.
+
 It contains some updates and serves as my test bench (Github / Juce / Visual Studio syncs), Wiki draft... for CtrlrX.
+
 The CtrlrX project is ONLY aimed at delivering updates, a wiki, documentation, tutorials or anything that the community cannot share on the original Ctrlr github due to credential restrictions. 
 Let's keep the Ctrlr github alive and keep up with what we were all doing there. But for anything that deserves special credentials unavailable there, just let's do it here on CtrlrX.
 
