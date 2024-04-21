@@ -1,7 +1,7 @@
 CtrlrX-SunnySynths
 =====
 
-CtrlrX-SunnySynths is an alternative fork of CtrlrX done by Damien Selleier which is itself an alternative fork of Roman Kubiak's Ctrlr.
+CtrlrX-SunnySynths is an alternative fork of CtrlrX done by Damien Sellier which is itself an alternative fork of Roman Kubiak's Ctrlr.
 
 It contains some updates and serves as my test bench (Github / Juce / Visual Studio syncs), Wiki draft... for CtrlrX.
 
