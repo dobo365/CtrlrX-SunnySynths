@@ -1,4 +1,4 @@
-CtrlrX-SunnySynths (DB)
+CtrlrX-SunnySynths
 =====
 
 CtrlrX-SunnySynths is an alternative fork of CtrlrX done by Damien Sellier which is itself an alternative fork of Roman Kubiak's Ctrlr.
