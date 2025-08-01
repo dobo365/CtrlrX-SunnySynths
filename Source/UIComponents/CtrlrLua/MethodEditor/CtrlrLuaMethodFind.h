@@ -80,6 +80,7 @@ private:
     ScopedPointer<TextButton> replaceAllButton;
     ScopedPointer<Label> label;
     ScopedPointer<ToggleButton> matchCase;
+    ScopedPointer<ToggleButton> keepOpened;
     ScopedPointer<Label> label2;
     ScopedPointer<ComboBox> whereToFindCombo;
 

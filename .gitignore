@@ -48,30 +48,19 @@ obj/                      # Object files directory
 *.vst3/                   # VST3 plugin bundles (macOS directory/bundle)
 *.component/              # Audio Unit plugin bundles (macOS directory/bundle)
 *.app/                    # macOS Application bundles (as directory)
-# For completeness, also ignore these as files, though typically covered by directory ignores
+
+# Keep the binary files
 *.aaxplugin
-*.vst
-*.vst3
-*.component
-*.exe
-*.app
+#*.vst
+#*.vst3
+#*.component
+#*.exe
+#*.app
 
 # Specific IDE/Compiler Temporary Directories and Files
-# Visual Studio
-Debug/                    # VS Debug build output directory
-Release/                  # VS Release build output directory
-x64/                      # Often used for build configurations directory
-Win32/                    # Often used for build configurations directory
-IPCH/                     # Precompiled header cache directory
-*.ipch                    # Precompiled header cache files
-*.aps                     # VS resource script cache
-*.ncb                     # IntelliSense database
-*.opendb                  # VS database
-*.sdf                     # IntelliSense database
-*.tlog                    # Build log files
+Builds/
 
 # Xcode Specific Ignores (tuned for your Builds folder structure)
-Builds/                   # Ignore the entire Builds folder by default (where binaries go)
 
 # EXCEPTIONS: Do NOT ignore the essential Xcode project and workspace files themselves
 # These contain your project's structure and settings and MUST be tracked.
@@ -121,5 +110,4 @@ Source/Misc/boost/
 # Other project-specific ignores
 Panels/                   # Ignore the Panels directory and its contents
 # /Panels                 # If 'Panels' can also exist as a file in root and needs ignoring, use this
-Source/Misc/boost/boost.zip
 Source/Misc/vst2sdk/

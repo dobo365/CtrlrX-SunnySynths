@@ -90,6 +90,10 @@ CtrlrLuaMethodFind::CtrlrLuaMethodFind (CtrlrLuaMethodEditor &_owner)
     matchCase->setButtonText (TRANS("Match Case"));
     matchCase->addListener (this);
 
+	addAndMakeVisible(keepOpened = new ToggleButton(""));
+	keepOpened->setButtonText(TRANS("Keep methods opened after a match"));
+	keepOpened->addListener(this);
+
     addAndMakeVisible (label2 = new Label ("new label",
                                            TRANS("Replace")));
     label2->setFont (Font (16.00f, Font::bold | Font::italic));
@@ -137,7 +141,8 @@ CtrlrLuaMethodFind::~CtrlrLuaMethodFind()
     replaceAllButton = nullptr;
     label = nullptr;
     matchCase = nullptr;
-    label2 = nullptr;
+	keepOpened = nullptr;
+	label2 = nullptr;
     whereToFindCombo = nullptr;
 
 
@@ -155,7 +160,8 @@ void CtrlrLuaMethodFind::resized()
     replaceAllButton->setBounds ((proportionOfWidth (0.4505f) + proportionOfWidth (0.3302f)) + proportionOfWidth (0.0991f), 4, proportionOfWidth (0.0991f), 32);
     label->setBounds (4 + 0, 40, 64, 24);
     matchCase->setBounds (4 + 68, 40, 96, 24);
-    label2->setBounds (proportionOfWidth (0.4505f) + 121, 40, 64, 24);
+	keepOpened->setBounds(4 + 68, 64, 250, 24);
+	label2->setBounds (proportionOfWidth (0.4505f) + 121, 40, 64, 24);
     whereToFindCombo->setBounds (176, 40, 128, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -397,9 +403,38 @@ void CtrlrLuaMethodFind::findInAll()
 					reportFoundMatch (doc, names[i], results[j]);
 				}
 			}
+			else // Added 5.6.34 by goodweather. Search in not yet opened methods
+			{
+				/* Open method */
+				owner.createNewTab(m);
+				owner.setCurrentTab(m);
+
+				/* Perform search and report result */
+				CodeDocument& doc = m->getCodeEditor()->getCodeDocument();
+
+				Array<Range<int> > results = searchForMatchesInDocument(doc);
+
+				for (int j = 0; j < results.size(); j++)
+				{
+					reportFoundMatch(doc, names[i], results[j]);
+				}
+
+				/* If no result then close method; if any result then keep method open or not depending on the toggle */
+				if (results.size() == 0)
+				{
+					owner.closeCurrentTab();
+				}
+				else
+				{
+					if (!keepOpened->getToggleState())
+					{
+						owner.closeCurrentTab();
+					}
+				}
+			}
 		}
 	}
-
+	owner.getMethodEditArea()->insertOutput("\nSearch done\n\n", Colours::black);
 	owner.getMethodEditArea()->getLowerTabs()->setCurrentTabIndex(0,true);
 }
 

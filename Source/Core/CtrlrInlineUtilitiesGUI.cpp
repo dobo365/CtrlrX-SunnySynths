@@ -5,6 +5,20 @@
 namespace gui {
 
 // Define your custom ColourScheme getter functions here
+//    juce::LookAndFeel_V4::ColourScheme getYourColourScheme() // Added for CtrlrX v5.6.34 by...
+//    {
+//        return { windowBackground, widgetBackground, menuBackground,
+//        outline, defaultText, defaultFill,
+//        highlightedText, highlightedFill, menuText };
+//    }
+
+juce::LookAndFeel_V4::ColourScheme getClassicColourScheme() // Added for CtrlrX v5.6.34 by @dobo365 DB
+{
+    return { 0xffaaaaaa, 0xffdddddd, 0xffffffff,
+             0xff666666, 0xff000000, 0xff8584bc,
+             0xff000000, 0xffd9d2e9, 0xff000000 };
+}
+
 juce::LookAndFeel_V4::ColourScheme getJetBlackColourScheme()
 {
     return { 0xff0b0b0b, 0xff151515, 0xff111111,
@@ -86,6 +100,7 @@ juce::LookAndFeel_V4::ColourScheme colourSchemeFromProperty(const juce::var &pro
     if (property == "Dark")         return juce::LookAndFeel_V4::getDarkColourScheme();
     if (property == "Midnight")     return juce::LookAndFeel_V4::getMidnightColourScheme();
     // Now calling your local function
+    if (property == "Classic")      return getClassicColourScheme();
     if (property == "JetBlack")     return getJetBlackColourScheme();
     if (property == "YamDX")        return getYamDxColourScheme();
     if (property == "AkAPC")        return getAkApcColourScheme();
@@ -116,7 +131,7 @@ juce::LookAndFeel* createLookAndFeelFromDescription(const juce::String& descript
     // For "V4", or if description is empty/unrecognized, default to V4.
     // The specific ColourScheme will be applied *after* this function returns, in CtrlrEditor.
     else if (description.startsWith("V4") || description.isEmpty() || description == "Light" || description == "Grey" ||
-             description == "Dark" || description == "Midnight" || description == "JetBlack" ||
+             description == "Dark" || description == "Midnight" || description == "Classic" || description == "JetBlack" ||
              description == "YamDX" || description == "AkAPC" || description == "AkMPC" ||
              description == "LexiBlue" || description == "KurzGreen" || description == "KorGrey" ||
              description == "KorGold" || description == "ArturOrange" || description == "AiraGreen")
@@ -133,6 +148,8 @@ juce::LookAndFeel* createLookAndFeelFromDescription(const juce::String& descript
             return new juce::LookAndFeel_V4(juce::LookAndFeel_V4::getDarkColourScheme());
         else if (description == "V4 Midnight" || description == "Midnight")
             return new juce::LookAndFeel_V4(juce::LookAndFeel_V4::getMidnightColourScheme());
+        else if (description == "V4 Classic" || description == "Classic")
+            return new juce::LookAndFeel_V4(gui::getClassicColourScheme());
         else if (description == "V4 JetBlack" || description == "JetBlack")
             return new juce::LookAndFeel_V4(gui::getJetBlackColourScheme());
         else if (description == "V4 YamDX" || description == "YamDX")

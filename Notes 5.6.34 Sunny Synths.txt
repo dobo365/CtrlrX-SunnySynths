@@ -1,0 +1,406 @@
+ISSUES
+======
+- need to add a border / black outline in Lua editor - Column method, in order to get some "3D" effect as panel properties. Or add outline to the resizer to see it when it is grey?
+- Error in replaceText() / appendText() is making CtrlrX crash. 
+We should get the error message but no crash. How to avoid?
+- panel:getProperty("panelVersionMajor") returns 1.0 when being 1. Checked code and is indicated as int...
+- panel:getProperty("panelVersionMinor") returns 1.0 when being 1
+
+
+WISHES
+=======
+- light purple methods on mouse over. May be difficult because there is no JUCE ItemMouseOver for Treeview Items
+- use tree full width CtrlrValueTreeEditorItem::getItemWidth () in CtrlrValueTreeEditor.cpp
+- underline property label on mouse over (OK). Display of popup with explanation (from xml file or from URL) on click
+- (minor) panel canvas in white by default
+- Code editor preferences window: add OK / Apply / Cancel buttons in order to test different combinations
+- Linux version
+- To check: is there still a limit to 64 VST parameters. Is the overrides file sill needed?
+
+
+TIPS
+====
+Write text in output area
+owner.getMethodEditArea()->insertOutput("\nbuttonClicked: findInAll", Colours::black);
+
+
+CHANGES
+=======
+Changes done in comparison to initial 5.6.34
+
+*** Height between methods in Method editor - VERIFIED AND OK
+Source - UIComponents - CtrlrValueTreeEditor.h
+Line 13
+virtual const int				getItemHeight(const ValueTree &item)	const { return (32); }
+Changed from 32 to 24
+
+
+*** Find text in All methods - VERIFIED AND OK
+Only done in bottom tab search. Not in Ctrl-F popup
+
+Source - UIComponents - CtrlrLua - MethodEditor - CtrlrLuaMethodFind.h (this is for the bottom tab search)
+Line 83: add declaration of keepOpened toggle
+    ScopedPointer<ToggleButton> keepOpened;
+
+Source - UIComponents - CtrlrLua - MethodEditor - CtrlrLuaMethodFind.cpp (this is for the bottom tab search)
+Line 93: add new checkbox keepOpened
+	addAndMakeVisible(keepOpened = new ToggleButton(""));
+	keepOpened->setButtonText(TRANS("Keep methods opened after a match"));
+	keepOpened->addListener(this);
+
+Line 144: add keepOpened in destructor
+	keepOpened = nullptr;
+
+Line 163: add keepOpened in resized() to display it
+	keepOpened->setBounds(4 + 68, 64, 250, 24);
+
+Line 406: add search in closed methods
+			else // Added 5.6.34 by goodweather. Search in not yet opened methods
+			{
+				/* Open method */
+				owner.createNewTab(m);
+				owner.setCurrentTab(m);
+
+				/* Perform search and report result */
+				CodeDocument& doc = m->getCodeEditor()->getCodeDocument();
+
+				Array<Range<int> > results = searchForMatchesInDocument(doc);
+
+				for (int j = 0; j < results.size(); j++)
+				{
+					reportFoundMatch(doc, names[i], results[j]);
+				}
+
+				/* If no result then close method; if any result then keep method open or not depending on the toggle */
+				if (results.size() == 0)
+				{
+					owner.closeCurrentTab();
+				}
+				else
+				{
+					if (!keepOpened->getToggleState())
+					{
+						owner.closeCurrentTab();
+					}
+				}
+			}
+		}
+	}
+	owner.getMethodEditArea()->insertOutput("\nSearch done\n\n", Colours::black);
+
+!! For Ctrl-F, didn't succeed to get the checkbox working so not implementing it.
+This will keep all closed methods opened if there is a match.
+Source - UIComponents - CtrlrLua - MethodEditor - CtrlrLuaMethodCodeEditor.cpp (this is for the Ctrl-F popup search)
+Line 417
+			else // Added 5.6.34 by goodweather. Search in not yet opened methods
+			{
+				/* Open method */
+				owner.createNewTab(m);
+				owner.setCurrentTab(m);
+
+				/* Perform search and report result */
+				CodeDocument& doc = m->getCodeEditor()->getCodeDocument();
+
+				Array<Range<int> > results = searchForMatchesInDocument(doc, search);
+											     ^^^^^^
+				for (int j = 0; j < results.size(); j++)
+				{
+					reportFoundMatch(doc, names[i], results[j]);
+				}
+
+				/* If no result then close method; if any result then keep method open */
+				if (results.size() == 0)
+				{
+					owner.closeCurrentTab();
+				}
+			}
+
+
+*** Size of methods in italic - VERIFIED AND OK
+Source - UIComponents - CtrlrLua - MethodEditor - CtrlrLuaMethodEditor.cpp
+Change line 739 to
+str.append (File::descriptionOfSizeInBytes (item.getProperty(Ids::luaMethodCode).toString().length()), fSmallItalic, text.brighter(0.2f));
+
+
+*** Force colours of editable text properties - VERIFIED and OK
+Source - UIComponents - CtrlrPropertyEditors - CtrlrPropertyComponent.cpp
+class CtrlrTextPropLabel  : public Label  // Text Box for Type In Properties such as Panel Name etc
+Line 1970
+Forcing "half white" background with black text
+			// setColour(Label::backgroundColourId, findColour(Slider::backgroundColourId)); // The background colour to fill the label with
+			setColour(Label::backgroundColourId, Colour(0xfffffefa)); // The background colour to fill the label with. 5.6.34: set to halfwhite all the time
+			//setColour(Label::textColourId, findColour(Slider::textBoxTextColourId)); // The colour for the text
+			setColour(Label::textColourId, Colour(0xff000000)); // The colour for the text. 5.6.34: set to black all the time
+			setColour (Label::outlineColourId, findColour (Slider::textBoxOutlineColourId)); // An optional colour to use to draw a border around the label
+            
+			//setColour(Label::backgroundWhenEditingColourId, findColour(Slider::backgroundColourId).withAlpha(0.7f)); // The background colour when the label is being edited
+			setColour(Label::backgroundWhenEditingColourId, Colour(0xfffffefa)); // The background colour when the label is being edited. No change in comparison to not edited (half white)
+
+This code is overwriting (my guess), the settings done in Juce_LookAndFeel_V2.cpp in JUCE Modules – juce_gui_basics - lookandfeel
+
+
+*** Force colours of read only text properties - VERIFIED and OK
+Line 2017 ReadOnly properties background color changed
+from 
+textEditor->setColour (Label::backgroundColourId, findColour(Label::backgroundColourId).withAlpha(0.5f));
+to light grey
+textEditor->setColour(Label::backgroundColourId, Colour(0xffcccccc)); // The background colour for the read only property text. 5.6.34: set to light grey all the time
+
+
+*** Open method - VERIFIED and OK
+Source - UIComponents - CtrlrLua - MethodEditor - CtrlrLuaMethodEditor.cpp
+Line 907 		m.addItem (1, "Open method");
+Line 930
+			else if (ret == 1)
+			{
+				/* open a method */
+				setEditedMethod(Uuid(item.getProperty(Ids::uuid).toString()));
+			}
+
+
+*** Rename method - VERIFIED and OK
+Source - UIComponents - CtrlrLua - MethodEditor - CtrlrLuaMethodEditor.h
+Line 64 		void renameMethod(ValueTree currentMethod = ValueTree());
+Source - UIComponents - CtrlrLua - MethodEditor - CtrlrLuaMethodEditor.cpp
+Line 385
+void CtrlrLuaMethodEditor::renameMethod(ValueTree currentMethod)
+
+{
+	AlertWindow w("Rename method", "", AlertWindow::QuestionIcon, this);
+	w.addTextEditor("name", currentMethod.getProperty(Ids::luaMethodName).toString());
+	w.addButton("OK", 1, KeyPress(KeyPress::returnKey));
+	w.addButton("Cancel", 0, KeyPress(KeyPress::escapeKey));
+
+	if (w.runModalLoop())
+	{
+		currentMethod.setProperty(Ids::luaMethodName, w.getTextEditorContents("name"), nullptr);
+		updateRootItem();
+	}
+
+	saveSettings(); // save settings
+}
+Line 909 		m.addItem (3, "Rename method");
+Line 943
+			else if (ret == 3)
+			{
+				/* rename a method */
+				renameMethod(item);
+			}
+
+
+*** Adapted buttons layout at bottom of Resource editor - VERIFIED AND OK
+Source - UIComponents - CtrlrPanel - CtrlrPanelResourceEditor.cpp
+Line 71: completely adapted resized() function
+void CtrlrPanelResourceEditor::resized() // Updated v5.6.33. FIX issue #86 : unresponsive buttons	// v5.6.34: new int variables; adapted positioning. By @dobo365 DB
+{
+	int margin = 8;
+	int buttonWidth = 72;
+
+    resourceList->setBounds(0, 0, getWidth(), getHeight() - 48);
+    add->setBounds(margin + 0, getHeight() - 48 + margin, buttonWidth, 32);
+    remove->setBounds(2*margin + buttonWidth, getHeight() - 48 + margin, buttonWidth, 32);
+    move->setBounds(3*margin + 2*buttonWidth, getHeight() - 48 + margin, buttonWidth, 32);
+    reload->setBounds(getWidth() - buttonWidth - margin, getHeight() - 48 + margin, buttonWidth, 32);
+}
+
+
+*** Adapted background color of selected right tab - VERIFIED AND OK
+Source - UIComponents - CtrlrPanel - CtrlrPanelProperties.cpp
+Line 64: adapted paint() function
+void CtrlrPanelProperties::paint (Graphics& g)
+{
+    g.fillAll(findColour(DocumentWindow::backgroundColourId));
+ 
+    for (int i = 0; i < tabbedComponent->getNumTabs(); i++)
+    {
+        if (i == tabbedComponent->getTabbedButtonBar().getCurrentTabIndex())
+        {
+            // This is for v3 where the color is forced. Should add an If..then..else checking v4 LnF
+            tabbedComponent->getTabbedButtonBar().setTabBackgroundColour(i, Colour(0xffcccccc));   // v5.6.34: set to Light grey. ATTENTION: this is also changing the bottom part. By @dobo365 DB
+        }
+        else
+        {
+            tabbedComponent->getTabbedButtonBar().setTabBackgroundColour(i, getLookAndFeel().findColour(TabbedComponent::backgroundColourId));
+        }
+    }
+}
+
+
+*** Added Classic theme in v4 - VERIFIED AND OK
+Adapted CtrlrIDs.xml in Source - Resources - XML
+    <const name="componentlookandfeel" value="Default,V4 Light,V4 Grey,V4 Dark,V4 Midnight,V4 Classic,V4 JetBlack,V4 YamDX,V4 AkAPC,V4 AkMPC,V4 LexiBlue,V4 KurzGreen,V4 KorGrey,V4 KorGold,V4 ArturOrange,V4 AiraGreen,V3,V2,V1" />
+    <const name="lookandfeelschemes"   value="V4 Light,V4 Grey,V4 Dark,V4 Midnight,V4 Classic,V4 JetBlack,V4 YamDX,V4 AkAPC,V4 AkMPC,V4 LexiBlue,V4 KurzGreen,V4 KorGrey,V4 KorGold,V4 ArturOrange,V4 AiraGreen,V3,V2,V1" />
+    <const name="lookandfeel"          value="V4,V3,V2,V1" />
+    <const name="colourSchemes"        value="Default,Light,Grey,Dark,Midnight" />
+    <const name="ctrlrColourSchemes"   value="Light,Grey,Dark,Midnight,Classic,JetBlack,YamDX,AkAPC,AkMPC,LexiBlue,KurzGreen,KorGrey,KorGold,ArturOrange,AiraGreen" />
+
+CtrlrInlineUtilitiesGUI.cpp in Source - Core
+Line 15: add theme
+juce::LookAndFeel_V4::ColourScheme getClassicColourScheme() // Added for CtrlrX v5.6.34
+{
+    return { 0xffaaaaaa, 0xffdddddd, 0xffffffff,
+             0xff666666, 0xff000000, 0xff8584bc,
+             0xff000000, 0xffd9d2e9, 0xff000000 };
+}
+
+Line 103: add condition in colourSchemeFromProperty() function
+    if (property == "Classic")      return getClassicColourScheme();
+
+Line 134: modify condition in createLookAndFeelFromDescription() function
+    else if (description.startsWith("V4") || description.isEmpty() || description == "Light" || description == "Grey" ||
+             description == "Dark" || description == "Midnight" || description == "Classic" || description == "JetBlack" ||
+             description == "YamDX" || description == "AkAPC" || description == "AkMPC" ||
+             description == "LexiBlue" || description == "KurzGreen" || description == "KorGrey" ||
+             description == "KorGold" || description == "ArturOrange" || description == "AiraGreen")
+ 
+Line 151: add condition in createLookAndFeelFromDescription() function
+        else if (description == "V4 Classic" || description == "Classic")
+            return new juce::LookAndFeel_V4(gui::getClassicColourScheme());
+
+??? Also in
+Core - CtrlrManagerInstance Line 70?
+
+
+*** Always light red button for closing panels - VERIFIED AND OK
+Source - UIComponents - CtrlrApplicationWindow - CtrlrDocumentPanel.cpp
+Line 216
+        g.setColour (Colour(0xffcc7878));      // Light red Added v5.6.34 by GoodWeather
+
+
+*** Light grey background for About and Midi Settings windows - VERIFIED AND OK
+Line 140 in Juce_LookAndFeel_V2.cpp in JUCE Modules – juce_gui_basics - lookandfeel
+        ResizableWindow::backgroundColourId,        0xffaaaaaa,      // Was 0xff777777, v5.6.34 changed by @dobo365 DB
+
+
+*** Always Yellow resizer bar - VERIFIED AND OK
+Line 57 in Juce_LookAndFeel_V3.cpp in JUCE Modules – juce_gui_basics - lookandfeel
+Line 1390 in Juce_LookAndFeel_V4.cpp in JUCE Modules – juce_gui_basics - lookandfeel
+if (isMouseOver || isMouseDragging)
+   g.fillAll (Colours::yellow.withAlpha (0.4f));
+
+
+*** Property labels underlined on mouse over - VERIFIED AND OK
+Source - UIComponents - CtrlrPropertyEditors - CtrlrPropertyComponent.cpp
+Line 86: added mouse events handling functions
+void CtrlrPropertyComponent::mouseEnter(const MouseEvent& e)	// v5.6.34 Added back from 5.3.201 by @dobo365 DB
+{
+	if (e.x < getLookAndFeel().getPropertyComponentContentPosition(*this).getX())
+	{
+		setMouseCursor(MouseCursor::PointingHandCursor);
+		repaint();
+	}
+}
+
+void CtrlrPropertyComponent::mouseExit(const MouseEvent& e)	// v5.6.34 Added back from 5.3.201 by @dobo365 DB
+{
+	setMouseCursor(MouseCursor::NormalCursor);
+	repaint();
+}
+
+void CtrlrPropertyComponent::mouseDown(const MouseEvent& e)	// v5.6.34 Added back from 5.3.201 by @dobo365 DB
+{
+	if (e.x < getLookAndFeel().getPropertyComponentContentPosition(*this).getX())
+	{
+		/* Code in 5.3.201. Property ctrlrPropertiesAreURLs is not in 5.6.34 anymore
+		if (panel)
+		{
+			if ((bool)panel->getOwner().getProperty (Ids::ctrlrPropertiesAreURLs) == true)
+			{
+				url = URL (urlString.replace ("%ELEMENT_TYPE%", getElementType().isEmpty() ? "" : (":"+getElementType()))
+								.replace ("%ELEMENT_SUBTYPE%", getElementSubType().isEmpty() ? "" : (":"+getElementSubType()))
+								.replace ("%ELEMENT_PROPERTY%", propertyName.toString()));
+				url.launchInDefaultBrowser();
+			}
+		}*/
+
+		/* My proposal
+		- Open window like Midi Monitor. So, can stay opened with possibility to copy/paste from it
+		- Display code and explanations coming from some .xml file?
+		*/
+		//panel->getOwner().getWindowManager().toggle(CtrlrManagerWindowManager::MidiMonWindow, true);
+	}
+}
+
+void CtrlrPropertyComponent::mouseMove(const MouseEvent& e)
+{
+	if (e.x < getLookAndFeel().getPropertyComponentContentPosition(*this).getX())
+	{
+		if (getMouseCursor() != MouseCursor::PointingHandCursor)
+		{
+			setMouseCursor(MouseCursor::PointingHandCursor);
+			repaint();
+		}
+	}
+}
+
+
+*** textHighlightColour
+Used for method editor (selected method and hovered method)
+For selected method, 
+Line 65 in Juce_LookAndFeel_V2.cpp in JUCE Modules – juce_gui_basics - lookandfeel
+    const uint32 textHighlightColour   = 0x401111ee;
+For hovered method, 
+Line 130 in Source - UIComponents - CtrlrValueTreeEditor.cpp
+but...don't know how to do it
+
+
+*** askForInputText AlertWindow not reacting on Cancel - VERIFIED AND OK
+The current utils.askForInputTextWindow() is taking the text even when the Cancel button is pressed.
+Reason: code always returning the text and not checking for the Cancel button value
+Adapted Source - Lua - CtrlrLuaUtils.cpp
+Line 203
+String CtrlrLuaUtils::askForTextInputWindow (const String title, const String message, const String initialInputContent, const String onScreenLabel, const bool isPassword, const String button1Text, const String button2Text)
+{
+	AlertWindow w(title, message, AlertWindow::QuestionIcon, 0);
+	w.addTextEditor ("userInput", initialInputContent,  onScreenLabel, isPassword);
+	w.addButton (button1Text, 1);
+	w.addButton (button2Text, -1);
+	if (w.runModalLoop() == 1)
+	{
+		return (w.getTextEditorContents("userInput"));
+	}
+	else
+	{
+		return ("-1");
+	}
+
+}
+
+
+*** Panel close question ***
+New handling done by Damien. Works fine!
+Issue #141
+
+
+*** Removed warnings from CtrlrSliderInternal.cpp - OK
+1>G:\2. Source code for build\CtrlrX-SunnySynths\Source\UIComponents\CtrlrComponents\Sliders\CtrlrSliderInternal.cpp(286,17): warning C4189: 'sliderRadius': local variable is initialized but not referenced
+1>G:\2. Source code for build\CtrlrX-SunnySynths\Source\UIComponents\CtrlrComponents\Sliders\CtrlrSliderInternal.cpp(293,17): warning C4189: 'outlineThickness': local variable is initialized but not referenced
+1>G:\2. Source code for build\CtrlrX-SunnySynths\Source\UIComponents\CtrlrComponents\Sliders\CtrlrSliderInternal.cpp(386,17): warning C4189: 'sliderRadius': local variable is initialized but not referenced
+1>G:\2. Source code for build\CtrlrX-SunnySynths\Source\UIComponents\CtrlrComponents\Sliders\CtrlrSliderInternal.cpp(393,17): warning C4189: 'outlineThickness': local variable is initialized but not referenced
+Lines commented as not used
+
+
+*** Done to remove messages - OK
+Source - UIComponents - CtrlrLua - MethodEditor - CtrlrLuaMethodEditor.h
+- Commented addNewClass as no definition
+- Commented setRawDebuggerOutput as no definition
+Source - UIComponents - CtrlrValueTreeEditor.h
+- Commented canHandleDragAndDrop as no definition
+
+
+*** Mouse hover methods	- TOO DIFFICULT No item mouse over in JUCE treeview class
+Source - UIComponents - CtrlrValueTreeEditor.h
+Line 18 	virtual void	itemHovered(const MouseEvent &e, ValueTree &item)	{ }
+Line 56		void itemHovered (const MouseEvent& e);
+Source - UIComponents - CtrlrValueTreeEditor.cpp
+Line 161
+void CtrlrValueTreeEditorItem::itemHovered(const MouseEvent& e)
+{
+	provider.itemHovered(e, treeToEdit);
+}
+
+or adapt void CtrlrValueTreeEditorItem::paintItem?
+
+
+
+

@@ -83,6 +83,57 @@ void CtrlrPropertyComponent::refresh()
 	}
 }
 
+void CtrlrPropertyComponent::mouseEnter(const MouseEvent& e)		// v5.6.34 Added back from 5.3.201 by @dobo365 DB
+{
+	if (e.x < getLookAndFeel().getPropertyComponentContentPosition(*this).getX())
+	{
+		setMouseCursor(MouseCursor::PointingHandCursor);
+		repaint();
+	}
+}
+
+void CtrlrPropertyComponent::mouseExit(const MouseEvent& e)		// v5.6.34 Added back from 5.3.201 by @dobo365 DB
+{
+	setMouseCursor(MouseCursor::NormalCursor);
+	repaint();
+}
+
+void CtrlrPropertyComponent::mouseDown(const MouseEvent& e)		// v5.6.34 Added back from 5.3.201 by @dobo365 DB
+{
+	if (e.x < getLookAndFeel().getPropertyComponentContentPosition(*this).getX())
+	{
+		/* Code in 5.3.201. Property ctrlrPropertiesAreURLs is not in 5.6.34 anymore
+		if (panel)
+		{
+			if ((bool)panel->getOwner().getProperty (Ids::ctrlrPropertiesAreURLs) == true)
+			{
+				url = URL (urlString.replace ("%ELEMENT_TYPE%", getElementType().isEmpty() ? "" : (":"+getElementType()))
+								.replace ("%ELEMENT_SUBTYPE%", getElementSubType().isEmpty() ? "" : (":"+getElementSubType()))
+								.replace ("%ELEMENT_PROPERTY%", propertyName.toString()));
+				url.launchInDefaultBrowser();
+			}
+		}*/
+
+		/* My proposal
+		- Open window like Midi Monitor. So, can stay opened with possibility to copy/paste from it
+		- Display code and explanations coming from some .xml file OR displaying a page in the wiki (based on URL)
+		*/
+		//panel->getOwner().getWindowManager().toggle(CtrlrManagerWindowManager::MidiMonWindow, true);
+	}
+}
+
+void CtrlrPropertyComponent::mouseMove(const MouseEvent& e)
+{
+	if (e.x < getLookAndFeel().getPropertyComponentContentPosition(*this).getX())
+	{
+		if (getMouseCursor() != MouseCursor::PointingHandCursor)
+		{
+			setMouseCursor(MouseCursor::PointingHandCursor);
+			repaint();
+		}
+	}
+}
+
 Component *CtrlrPropertyComponent::getPropertyComponent()
 {
 	Value valueToControl = propertyElement.getPropertyAsValue (propertyName, panel ? panel->getUndoManager() : nullptr);
@@ -1965,12 +2016,15 @@ class CtrlrTextPropLabel  : public Label  // Text Box for Type In Properties suc
 				owner (owner_), maxChars (maxChars_), isMultiline (isMultiline_)
 		{
             setEditable (true, true, false); // single click, double-click, lossOfFocusDiscardsChanges
-            setColour (Label::backgroundColourId, findColour(Slider::backgroundColourId)); // The background colour to fill the label with
-            setColour(Label::textColourId, findColour(Slider::textBoxTextColourId)); // The colour for the text
-            setColour (Label::outlineColourId, findColour (Slider::textBoxOutlineColourId)); // An optional colour to use to draw a border around the label
+            //setColour (Label::backgroundColourId, findColour(Slider::backgroundColourId)); // The background colour to fill the label with
+			setColour(Label::backgroundColourId, Colour(0xfffffefa)); // The background colour to fill the label with. 5.6.34: set to halfwhite all the time
+			//setColour(Label::textColourId, findColour(Slider::textBoxTextColourId)); // The colour for the text
+			setColour(Label::textColourId, Colour(0xff000000)); // The colour for the text. 5.6.34: set to black all the time
+			setColour (Label::outlineColourId, findColour (Slider::textBoxOutlineColourId)); // An optional colour to use to draw a border around the label
             
-            setColour(Label::backgroundWhenEditingColourId, findColour(Slider::backgroundColourId).withAlpha(0.7f)); // The background colour when the label is being edited
-            setColour(Label::textWhenEditingColourId, findColour(Label::textWhenEditingColourId).withAlpha(0.7f)); // The colour for the text when the label is being edited
+            //setColour(Label::backgroundWhenEditingColourId, findColour(Slider::backgroundColourId).withAlpha(0.7f)); // The background colour when the label is being edited
+			setColour(Label::backgroundWhenEditingColourId, Colour(0xfffffefa)); // The background colour when the label is being edited. No change in comparison to not edited (half white)
+			setColour(Label::textWhenEditingColourId, findColour(Label::textWhenEditingColourId).withAlpha(0.7f)); // The colour for the text when the label is being edited
             setColour(Label::outlineWhenEditingColourId, findColour(Slider::textBoxOutlineColourId)); // An optional border colour when the label is being edited
 		}
 
@@ -2016,8 +2070,9 @@ CtrlrTextPropertyComponent::CtrlrTextPropertyComponent (const Value& _valueToCon
 	{
 		// textEditor->setColour (Label::backgroundColourId, textEditor->findColour(Label::backgroundColourId,false).withAlpha(0.5f)); // Was set to false for non inheritance
 		// textEditor->setColour (Label::textColourId, textEditor->findColour(Label::textColourId,false).brighter(0.5f)); // Was set to false for non inheritance
-        textEditor->setColour (Label::backgroundColourId, findColour(Label::backgroundColourId));
-        textEditor->setColour (Label::textColourId, findColour(Label::textColourId));
+        // textEditor->setColour (Label::backgroundColourId, findColour(Label::backgroundColourId).withAlpha(0.5f));
+		textEditor->setColour(Label::backgroundColourId, Colour(0xffcccccc)); // The background colour for the read only property text. 5.6.34: set to light grey all the time
+		textEditor->setColour (Label::textColourId, findColour(Label::textColourId));
         textEditor->setEditable (false, false, false);
         // textEditor->setJustificationType(juce::Justification::topLeft); // Added v5.6.34.
 	}

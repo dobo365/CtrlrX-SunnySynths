@@ -3,6 +3,7 @@
 
 
 ## Table of Contents
+* [About CtrlrX - Sunny Synths](#about-ctrlrx-sunnysynths)
 * [About CtrlrX](#about-ctrlrx)
 * [Donations](#donations)
 * [Licensing](#licensing)
@@ -30,6 +31,12 @@
 * [Notes](#notes)
 
 ---
+
+## About CtrlrX - Sunny Synths
+
+[CtrlrX - Sunny Synths](https://github.com/dobo365/CtrlrX-SunnySynths) by [Dominique Bontemps](https://github.com/dobo365/) is an alternative fork of [CtrlrX](https://github.com/damiensellier/CtrlrX) by [Damien Sellier](https://github.com/DamienSellier) containing a few adjustments mainly related to the look and feel.
+I'm still contributing to CtrlrX.
+The branch xxx - InWork contains my InWork changes based on the corresponding CtrlrX version.
 
 ## About CtrlrX
 

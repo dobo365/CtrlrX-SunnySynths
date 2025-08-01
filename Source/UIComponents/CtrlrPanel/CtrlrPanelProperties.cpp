@@ -64,6 +64,19 @@ CtrlrPanelProperties::~CtrlrPanelProperties()
 void CtrlrPanelProperties::paint (Graphics& g)
 {
     g.fillAll(findColour(DocumentWindow::backgroundColourId));
+ 
+    for (int i = 0; i < tabbedComponent->getNumTabs(); i++)
+    {
+        if (i == tabbedComponent->getTabbedButtonBar().getCurrentTabIndex())
+        {
+            // This is for v3 where the color is forced. Should add an If..then..else checking v4 LnF
+            tabbedComponent->getTabbedButtonBar().setTabBackgroundColour(i, Colour(0xffcccccc));   // v5.6.34: set to Light grey. !! also changes bottom part. By @dobo365 DB
+        }
+        else
+        {
+            tabbedComponent->getTabbedButtonBar().setTabBackgroundColour(i, getLookAndFeel().findColour(TabbedComponent::backgroundColourId));
+        }
+    }
 }
 
 void CtrlrPanelProperties::resized()

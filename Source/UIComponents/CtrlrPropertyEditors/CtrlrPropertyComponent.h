@@ -29,6 +29,10 @@ class CtrlrPropertyComponent  : public PropertyComponent
 		void resized();
 		void paint (Graphics &g);
 		void refresh();
+		void mouseEnter(const MouseEvent& e);	// Added 5.6.34 B by goodweather @dobo365. Based on 5.3.201
+		void mouseExit(const MouseEvent& e);	// Added 5.6.34 B by goodweather @dobo365. Based on 5.3.201
+		void mouseDown(const MouseEvent& e);	// Added 5.6.34 B by goodweather @dobo365. Based on 5.3.201
+		void mouseMove(const MouseEvent& e);	// Added 5.6.34 B by goodweather @dobo365. Based on 5.3.201
 		const String getPropertyName();
 		const String getVisibleText();
 		const String getElementSubType();

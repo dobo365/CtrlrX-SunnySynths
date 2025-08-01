@@ -137,7 +137,7 @@ LookAndFeel_V2::LookAndFeel_V2()
         Slider::textBoxHighlightColourId,           textHighlightColour,
         Slider::textBoxOutlineColourId,             standardOutlineColour,
 
-        ResizableWindow::backgroundColourId,        0xff777777,
+        ResizableWindow::backgroundColourId,        0xffaaaaaa,      // Was 0xff777777, v5.6.34 changed by @dobo365 DB
         //DocumentWindow::textColourId,               0xff000000, // (this is deliberately not set)
 
         AlertWindow::backgroundColourId,            0xffededed,

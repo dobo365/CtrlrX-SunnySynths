@@ -212,8 +212,9 @@ void CtrlrDocumentPanelCloseButton::paintButton (Graphics& g, bool isMouseOverBu
         //g.setColour (Colour(findColour(TextButton::buttonOnColourId)).brighter(0.4)); // v.5.2.198
         //g.setColour (Colour (0xdfe7e7e8)); // Added v5.6.30
         //g.setColour (Colours::red); // Added v5.6.31 by GoodWeather
-        g.setColour (findColour(TextButton::buttonOnColourId));; // Added v5.6.31
-        
+        //g.setColour (findColour(TextButton::buttonOnColourId));; // Added v5.6.31. Commented in 5.6.34
+        g.setColour(Colour(0xffcc7878));      // Light red Added v5.6.34 by GoodWeather
+
         g.fillRoundedRectangle((float) (proportionOfWidth (0.0500f)),
                                (float) (proportionOfHeight (0.0500f)),
                                (float) (proportionOfWidth (0.9000f)),
