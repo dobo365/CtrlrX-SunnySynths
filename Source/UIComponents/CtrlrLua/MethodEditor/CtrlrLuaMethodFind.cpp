@@ -380,7 +380,7 @@ void CtrlrLuaMethodFind::findInOpened()
 
 void CtrlrLuaMethodFind::findInAll()
 {
-	owner.getMethodEditArea()->insertOutput("\n\nSearching for: \""+findInput->getText()+"\" in all methods (double click line to jump)\n", Colours::darkblue);
+	owner.getMethodEditArea()->insertOutput("\nSearching for: \""+findInput->getText()+"\" in all methods (double click line to jump)\n", Colours::black);
 	StringArray names;
 
 	for (int i=0; i<owner.getMethodManager().getNumMethods(); i++)

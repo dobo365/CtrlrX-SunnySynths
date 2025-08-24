@@ -15,7 +15,7 @@ CtrlrAbout::CtrlrAbout (CtrlrManager &_owner)
     ctrlrLogo->setMouseCursor(MouseCursor::PointingHandCursor);
     
     // "Ctrlr" logo as letters
-    addAndMakeVisible (ctrlrName = new Label ("", TRANS("CtrlrX")));
+    addAndMakeVisible (ctrlrName = new Label ("", TRANS("CtrlrX - Sunny Synths")));
     
     ctrlrName->setFont (Font (32, Font::bold)); // was 64 then 52
     ctrlrName->setJustificationType (Justification::topLeft); // was centredLeft
