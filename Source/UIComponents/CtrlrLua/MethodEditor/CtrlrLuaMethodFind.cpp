@@ -355,8 +355,9 @@ void CtrlrLuaMethodFind::findInOpened()
 		return;
 
 	StringArray names = owner.getTabs()->getTabNames();
+	int numFoundInstances = 0;
 
-	owner.getMethodEditArea()->insertOutput("\n\nSearching for: \""+findInput->getText()+"\" in all opened methods (double click line to jump)\n", Colours::darkblue);
+	owner.getMethodEditArea()->insertOutput("\nSearching for: \""+findInput->getText()+"\" in all opened methods (double click line to jump)\n", Colours::black);
 
 	for (int i=0; i<owner.getTabs()->getNumTabs(); i++)
 	{
@@ -368,12 +369,28 @@ void CtrlrLuaMethodFind::findInOpened()
 
 			Array<Range<int> > results = searchForMatchesInDocument (doc);
 
+			numFoundInstances += results.size();
 			for (int j=0; j<results.size(); j++)
 			{
 				reportFoundMatch (doc, names[i], results[j]);
 			}
 		}
 	}
+
+	if (numFoundInstances == 0)
+	{
+		owner.getMethodEditArea()->insertOutput("Search completed (nothing found)\n\n", Colours::black);
+	}
+	else if (numFoundInstances == 1)
+	{
+		owner.getMethodEditArea()->insertOutput("\nSearch completed (1 instance found)\n\n", Colours::black);
+	}
+	else
+	{
+		owner.getMethodEditArea()->insertOutput("\nSearch completed (" + String(numFoundInstances) + " instances found)\n\n", Colours::black);
+	}
+
+	owner.getMethodEditArea()->getLowerTabs()->setCurrentTabIndex(0, true);
 
 	owner.getMethodEditArea()->getLowerTabs()->setCurrentTabIndex(0,true);
 }
@@ -382,6 +399,7 @@ void CtrlrLuaMethodFind::findInAll()
 {
 	owner.getMethodEditArea()->insertOutput("\nSearching for: \""+findInput->getText()+"\" in all methods (double click line to jump)\n", Colours::black);
 	StringArray names;
+	int numFoundInstances = 0;
 
 	for (int i=0; i<owner.getMethodManager().getNumMethods(); i++)
 	{
@@ -398,6 +416,7 @@ void CtrlrLuaMethodFind::findInAll()
 
 				Array<Range<int> > results = searchForMatchesInDocument (doc);
 
+				numFoundInstances += results.size();
 				for (int j=0; j<results.size(); j++)
 				{
 					reportFoundMatch (doc, names[i], results[j]);
@@ -414,6 +433,7 @@ void CtrlrLuaMethodFind::findInAll()
 
 				Array<Range<int> > results = searchForMatchesInDocument(doc);
 
+				numFoundInstances += results.size();
 				for (int j = 0; j < results.size(); j++)
 				{
 					reportFoundMatch(doc, names[i], results[j]);
@@ -434,7 +454,20 @@ void CtrlrLuaMethodFind::findInAll()
 			}
 		}
 	}
-	owner.getMethodEditArea()->insertOutput("\nSearch done\n\n", Colours::black);
+	
+	if (numFoundInstances == 0)
+	{
+		owner.getMethodEditArea()->insertOutput("Search completed (nothing found)\n\n", Colours::black);
+	}
+	else if (numFoundInstances == 1)
+	{
+		owner.getMethodEditArea()->insertOutput("\nSearch completed (1 instance found)\n\n", Colours::black);
+	}
+	else
+	{
+		owner.getMethodEditArea()->insertOutput("\nSearch completed (" + String(numFoundInstances) + " instances found)\n\n", Colours::black);
+	}
+	
 	owner.getMethodEditArea()->getLowerTabs()->setCurrentTabIndex(0,true);
 }
 

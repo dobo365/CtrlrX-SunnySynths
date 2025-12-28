@@ -206,8 +206,8 @@ void CtrlrPanelModulatorList::paintRowBackground (Graphics& g, int rowNumber, in
 {
 	if (rowIsSelected)
 	{
-		gui::drawSelectionRectangle (g, width, height);
-        g.fillAll(Colours::red);
+		gui::drawSelectionRectangle (g, width, height, Colour(0xffbfbba9));
+        //g.fillAll(Colours::red);
 	}
 }
 

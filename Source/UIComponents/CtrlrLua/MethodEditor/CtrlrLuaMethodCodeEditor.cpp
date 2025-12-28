@@ -364,8 +364,9 @@ void CtrlrLuaMethodCodeEditor::findInOpened(const String &search)
 		return;
 
 	StringArray names = owner.getTabs()->getTabNames();
+	int numFoundInstances = 0;
 
-	owner.getMethodEditArea()->insertOutput("\n\nSearching for: \""+search+"\" in all opened methods (double click line to jump)\n", Colours::darkblue);
+	owner.getMethodEditArea()->insertOutput("\nSearching for: \""+search+"\" in all opened methods (double click line to jump)\n", Colours::black);
 
 	for (int i=0; i<owner.getTabs()->getNumTabs(); i++)
 	{
@@ -377,6 +378,7 @@ void CtrlrLuaMethodCodeEditor::findInOpened(const String &search)
 
 			Array<Range<int> > results = searchForMatchesInDocument (doc, search);
 
+			numFoundInstances += results.size();
 			for (int j=0; j<results.size(); j++)
 			{
 				reportFoundMatch (doc, names[i], results[j]);
@@ -384,13 +386,27 @@ void CtrlrLuaMethodCodeEditor::findInOpened(const String &search)
 		}
 	}
 
+	if (numFoundInstances == 0)
+	{
+		owner.getMethodEditArea()->insertOutput("Search completed (nothing found)\n\n", Colours::black);
+	}
+	else if (numFoundInstances == 1)
+	{
+		owner.getMethodEditArea()->insertOutput("\nSearch completed (1 instance found)\n\n", Colours::black);
+	}
+	else
+	{
+		owner.getMethodEditArea()->insertOutput("\nSearch completed (" + String(numFoundInstances) + " instances found)\n\n", Colours::black);
+	}
+
 	owner.getMethodEditArea()->getLowerTabs()->setCurrentTabIndex(0,true);
 }
 
 void CtrlrLuaMethodCodeEditor::findInAll(const String &search)
 {
-	owner.getMethodEditArea()->insertOutput("\n\nSearching for: \""+search+"\" in all methods (double click line to jump)\n", Colours::darkblue);
+	owner.getMethodEditArea()->insertOutput("\nSearching for: \""+search+"\" in all methods (double click line to jump)\n", Colours::black);
 	StringArray names;
+	int numFoundInstances = 0;
 
 	for (int i=0; i<owner.getMethodManager().getNumMethods(); i++)
 	{
@@ -407,12 +423,50 @@ void CtrlrLuaMethodCodeEditor::findInAll(const String &search)
 
 				Array<Range<int> > results = searchForMatchesInDocument (doc, search);
 
+				numFoundInstances += results.size();
 				for (int j=0; j<results.size(); j++)
 				{
 					reportFoundMatch (doc, names[i], results[j]);
 				}
 			}
+			else // Added 5.6.34 by goodweather. Search in closed methods
+			{
+				/* Open method */
+				owner.createNewTab(m);
+				owner.setCurrentTab(m);
+
+				/* Perform search and report result */
+				CodeDocument& doc = m->getCodeEditor()->getCodeDocument();
+
+				Array<Range<int> > results = searchForMatchesInDocument (doc, search);
+
+				numFoundInstances += results.size();
+				for (int j = 0; j < results.size(); j++)
+					{
+						reportFoundMatch (doc, names[i], results[j]);
+					}
+
+				/* If no result then close method; if any result then keep method open */
+				// Put in comment. When Ctrlr-F is used, there is no toggle. So, better to just show the list of matches and leave the opened methods as is...
+				//if (results.size() == 0)
+				//{
+				owner.closeCurrentTab();
+				//}
+			}
 		}
+	}
+
+	if (numFoundInstances == 0)
+	{
+		owner.getMethodEditArea()->insertOutput("Search completed (nothing found)\n\n", Colours::black);
+	}
+	else if (numFoundInstances == 1)
+	{
+		owner.getMethodEditArea()->insertOutput("\nSearch completed (1 instance found)\n\n", Colours::black);
+	}
+	else
+	{
+		owner.getMethodEditArea()->insertOutput("\nSearch completed (" + String(numFoundInstances) + " instances found)\n\n", Colours::black);
 	}
 
 	owner.getMethodEditArea()->getLowerTabs()->setCurrentTabIndex(0,true);

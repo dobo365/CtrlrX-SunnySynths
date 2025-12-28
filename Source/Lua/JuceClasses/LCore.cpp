@@ -961,6 +961,22 @@ namespace LXmlJuce6Factories // Added v5.6.34. Thanks to @dnaldoog
 	}
 }
 
+// Helper to handle the unique_ptr conversion. Added v5.6.34. Thanks to @dnaldoog
+static XmlElement* getDocumentElementWrapper(XmlDocument* doc, bool onlyReadOuter)
+{
+	// .release() takes the pointer out of the unique_ptr without deleting the object
+
+	/*
+	 The error C2280 occurs because std::unique_ptr is a move-only type. Its copy constructor is explicitly deleted.
+	 When you bind XmlDocument::getDocumentElement directly via .def(),
+	 Luabind attempts to create a wrapper that copies the
+	 return value of the function into a Lua-managed object.
+	 Since it can't copy a unique_ptr, the compiler throws an error.
+	*/
+
+	return doc->getDocumentElement(onlyReadOuter).release();
+}
+
 void LXmlElement::wrapForLua (lua_State *L)
 {
 	using namespace luabind;
@@ -1027,8 +1043,9 @@ void LXmlElement::wrapForLua (lua_State *L)
         class_<XmlDocument>("XmlDocument")
             .def(constructor<const String &>())
             .def(constructor<const File &>())
-            //.def("getDocumentElement", &XmlDocument::getDocumentElement)
-            .def("getLastParseError", &XmlDocument::getLastParseError)
+            //.def("getDocumentElement", &XmlDocument::getDocumentElement)	// Commented by Roman Kubiak probably in 5.5.9
+			.def("getDocumentElement", &getDocumentElementWrapper, adopt(result))	// Added v5.6.34. Thanks to @dnaldoog
+			.def("getLastParseError", &XmlDocument::getLastParseError)
             .def("setInputSource", &XmlDocument::setInputSource)
             .def("setEmptyTextElementsIgnored", &XmlDocument::setEmptyTextElementsIgnored)
             .scope[ // Updated v5.6.34. Thanks to @dnaldoog

@@ -15,36 +15,43 @@ public:
 	{
 	}
 
-	void paint(Graphics& g) override
+	void paint(Graphics& g) override // updated to calculate text height
 	{
 		g.fillAll(Colour(0xfff0f0f0));
 
-		// Draw the info text at the top
-		g.setColour(Colours::black);
-		g.setFont(Font(12.0f));
+		// Create an AttributedString to hold the text with its properties
+		AttributedString text;
+		text.append(infoMessage, Font(12.0f), Colours::black);
 
 		int textX = 10;
 		int textY = 10;
 		int textWidth = getWidth() - 20;
-		int textHeight = thumbnail.isNull() ? (getHeight() - 20) : 120; // Reserve space for image if present
 
-		g.drawMultiLineText(infoMessage, textX, textY + 15, textWidth);
+		// Use a TextLayout to calculate the exact height required
+		TextLayout tl;
+		tl.createLayout(text, (float)textWidth);
+
+		// Draw the info text
+		tl.draw(g, Rectangle<float>((float)textX, (float)textY, (float)textWidth, tl.getHeight()));
+
+		// Get the actual vertical position where the text ends
+		int textEndY = textY + (int)tl.getHeight();
 
 		// Draw the thumbnail image underneath the text
 		if (!thumbnail.isNull())
 		{
-			int imageY = textHeight + 20; // Position below text with some margin
-			int imageX = (getWidth() - thumbnail.getWidth()) / 2; // Center the image horizontally
+			// Position the image with a margin below the text
+			int imageY = textEndY + 20;
+			int imageX = (getWidth() - thumbnail.getWidth()) / 2;
 
-			// Ensure imageX is not negative (in case thumbnail is wider than dialog)
-			if (imageX < 10) imageX = 10;
+			if (imageX < 10)
+				imageX = 10;
 
 			g.drawImage(thumbnail, imageX, imageY, thumbnail.getWidth(), thumbnail.getHeight(),
 				0, 0, thumbnail.getWidth(), thumbnail.getHeight());
 
-			// Draw a border around the image
 			g.setColour(Colours::grey);
-			g.drawRect(imageX - 1, imageY - 1, thumbnail.getWidth() + 2, thumbnail.getHeight() + 2);
+			//g.drawRect(imageX - 1, imageY - 1, thumbnail.getWidth() + 2, thumbnail.getHeight() + 2);
 		}
 	}
 
@@ -52,96 +59,98 @@ public:
 	{
 		// Component will be resized by the dialog window
 	}
+
 private:
 	String infoMessage;
 	Image thumbnail;
 };
 
 // Definition of CtrlrPanelResourceEditor
-CtrlrPanelResourceEditor::CtrlrPanelResourceEditor (CtrlrPanelEditor &_owner)
-    : owner(_owner),
-      resourceList(nullptr),
-      add(nullptr),
-	  remove(nullptr),
-	  move(nullptr),
-	  reload(nullptr),
-	  sortByColumnId(1),
-	  sortForward(1)
+CtrlrPanelResourceEditor::CtrlrPanelResourceEditor(CtrlrPanelEditor& _owner)
+	: owner(_owner),
+	resourceList(nullptr),
+	add(nullptr),
+	remove(nullptr),
+	move(nullptr),
+	reload(nullptr),
+	sortByColumnId(1),
+	sortForward(1),
+	maxAspectRatioForStrip(50.0f) // Lower value will split small l/w ratios
 {
-    addAndMakeVisible (resourceList = new TableListBox ("Resource List", this));
-    resourceList->setName (L"resourceList");
+	addAndMakeVisible(resourceList = new TableListBox("Resource List", this));
+	resourceList->setName(L"resourceList");
 
-    addAndMakeVisible (add = new TextButton (L"new button"), -1); // Updated v5.6.33. Z index added. By @dnladoog JG on 4/23/20025
-    add->setTooltip (L"Add new resources");
-    add->setButtonText (L"Add");
-    add->addListener (this);
-    add->setColour (TextButton::buttonColourId, Colour (0xffb2b2b2));
+	addAndMakeVisible(add = new TextButton(L"new button"), -1); // Updated v5.6.33. Z index added. By @dnladoog JG on 4/23/2025
+	add->setTooltip(L"Add new resources");
+	add->setButtonText(L"Add");
+	add->addListener(this);
+	add->setColour(TextButton::buttonColourId, Colour(0xffb2b2b2));
 
-	addAndMakeVisible (remove = new TextButton (""), -1); // Updated v5.6.33. Z index added. By @dnladoog JG on 4/23/20025
-    remove->setTooltip (L"Remove selected resources");
-    remove->setButtonText (L"Remove");
-    remove->addListener (this);
-    remove->setColour (TextButton::buttonColourId, Colour (0xffb2b2b2));
+	addAndMakeVisible(remove = new TextButton(""), -1); // Updated v5.6.33. Z index added. By @dnladoog JG on 4/23/2025
+	remove->setTooltip(L"Remove selected resources");
+	remove->setButtonText(L"Remove");
+	remove->addListener(this);
+	remove->setColour(TextButton::buttonColourId, Colour(0xffb2b2b2));
 
-	addAndMakeVisible(move = new TextButton(""), -1); // Updated v5.6.33. Z index added. By @dnladoog JG on 4/23/20025
+	addAndMakeVisible(move = new TextButton(""), -1); // Updated v5.6.33. Z index added. By @dnladoog JG on 4/23/2025
 	move->setTooltip(L"Move resources to panel folder");
 	move->setButtonText(L"Move...");
 	move->addListener(this);
 	move->setColour(TextButton::buttonColourId, Colour(0xffb2b2b2));
 
-	addAndMakeVisible (reload = new TextButton (""), -1); // Updated v5.6.33. Z index added. By @dnladoog JG on 4/23/20025
-    reload->setTooltip (L"Reload all resources");
-    reload->setButtonText (L"Reload");
-    reload->addListener (this);
-    reload->setColour (TextButton::buttonColourId, Colour (0xffb2b2b2));
+	addAndMakeVisible(reload = new TextButton(""), -1); // Updated v5.6.33. Z index added. By @dnladoog JG on 4/23/2025
+	reload->setTooltip(L"Reload all resources");
+	reload->setButtonText(L"Reload");
+	reload->addListener(this);
+	reload->setColour(TextButton::buttonColourId, Colour(0xffb2b2b2));
 
 	tableFont = Font(Font::getDefaultSansSerifFontName(), 12.0f, Font::plain);
-	resourceList->setRowHeight (22);
-	resourceList->setHeaderHeight (22);
-	resourceList->setMultipleSelectionEnabled (true);
-	resourceList->getHeader().setStretchToFitActive (true);
-	resourceList->getHeader().addColumn ("Name", 1, 160, 128);
-	resourceList->getHeader().addColumn ("Size", 2, 48, 48);
-	resourceList->getHeader().addColumn ("Type", 3, 32, 32);
-    setSize (216, 340);
+	resourceList->setRowHeight(22);
+	resourceList->setHeaderHeight(22);
+	resourceList->setMultipleSelectionEnabled(true);
+	resourceList->getHeader().setStretchToFitActive(true);
+	resourceList->getHeader().addColumn("Name", 1, 160, 128);
+	resourceList->getHeader().addColumn("Size", 2, 48, 48);
+	resourceList->getHeader().addColumn("Type", 3, 32, 32);
+	setSize(216, 340);
 	updateTable();
 }
 
 CtrlrPanelResourceEditor::~CtrlrPanelResourceEditor()
 {
-    deleteAndZero (resourceList);
-    deleteAndZero (add);
-	deleteAndZero (remove);
-	deleteAndZero (move);
-	deleteAndZero (reload);
+	deleteAndZero(resourceList);
+	deleteAndZero(add);
+	deleteAndZero(remove);
+	deleteAndZero(move);
+	deleteAndZero(reload);
 }
 
-void CtrlrPanelResourceEditor::paint (Graphics& g)
+void CtrlrPanelResourceEditor::paint(Graphics& g)
 {
 }
 
-void CtrlrPanelResourceEditor::resized() // Updated v5.6.33. FIX issue #86 : unresponsive buttons	// v5.6.34: new int variables; adapted positioning. By @dobo365 DB
+void CtrlrPanelResourceEditor::resized() // Updated v5.6.34. Thanks to @dobo365. Updated v5.6.33. FIX issue #86 : unresponsive buttons
 {
 	int margin = 8;
 	int buttonWidth = 72;
 
-    resourceList->setBounds(0, 0, getWidth(), getHeight() - 48);
-    add->setBounds(margin + 0, getHeight() - 48 + margin, buttonWidth, 32);
-    remove->setBounds(2*margin + buttonWidth, getHeight() - 48 + margin, buttonWidth, 32);
-    move->setBounds(3*margin + 2*buttonWidth, getHeight() - 48 + margin, buttonWidth, 32);
-    reload->setBounds(getWidth() - buttonWidth - margin, getHeight() - 48 + margin, buttonWidth, 32);
+	resourceList->setBounds(0, 0, getWidth(), getHeight() - 48);
+	add->setBounds(margin + 0, getHeight() - 48 + margin, buttonWidth, 32);
+	remove->setBounds(2 * margin + buttonWidth, getHeight() - 48 + margin, buttonWidth, 32);
+	move->setBounds(3 * margin + 2 * buttonWidth, getHeight() - 48 + margin, buttonWidth, 32);
+	reload->setBounds(getWidth() - buttonWidth - margin, getHeight() - 48 + margin, buttonWidth, 32);
 }
 
-void CtrlrPanelResourceEditor::buttonClicked (Button* buttonThatWasClicked)
+void CtrlrPanelResourceEditor::buttonClicked(Button* buttonThatWasClicked)
 {
-    if (buttonThatWasClicked == add)
-    {
+	if (buttonThatWasClicked == add)
+	{
 		addResourceFromFile();
-    }
-    else if (buttonThatWasClicked == remove)
-    {
+	}
+	else if (buttonThatWasClicked == remove)
+	{
 		deleteSelectedResources();
-    }
+	}
 	else if (buttonThatWasClicked == move)
 	{
 		moveResources();
@@ -157,73 +166,94 @@ int CtrlrPanelResourceEditor::getNumRows()
 	return (resources.size());
 }
 
-void CtrlrPanelResourceEditor::paintRowBackground (Graphics& g, int rowNumber, int width, int height, bool rowIsSelected)
+void CtrlrPanelResourceEditor::paintRowBackground(Graphics& g, int rowNumber, int width, int height, bool rowIsSelected)
 {
 	if (rowIsSelected)
 	{
-        gui::drawSelectionRectangle (g, width, height);
+		gui::drawSelectionRectangle(g, width, height);
 	}
 }
 
-void CtrlrPanelResourceEditor::paintCell (Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
+void CtrlrPanelResourceEditor::paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
 {
+	// Updated v5.6.34. SEE : https://github.com/damiensellier/CtrlrX/issues/147
+	// Draw the background first. The color changes depending on whether the row is selected.
 	if (rowIsSelected)
 	{
-		g.setColour (Colours::white);
+		// For selected rows, use a distinct background color.
+		// Use the dedicated highlight color from the file tree component.
+		g.setColour(findColour(DirectoryContentsDisplayComponent::highlightColourId));
 	}
 	else
 	{
-		g.setColour (Colours::black);
+		// For unselected rows, use the standard background color.
+		g.setColour(findColour(ListBox::backgroundColourId));
 	}
+	g.fillRect(0, 0, width, height);
+
+	// Set the color for the text and other content based on selection.
+	if (rowIsSelected)
+	{
+		// For selected rows, use a text color that contrasts well with the highlight color.
+		// `highlightedTextColourId` is often used for this.
+		g.setColour(findColour(DirectoryContentsDisplayComponent::highlightedTextColourId));
+	}
+	else
+	{
+		// Set the standard text color for unselected rows.
+		g.setColour(findColour(ListBox::textColourId));
+	}
+
+	// Now, the code to draw the content of each column.
 
 	if (columnId == 1)
 	{
-		if (resources [rowNumber])
+		if (resources[rowNumber])
 		{
-			g.setFont (tableFont.boldened());
-			g.drawFittedText (resources [rowNumber]->getName(), 4, 2, width - 8, height - 4, Justification::left, 2);
+			g.setFont(tableFont.boldened());
+			g.drawFittedText(resources[rowNumber]->getName(), 4, 2, width - 8, height - 4, Justification::left, 2);
 		}
 	}
 
 	if (columnId == 2)
 	{
-		if (resources [rowNumber])
+		if (resources[rowNumber])
 		{
-			g.setFont (tableFont);
-			g.drawFittedText (STR (File::descriptionOfSizeInBytes (resources [rowNumber]->getSize())+" ("+STR(resources [rowNumber]->getSize())+")"), 4, 2, width - 8, height - 4, Justification::left, 2);
+			g.setFont(tableFont);
+			g.drawFittedText(STR(File::descriptionOfSizeInBytes(resources[rowNumber]->getSize()) + " (" + STR(resources[rowNumber]->getSize()) + ")"), 4, 2, width - 8, height - 4, Justification::left, 2);
 		}
 	}
 
 	if (columnId == 3)
 	{
-		if (resources [rowNumber])
+		if (resources[rowNumber])
 		{
-			g.setFont (tableFont);
-			g.drawFittedText (resources [rowNumber]->getTypeDescription(), 4, 2, width - 8, height - 4, Justification::left, 2);
+			g.setFont(tableFont);
+			g.drawFittedText(resources[rowNumber]->getTypeDescription(), 4, 2, width - 8, height - 4, Justification::left, 2);
 		}
 	}
 }
 
 void CtrlrPanelResourceEditor::addResourceFromFile()
 {
-	FileChooser fileChooser ("Resource file",
-							File(owner.getOwner().getCtrlrManagerOwner().getProperty(Ids::ctrlrLastBrowsedResourceDir))
-							,"*.*"
-							,owner.getOwner().getCtrlrManagerOwner().getProperty(Ids::ctrlrNativeFileDialogs));
+	FileChooser fileChooser("Resource file",
+		File(owner.getOwner().getCtrlrManagerOwner().getProperty(Ids::ctrlrLastBrowsedResourceDir))
+		, "*.*"
+		, owner.getOwner().getCtrlrManagerOwner().getProperty(Ids::ctrlrNativeFileDialogs));
 	if (fileChooser.browseForMultipleFilesToOpen(0))
- 	{
+	{
 		Array <File> filesToOpen = fileChooser.getResults();
 
-		for (int i=0; i<filesToOpen.size(); i++)
+		for (int i = 0; i < filesToOpen.size(); i++)
 		{
 			if (i == 0)
-				owner.getOwner().getCtrlrManagerOwner().setProperty (Ids::ctrlrLastBrowsedResourceDir, filesToOpen[i].getParentDirectory().getFullPathName());
+				owner.getOwner().getCtrlrManagerOwner().setProperty(Ids::ctrlrLastBrowsedResourceDir, filesToOpen[i].getParentDirectory().getFullPathName());
 
-			if (getResourceManager().resourceExists (filesToOpen[i]))
+			if (getResourceManager().resourceExists(filesToOpen[i]))
 			{
 				if ((bool)owner.getOwner().getCtrlrManagerOwner().getProperty(Ids::ctrlrOverwriteResources) == false)
 				{
-					if (!SURE("Resource: "+filesToOpen[i].getFileNameWithoutExtension()+" already exists. Overwrite?", this))
+					if (!SURE("Resource: " + filesToOpen[i].getFileNameWithoutExtension() + " already exists. Overwrite?", this))
 					{
 						return;
 					}
@@ -234,15 +264,15 @@ void CtrlrPanelResourceEditor::addResourceFromFile()
 				if (index >= 0)
 				{
 					getResourceManager().removeResource(index);
-					getResourceManager().addResource (filesToOpen[i]);
+					getResourceManager().addResource(filesToOpen[i]);
 				}
 			}
 			else
 			{
- 				getResourceManager().addResource (filesToOpen[i]);
+				getResourceManager().addResource(filesToOpen[i]);
 			}
 		}
- 	}
+	}
 
 	updateTable();
 }
@@ -251,11 +281,11 @@ void CtrlrPanelResourceEditor::deleteSelectedResources()
 {
 	_DBG("CtrlrPanelResourceEditor::deleteSelectedResources");
 
-	for (int i=resourceList->getNumSelectedRows()-1; i>=0; i--)
+	for (int i = resourceList->getNumSelectedRows() - 1; i >= 0; i--)
 	{
 		const int row = resourceList->getSelectedRow(i);
 
-		_DBG("row selected: "+STR(row)+"/"+STR(i));
+		_DBG("row selected: " + STR(row) + "/" + STR(i));
 
 		if (resources[row])
 		{
@@ -271,13 +301,13 @@ void CtrlrPanelResourceEditor::updateTable()
 	resources = getResourceManager().getResourcesCopy();
 
 	resourceList->deselectAllRows();
- 	resourceList->updateContent();
+	resourceList->updateContent();
 	if (owner.getPropertiesPanel())
 		owner.getPropertiesPanel()->refreshAll();
-	resources.sort (*this, false);
+	resources.sort(*this, false);
 }
 
-CtrlrPanelResourceManager &CtrlrPanelResourceEditor::getResourceManager()
+CtrlrPanelResourceManager& CtrlrPanelResourceEditor::getResourceManager()
 {
 	return (owner.getOwner().getResourceManager());
 }
@@ -288,18 +318,18 @@ void CtrlrPanelResourceEditor::visibilityChanged()
 	resourceList->updateContent();
 }
 
-void CtrlrPanelResourceEditor::cellDoubleClicked (int rowNumber, int columnId, const MouseEvent &e)
+void CtrlrPanelResourceEditor::cellDoubleClicked(int rowNumber, int columnId, const MouseEvent& e)
 {
 	showResourceInfo(rowNumber);
 }
 
-void CtrlrPanelResourceEditor::cellClicked(int rowNumber, int columnId, const MouseEvent &e)
+void CtrlrPanelResourceEditor::cellClicked(int rowNumber, int columnId, const MouseEvent& e)
 {
 	if (e.mods.isPopupMenu())
 	{
 		PopupMenu m;
-		m.addSectionHeader ("Resource");
-		m.addItem (1, "More info");
+		m.addSectionHeader("Resource");
+		m.addItem(1, "More info");
 		const int ret = m.show();
 
 		if (ret == 1)
@@ -311,7 +341,7 @@ void CtrlrPanelResourceEditor::cellClicked(int rowNumber, int columnId, const Mo
 
 void CtrlrPanelResourceEditor::showResourceInfo(const int resourceIndex)
 {
-	CtrlrPanelResource *res = resources[resourceIndex];
+	CtrlrPanelResource* res = resources[resourceIndex];
 	if (res == nullptr)
 		return;
 
@@ -320,7 +350,7 @@ void CtrlrPanelResourceEditor::showResourceInfo(const int resourceIndex)
 	message << "Data file: " + res->getFile().getFullPathName() + "\n";
 	message << "Source file: " + res->getSourceFile().getFullPathName() + "\n";
 	message << "Source hash: " + STR(res->getHashCode()) + "\n";
-	AudioFormatReader *afr = res->asAudioFormat();
+	AudioFormatReader* afr = res->asAudioFormat();
 
 	if (afr)
 	{
@@ -349,8 +379,28 @@ void CtrlrPanelResourceEditor::showResourceInfo(const int resourceIndex)
 		message << "Height: " + STR(originalImage.getHeight()) + "\n";
 		message << "Has alpha: " + STR((int)originalImage.hasAlphaChannel()) + "\n";
 
-		thumbnailImage = createThumbnail(originalImage, 150);
-		message << "Thumbnail size: " + STR(thumbnailImage.getWidth()) + "x" + STR(thumbnailImage.getHeight()) + "\n";
+
+		int originalWidth = originalImage.getWidth();
+		int originalHeight = originalImage.getHeight();
+
+		bool isHorizontalStrip = (originalWidth >= 6 * originalHeight && originalWidth % originalHeight == 0);
+		bool isVerticalStrip = (originalHeight >= 6 * originalWidth && originalHeight % originalWidth == 0);
+
+		if (isHorizontalStrip)
+		{
+			int numFrames = originalWidth / originalHeight;
+			message << "Detected horizontal image strip with " + STR(numFrames) + " frames\n";
+			message << "Frame size: " + STR(originalHeight) + "x" + STR(originalHeight) + "\n";
+		}
+		else if (isVerticalStrip)
+		{
+			int numFrames = originalHeight / originalWidth;
+			message << "Detected vertical image strip with " + STR(numFrames) + " frames\n";
+			message << "Frame size: " + STR(originalWidth) + "x" + STR(originalWidth) + "\n";
+		}
+
+		thumbnailImage = createImageStripThumbnail(originalImage, 150);
+		//message << "Thumbnail size: " + STR(thumbnailImage.getWidth()) + "x" + STR(thumbnailImage.getHeight()) + "\n";
 	}
 	// Check if it might be a font file
 	else if (isFontFile(res->getFile()))
@@ -562,12 +612,31 @@ void CtrlrPanelResourceEditor::showResourceInfo(const int resourceIndex)
 
 	DialogWindow::LaunchOptions lo;
 
-	if ((hasImage || hasFont) && !thumbnailImage.isNull())
+	if ((hasImage || hasFont) && !thumbnailImage.isNull()) // Improved method for margin
 	{
 		// Create a custom component that contains both the label and image/font preview
 		Component* contentComponent = new ImageInfoComponent(message, thumbnailImage);
-		// Adjust height to accommodate text at top + preview at bottom + margins
-		int dialogHeight = 160 + thumbnailImage.getHeight() + 30; // text area + preview + margins
+
+		// Calculate the actual text height using TextLayout (similar to paint method)
+		// This is important to size the dialog correctly based on content
+		AttributedString textForHeightCalc;
+		textForHeightCalc.append(message, Font(12.0f), Colours::black);
+		TextLayout tlForHeightCalc;
+		tlForHeightCalc.createLayout(textForHeightCalc, 450.0f - 20.0f); // Use dialog width - margins
+		int estimatedTextHeight = (int)tlForHeightCalc.getHeight();
+
+		const int topMargin = 10;
+		const int textImageMargin = 20;
+		const int bottomMargin = 20; // Additional bottom margin for the dialog itself
+
+		// Adjust height to accommodate text at top + preview + margins
+		// estimatedTextHeight for the actual text content
+		// topMargin for space above text
+		// textImageMargin for space between text and image
+		// thumbnailImage.getHeight() for the image itself
+		// bottomMargin for space below image
+		int dialogHeight = topMargin + estimatedTextHeight + textImageMargin + thumbnailImage.getHeight() + bottomMargin;
+
 		contentComponent->setSize(450, dialogHeight);
 		lo.content.set(contentComponent, true);
 	}
@@ -591,32 +660,32 @@ void CtrlrPanelResourceEditor::showResourceInfo(const int resourceIndex)
 
 void CtrlrPanelResourceEditor::sortOrderChanged(int newSortColumnId, bool isForwards)
 {
-	sortByColumnId	= newSortColumnId;
-	sortForward		= isForwards ? 1 : -1;
+	sortByColumnId = newSortColumnId;
+	sortForward = isForwards ? 1 : -1;
 
-	resources.sort (*this, false);
+	resources.sort(*this, false);
 }
 
-int CtrlrPanelResourceEditor::compareElements(CtrlrPanelResource *first, CtrlrPanelResource *second)
+int CtrlrPanelResourceEditor::compareElements(CtrlrPanelResource* first, CtrlrPanelResource* second)
 {
 	int ret = 0;
 
 	switch (sortByColumnId)
 	{
-		case 1:
-			ret = first->getName().compareNatural(second->getName());
-			break;
+	case 1:
+		ret = first->getName().compareNatural(second->getName());
+		break;
 
-		case 2:
-			if (first->getSize() > second->getSize())
-				ret = 1;
-			if (first->getSize() < second->getSize())
-				ret = -1;
-			if (first->getSize() == second->getSize())
-				ret = 0;
-			break;
-		default:
-			break;
+	case 2:
+		if (first->getSize() > second->getSize())
+			ret = 1;
+		if (first->getSize() < second->getSize())
+			ret = -1;
+		if (first->getSize() == second->getSize())
+			ret = 0;
+		break;
+	default:
+		break;
 	}
 
 	return (ret * sortForward);
@@ -635,16 +704,16 @@ void CtrlrPanelResourceEditor::moveResources()
 			const Result res = targetFolder.createDirectory();
 			if (res.failed())
 			{
-				AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Move resources to panel folder", "Failed to create resources folder '"+ location +"'.\n" + res.getErrorMessage());
+				AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Move resources to panel folder", "Failed to create resources folder '" + location + "'.\n" + res.getErrorMessage());
 				return;
 			}
 		}
 		else if (!targetFolder.isDirectory())
 		{
-			AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Move resources to panel folder", "Failed to access resources folder '"+ location +"'.");
+			AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Move resources to panel folder", "Failed to access resources folder '" + location + "'.");
 			return;
 		}
-		for (int i = 0; i<resources.size(); i++)
+		for (int i = 0; i < resources.size(); i++)
 		{
 			if (resources[i])
 			{
@@ -686,32 +755,32 @@ void CtrlrPanelResourceEditor::reloadAllResourcesFromSourceFiles()
 
 	if (resourceList->getNumSelectedRows() <= 0)
 	{
-		for (int i=0; i<resources.size(); i++)
+		for (int i = 0; i < resources.size(); i++)
 		{
 			if (resources[i])
 			{
-				resourcesReloaded.add (resources[i]);
+				resourcesReloaded.add(resources[i]);
 				resources[i]->reloadFromSourceFile();
 			}
 		}
 	}
 	else
 	{
-		for (int i=0; i<resourceList->getNumSelectedRows(); i++)
+		for (int i = 0; i < resourceList->getNumSelectedRows(); i++)
 		{
 			const int row = resourceList->getSelectedRow(i);
 			if (resources[row])
 			{
-				resourcesReloaded.add (resources[row]);
+				resourcesReloaded.add(resources[row]);
 				resources[row]->reloadFromSourceFile();
 			}
 		}
 	}
 
-	owner.reloadResources (resourcesReloaded);
+	owner.reloadResources(resourcesReloaded);
 }
 
-void CtrlrPanelResourceEditor::backgroundClicked (const MouseEvent &e)
+void CtrlrPanelResourceEditor::backgroundClicked(const MouseEvent& e)
 {
 	resourceList->deselectAllRows();
 }
@@ -720,25 +789,25 @@ void CtrlrPanelResourceEditor::lookAndFeelChanged()
 {
 /*
 	// Update the 'add' button's colours
-	add->setColour(TextButton::buttonColourId, findColour(TextButton::buttonOnColourId));
+	add->setColour(TextButton::buttonColourId, findColour(TextButton::buttonColourId));
 	add->setColour(TextButton::buttonOnColourId, findColour(TextButton::buttonOnColourId));
 	add->setColour(TextButton::textColourOffId, findColour(TextButton::textColourOffId));
 	add->setColour(TextButton::textColourOnId, findColour(TextButton::textColourOnId));
 
 	// Update the 'remove' button's colours
-	remove->setColour(TextButton::buttonColourId, findColour(TextButton::buttonOnColourId));
+	remove->setColour(TextButton::buttonColourId, findColour(TextButton::buttonColourId));
 	remove->setColour(TextButton::buttonOnColourId, findColour(TextButton::buttonOnColourId));
 	remove->setColour(TextButton::textColourOffId, findColour(TextButton::textColourOffId));
 	remove->setColour(TextButton::textColourOnId, findColour(TextButton::textColourOnId));
 
 	// Update the 'move' button's colours
-	move->setColour(TextButton::buttonColourId, findColour(TextButton::buttonOnColourId));
+	move->setColour(TextButton::buttonColourId, findColour(TextButton::buttonColourId));
 	move->setColour(TextButton::buttonOnColourId, findColour(TextButton::buttonOnColourId));
 	move->setColour(TextButton::textColourOffId, findColour(TextButton::textColourOffId));
 	move->setColour(TextButton::textColourOnId, findColour(TextButton::textColourOnId));
 
 	// Update the 'reload' button's colours
-	reload->setColour(TextButton::buttonColourId, findColour(TextButton::buttonOnColourId));
+	reload->setColour(TextButton::buttonColourId, findColour(TextButton::buttonColourId));
 	reload->setColour(TextButton::buttonOnColourId, findColour(TextButton::buttonOnColourId));
 	reload->setColour(TextButton::textColourOffId, findColour(TextButton::textColourOffId));
 	reload->setColour(TextButton::textColourOnId, findColour(TextButton::textColourOnId));
@@ -773,4 +842,164 @@ Image CtrlrPanelResourceEditor::createThumbnail(const Image& originalImage, int 
 	// Create scaled thumbnail with high quality resampling
 	return originalImage.rescaled(thumbnailWidth, thumbnailHeight,
 		Graphics::ResamplingQuality::highResamplingQuality);
+}
+
+// New image strip helper methods
+// REF : https://github.com/damiensellier/CtrlrX/pull/161#issuecomment-3257863818
+Image CtrlrPanelResourceEditor::createImageStripThumbnail(const Image& originalImage, int maxSize)
+{
+	int originalWidth = originalImage.getWidth();
+	int originalHeight = originalImage.getHeight();
+
+	// Case 1: Symmetrical Strip
+	if ((originalWidth > originalHeight && (originalWidth % originalHeight == 0)) ||
+		(originalHeight > originalWidth && (originalHeight % originalWidth == 0)))
+	{
+		int sectionSize = jmin(originalWidth, originalHeight);
+		int numSections = jmax(originalWidth, originalHeight) / sectionSize;
+
+		if (numSections >= 5)
+		{
+			_DBG("Detected image strip with " + String(numSections) + " sections");
+			if (originalWidth > originalHeight) // Horizontal Strip
+			{
+				return createHorizontalStripThumbnail(originalImage, sectionSize, numSections, maxSize);
+			}
+			else // Vertical Strip
+			{
+				return createVerticalStripThumbnail(originalImage, sectionSize, numSections, maxSize);
+			}
+		}
+	}
+
+	double aspectRatio = (double)jmax(originalWidth, originalHeight) / (double)jmin(originalWidth, originalHeight);
+	_DBG("L/W ratio: " + String(maxAspectRatioForStrip) + ":AspectRatio = 1:" + String(aspectRatio));
+	// Check if the image has an extreme length-to-width ratio
+	if (aspectRatio > maxAspectRatioForStrip)
+	{
+		_DBG("Extreme aspect ratio detected, cropping to square region");
+		Image croppedImage;
+		if (originalHeight > originalWidth) // Vertical Strip
+		{
+			int frameHeight = originalWidth;
+			int croppedHeight = frameHeight * 5;
+
+			croppedImage = originalImage.getClippedImage({ 0, 0, originalWidth, jmin(croppedHeight, originalHeight) });
+		}
+		else // Horizontal Strip
+		{
+			int frameWidth = originalHeight;
+			int croppedWidth = frameWidth * 5;
+
+			croppedImage = originalImage.getClippedImage({ 0, 0, jmin(croppedWidth, originalWidth), originalHeight });
+		}
+		_DBG("Cropped size: " + String(croppedImage.getWidth()) + "x" + String(croppedImage.getHeight()));
+		return createThumbnail(croppedImage, maxSize);
+	}
+
+	_DBG("Normal aspect ratio, creating standard thumbnail");
+	// Fallback: If the aspect ratio is not extreme, just display the whole image as a single thumbnail.
+	return createThumbnail(originalImage, maxSize);
+}
+
+Image CtrlrPanelResourceEditor::createHorizontalStripThumbnail(const Image& originalImage,
+	int sectionSize, int numSections, int maxSize)
+{
+	// Calculate positions for 5 representative sections
+	Array<int> sectionIndices;
+	sectionIndices.add(0);                              // First
+	sectionIndices.add(numSections / 4);                // Quarter
+	sectionIndices.add(numSections / 2);                // Center
+	sectionIndices.add((numSections * 3) / 4);          // Three-quarter
+	sectionIndices.add(numSections - 1);                // Last
+
+	// Calculate thumbnail dimensions
+	int thumbSectionSize = jmin(maxSize / 5, sectionSize); // Fit 5 sections in maxSize
+	int thumbWidth = thumbSectionSize * 5;
+	int thumbHeight = thumbSectionSize;
+
+	// Create composite thumbnail
+	Image thumbnail(Image::ARGB, thumbWidth, thumbHeight, true);
+	Graphics g(thumbnail);
+	g.fillAll(Colours::transparentBlack);
+
+	for (int i = 0; i < 5; i++)
+	{
+		int sourceX = sectionIndices[i] * sectionSize;
+		int destX = i * thumbSectionSize;
+
+		// Create a temporary image for this section
+		Image sectionImage(Image::ARGB, sectionSize, sectionSize, true);
+		Graphics sectionG(sectionImage);
+
+		// Use reduceClipRegion to extract the specific section
+		Rectangle<int> sectionRect(sourceX, 0, sectionSize, sectionSize);
+		sectionG.reduceClipRegion(sectionRect.translated(-sourceX, 0)); // Translate to origin
+		sectionG.drawImageAt(originalImage, -sourceX, 0); // Draw with offset
+
+		// Scale and draw this section to the thumbnail
+		Image scaledSection = sectionImage.rescaled(thumbSectionSize, thumbSectionSize,
+			Graphics::ResamplingQuality::highResamplingQuality);
+		g.drawImageAt(scaledSection, destX, 0);
+
+		// Draw separator line between sections (except after last)
+		if (i < 4)
+		{
+			g.setColour(Colours::darkgrey);
+			//g.drawVerticalLine(destX + thumbSectionSize, 0, thumbHeight);
+		}
+	}
+
+	return thumbnail;
+}
+
+Image CtrlrPanelResourceEditor::createVerticalStripThumbnail(const Image& originalImage,
+	int sectionSize, int numSections, int maxSize)
+{
+	// Calculate positions for 5 representative sections
+	Array<int> sectionIndices;
+	sectionIndices.add(0);                              // First
+	sectionIndices.add(numSections / 4);                // Quarter
+	sectionIndices.add(numSections / 2);                // Center
+	sectionIndices.add((numSections * 3) / 4);          // Three-quarter
+	sectionIndices.add(numSections - 1);                // Last
+
+	// Calculate thumbnail dimensions
+	int thumbSectionSize = jmin(maxSize / 5, sectionSize); // Fit 5 sections in maxSize
+	int thumbWidth = thumbSectionSize;
+	int thumbHeight = thumbSectionSize * 5;
+
+	// Create composite thumbnail
+	Image thumbnail(Image::ARGB, thumbWidth, thumbHeight, true);
+	Graphics g(thumbnail);
+	g.fillAll(Colours::transparentBlack);
+
+	for (int i = 0; i < 5; i++)
+	{
+		int sourceY = sectionIndices[i] * sectionSize;
+		int destY = i * thumbSectionSize;
+
+		// Create a temporary image for this section
+		Image sectionImage(Image::ARGB, sectionSize, sectionSize, true);
+		Graphics sectionG(sectionImage);
+
+		// Use reduceClipRegion to extract the specific section
+		Rectangle<int> sectionRect(0, sourceY, sectionSize, sectionSize);
+		sectionG.reduceClipRegion(sectionRect.translated(0, -sourceY)); // Translate to origin
+		sectionG.drawImageAt(originalImage, 0, -sourceY); // Draw with offset
+
+		// Scale and draw this section to the thumbnail
+		Image scaledSection = sectionImage.rescaled(thumbSectionSize, thumbSectionSize,
+			Graphics::ResamplingQuality::highResamplingQuality);
+		g.drawImageAt(scaledSection, 0, destY);
+
+		// Draw separator line between sections (except after last)
+		if (i < 4)
+		{
+			g.setColour(Colours::darkgrey);
+			//g.drawHorizontalLine(destY + thumbSectionSize, 0, thumbWidth);
+		}
+	}
+
+	return thumbnail;
 }
