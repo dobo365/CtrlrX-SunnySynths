@@ -45,7 +45,8 @@ class CtrlrPanelNotifier : public Component,
 class CtrlrPanelEditor  :	public Component,
 							public ValueTree::Listener,
 							public CtrlrLuaObject,
-                            public LookAndFeel_V4
+                            public LookAndFeel_V4,
+							public juce::ChangeListener // Added 5.6.34
 {
 	public:
 		CtrlrPanelEditor (CtrlrPanel &_owner, CtrlrManager &_ctrlrManager, const String &panelName);
@@ -57,7 +58,7 @@ class CtrlrPanelEditor  :	public Component,
 			Tile
 		};
 		void restoreState(const ValueTree &savedSate);
-		void setBackgroundImage (const File &imageFile);
+		//void setBackgroundImage (const File &imageFile);	Commented 5.6.34.4 because no function nowhere...
 		CtrlrPanelCanvas *getCanvas();
         CtrlrComponentSelection *getSelection();
 		void editModeChanged();
@@ -89,7 +90,7 @@ class CtrlrPanelEditor  :	public Component,
     
         void notify(const String &notification, CtrlrNotificationCallback *callback, const CtrlrNotificationType ctrlrNotificationType = NotifyInformation);  // Added back v5.6.31 for file management bottom notification bar
         void notificationClicked(const MouseEvent e); // Added back v5.6.31 for file management bottom notification bar
-        void changeListenerCallback (ChangeBroadcaster *source); // Added back v5.6.31 for file management bottom notification bar
+        void changeListenerCallback (ChangeBroadcaster *source) override; // Updated v5.6.34. Required override. // Added back v5.6.31 for file management bottom notification bar
     
 		void setAllCombosDisabled();
 		void setAllCombosEnabled();
@@ -97,7 +98,7 @@ class CtrlrPanelEditor  :	public Component,
 		bool getRestoreState()					{ return (currentRestoreState); }
 		void setRestoreState(const bool _state) { currentRestoreState = _state; }
 		void reloadResources (Array <CtrlrPanelResource*> resourcesThatChanged);
-        void showComponentRuntimeConfig(CtrlrComponent *componentToConfigure);
+        // void showComponentRuntimeConfig(CtrlrComponent *componentToConfigure);	// Modified 5.6.34.4 as useless. Related to the WIN crash on LnF switch
 		void searchForProperty();
         static LookAndFeel* getLookAndFeelFromDescription(const String &lookAndFeelDesc);
         void editModeChanged(const bool isEditMode);

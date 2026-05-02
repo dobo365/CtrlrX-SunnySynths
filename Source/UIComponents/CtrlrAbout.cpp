@@ -72,11 +72,10 @@ CtrlrAbout::CtrlrAbout (CtrlrManager &_owner)
     creditsLabel->setColour (TextEditor::backgroundColourId, Colour(getLookAndFeel().findColour (Label::backgroundColourId)));
     creditsLabel->setColour (TextEditor::outlineColourId, Colour(getLookAndFeel().findColour (TextEditor::outlineColourId).withAlpha(0.0f)));
     creditsLabel->setColour (TextEditor::shadowColourId, Colour(getLookAndFeel().findColour (TextEditor::shadowColourId).withAlpha(0.0f)));
-    creditsLabel->setText ("CtrlrX by Damien Sellier is an updated version of \n"
+    creditsLabel->setText ("CtrlrX - Sunny Synths is an adapted version of\n"
+                           "CtrlrX by Damien Sellier which is an updated version of\n"
                            "Ctrlr by Roman Kubiak under BSD|GPL license.");
-    
-    
-    
+   
     // Github LOGO SVG
     addAndMakeVisible (githubLogo = gui::createDrawableButton("Github Logo", BIN2STR(github_colour_svg))); // Updated v5.6.31. It required to drag drop SVG file in the projucer in the icon folder to be embedded
     githubLogo->addListener (this);
@@ -393,8 +392,8 @@ CtrlrAbout::~CtrlrAbout()
 //==============================================================================
 void CtrlrAbout::paint (Graphics& g)
 {
-    // g.setColour (Colour (0xff4c4c4c)); // Removed v5.6.31
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId)); // Added v5.6.31
+    g.setColour (Colour (0xff4c4c4c)); // Removed v5.6.31
+    //g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId)); // Added v5.6.31
     
     // Horizontal line separator
     g.setColour(getLookAndFeel().findColour (Label::textColourId).withAlpha(0.5f));
@@ -437,7 +436,7 @@ void CtrlrAbout::resized()
     heightPosition += ( ctrlrxReleaseDateLabelheight );
     ctrlrxLibsVersionLabel->setBounds (ctrlrLogoSize + paddingSize*3, heightPosition, rightColumnWidth, ctrlrxLibsVersionLabelheight);
     
-    int creditsLabelheight = 32;
+    int creditsLabelheight = 48;
     heightPosition += ( ctrlrxLibsVersionLabelheight + paddingSize );
     creditsLabel->setBounds (ctrlrLogoSize + paddingSize*3 + 4, heightPosition, rightColumnWidth, creditsLabelheight);
         

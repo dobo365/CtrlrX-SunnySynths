@@ -790,6 +790,7 @@ namespace Ids
     DECLARE_ID (ctrlrVersionCompressed);
     DECLARE_ID (ctrlrMidiMonInputBufferSize);
     DECLARE_ID (ctrlrMidiMonOutputBufferSize);
+    DECLARE_ID (ctrlrMidiFilters); // Added v5.6.35 (CtrlrX - Sunny Synths 5.6.34.4)
     DECLARE_ID (ctrlrLogMidiInput);
     DECLARE_ID (ctrlrLogMidiOutput);
     DECLARE_ID (ctrlrLogOptions);

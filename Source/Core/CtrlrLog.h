@@ -43,9 +43,22 @@ class CtrlrLog : public AsyncUpdater, public Logger, public DeletedAtShutdown
 
 		struct CtrlrLogMessage
 		{
+			// Explicit Default Constructor
+			CtrlrLogMessage():level(Info), time(juce::Time::getCurrentTime())
+			{
+			}
+			// Parametrized Constructor for easier logging
+			CtrlrLogMessage(const String& msg, LogLevel lvl, juce::Time t, const juce::MidiMessage& midi = juce::MidiMessage())
+				: message(msg), level(lvl), time(t), midiData(midi)
+			{
+			}
+			
 			String message;
 			LogLevel level;
 			juce::Time time;
+			// MidiMessage and hasMidiData are the missing pieces you need for your filter logic
+			MidiMessage midiData;
+			bool hasMidiData = false;  // Flag to indicate if midiData is valid
 		};
 
 		class Listener
@@ -67,12 +80,13 @@ class CtrlrLog : public AsyncUpdater, public Logger, public DeletedAtShutdown
 		void logMessage (const String &device, const MidiMessage &message, const double time, const LogLevel level);
 		void logMessage (const String &device, const MidiBuffer &buffer, const LogLevel level);
 		void logMessage (const String &device, const MidiBuffer &buffer, const double time, const LogLevel level);
+		void logMessage (const String &message, const LogLevel level, const MidiMessage &midiData); /* overload for filtering midi messages*/
 		void logMessage (const String &message);
 		void logMessage(CtrlrLog::LogLevel, char *fmt, ...);
 
 		void setLogToFile (const bool _logToFile);
-		bool getLogMidiInput ();
-		bool getLogMidiOutput ();
+		//bool getLogMidiInput ();	// Commented in 5.6.34.4 as no definition
+		//bool getLogMidiOutput ();	// Commented in 5.6.34.4 as no definition
 		const String formatMidiMessage (const MidiMessage &message, const double timestamp = -1);
 		static LogLevel stringToLevel (const String &level);
 		static String levelToString(const LogLevel &level);

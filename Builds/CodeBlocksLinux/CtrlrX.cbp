@@ -21,8 +21,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34.4&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062204&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;1&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -86,8 +86,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34.4&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062204&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;1&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -153,8 +153,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34.4&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062204&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -217,8 +217,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34.4&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062204&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;1&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -281,8 +281,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34.4&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062204&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;1&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -347,8 +347,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34.4&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062204&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>

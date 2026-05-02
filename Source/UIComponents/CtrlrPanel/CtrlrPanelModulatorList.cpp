@@ -10,31 +10,36 @@
 /* ********************************************************************************** */
 CtrlrPanelModulatorList::CtrlrPanelModulatorList (CtrlrPanel &_owner)
     : owner(_owner),
-      modulatorList (0),
-	  modulatorListTree(owner)
+      modulatorList (nullptr), 
+      modulatorListTree(owner)
 {
-	addAndMakeVisible (&modulatorListTree);
-	modulatorListTree.setVisible (false);
+    addAndMakeVisible (&modulatorListTree);
+    modulatorListTree.setVisible (false);
 
-	owner.setProperty (Ids::uiPanelModulatorListViewTree, false);
+    owner.setProperty (Ids::uiPanelModulatorListViewTree, false);
 
     addAndMakeVisible (modulatorList = new TableListBox ("Modulator List", this));
-    modulatorList->setName (L"modulatorList");
-	modulatorList->getHeader().setStretchToFitActive(true);
-	modulatorList->setMultipleSelectionEnabled (true);
-	modulatorList->setHeaderHeight (20);
+    modulatorList->setName ("modulatorList");
+    modulatorList->getHeader().setStretchToFitActive(true);
+    modulatorList->setMultipleSelectionEnabled (true);
+    modulatorList->setHeaderHeight (20);
 
-	if (owner.getProperty (Ids::panelModulatorListColumns).toString() != COMBO_ITEM_NONE)
-	{
-		restoreColumns (owner.getProperty (Ids::panelModulatorListColumns));
-	}
-	else
-	{
-		resetToDefaults();
-	}
-	owner.addPanelListener (this);
+    if (owner.getProperty (Ids::panelModulatorListColumns).toString() != COMBO_ITEM_NONE)
+    {
+        restoreColumns (owner.getProperty (Ids::panelModulatorListColumns));
+    }
+    else
+    {
+        resetToDefaults();
+    }
+    
+    owner.addPanelListener (this);
+
+    // Start the timer to poll for selection changes every 200ms
+    startTimer (200); 
+
     setSize (600, 400);
-	refresh();
+    refresh();
 }
 
 CtrlrPanelModulatorList::~CtrlrPanelModulatorList()
@@ -58,17 +63,23 @@ void CtrlrPanelModulatorList::resetToDefaults()
 	modulatorList->getHeader().removeAllColumns();
 	modulatorList->getHeader().addColumn ("name", getColumnIdForIdentifier("name")+1, 100);
 	modulatorList->getHeader().addColumn ("modulatorValue", getColumnIdForIdentifier("modulatorValue")+1, 60);
-	modulatorList->getHeader().addColumn ("vstIndex", getColumnIdForIdentifier("vstIndex")+1, 60);
+	modulatorList->getHeader().addColumn ("vstIndex", getColumnIdForIdentifier("vstIndex") + 1, 60);
+	modulatorList->getHeader().addColumn ("vstExported", getColumnIdForIdentifier("modulatorVstExported") + 1, 40);
+	modulatorList->getHeader().addColumn ("midiMessageType", getColumnIdForIdentifier("midiMessageType") + 1, 60);
+	modulatorList->getHeader().addColumn ("midiMessageCtrlrNumber", getColumnIdForIdentifier("midiMessageCtrlrNumber") + 1, 60);
 	modulatorList->getHeader().addColumn ("uiType", getColumnIdForIdentifier("uiType")+1, 100);
 	modulatorList->getHeader().addColumn ("componentRectangle", getColumnIdForIdentifier("componentRectangle")+1, 80);
 	modulatorList->getHeader().addColumn ("componentGroupName", getColumnIdForIdentifier("componentGroupName")+1, 60);
-	modulatorList->getHeader().addColumn ("componentTabName", getColumnIdForIdentifier("componentTabName")+1, 60);
-	modulatorList->getHeader().addColumn ("componentRadioGroupId", getColumnIdForIdentifier("componentRadioGroupId")+1, 60);
-	modulatorList->getHeader().addColumn ("midiMessageType", getColumnIdForIdentifier("midiMessageType")+1, 60);
-	modulatorList->getHeader().addColumn ("midiMessageCtrlrNumber", getColumnIdForIdentifier("midiMessageCtrlrNumber")+1, 60);
-	modulatorList->getHeader().addColumn ("midiMessageSysExFormula", getColumnIdForIdentifier("midiMessageSysExFormula")+1, 100);
-	modulatorList->getHeader().addColumn ("modulatorCustomIndex", getColumnIdForIdentifier("modulatorCustomIndex")+1, 60);
-	modulatorList->getHeader().addColumn ("modulatorCustomIndexGroup", getColumnIdForIdentifier("modulatorCustomIndexGroup")+1, 60);
+	modulatorList->getHeader().addColumn ("componentIsLocked", getColumnIdForIdentifier("componentIsLocked") + 1,40);
+	modulatorList->getHeader().addColumn ("componentDisabled", getColumnIdForIdentifier("componentDisabled") + 1, 40);
+	//modulatorList->getHeader().addColumn ("componentTabName", getColumnIdForIdentifier("componentTabName")+1, 60);
+	//modulatorList->getHeader().addColumn ("componentRadioGroupId", getColumnIdForIdentifier("componentRadioGroupId")+1, 60);
+	//modulatorList->getHeader().addColumn ("midiMessageSysExFormula", getColumnIdForIdentifier("midiMessageSysExFormula")+1, 100);
+	//modulatorList->getHeader().addColumn ("modulatorCustomIndex", getColumnIdForIdentifier("modulatorCustomIndex")+1, 60);
+	//modulatorList->getHeader().addColumn ("modulatorCustomIndexGroup", getColumnIdForIdentifier("modulatorCustomIndexGroup")+1, 60);
+
+	// Update list of columns in panel properties	Added 5.6.34.4 @dobo365
+	owner.setProperty(Ids::panelModulatorListColumns, modulatorList->getHeader().toString());
 }
 
 void CtrlrPanelModulatorList::visibilityChanged()
@@ -101,6 +112,37 @@ void CtrlrPanelModulatorList::copyModulatorList()
 
 void CtrlrPanelModulatorList::modulatorChanged (CtrlrModulator *modulatorThatChanged)
 {
+	_DBG("modulatorChanged fired for: " + (modulatorThatChanged ? modulatorThatChanged->getName() : "null"));
+	    if (owner.getEditor() && owner.getEditor()->getCanvas())
+    {
+        // Get the current selection from the canvas
+        SelectedItemSet<CtrlrComponent*>& selection = owner.getEditor()->getCanvas()->getSelection();
+        SparseSet<int> rowsToSelect;
+
+        for (int i = 0; i < copyOfModulatorList.size(); ++i)
+        {
+            if (CtrlrModulator* m = copyOfModulatorList[i])
+            {
+                if (m->getComponent() && selection.isSelected(m->getComponent()))
+                {
+                    rowsToSelect.addRange(Range<int>(i, i + 1));
+                }
+            }
+        }
+
+        // Set the selection without triggering a callback loop
+        modulatorList->setSelectedRows(rowsToSelect, dontSendNotification);
+
+        // Logic to scroll: TableListBox doesn't always expose scroll methods directly,
+        // so we access the internal ListBox if the selection isn't empty.
+        if (rowsToSelect.size() > 0)
+        {
+            int firstRow = rowsToSelect.getRange(0).getStart();
+            
+            // This is the most compatible way to force a scroll in JUCE 6 TableListBox:
+            modulatorList->selectRow(firstRow, true, true);
+        }
+    }
 }
 
 void CtrlrPanelModulatorList::modulatorAdded (CtrlrModulator *modulatorThatWasAdded)
@@ -139,8 +181,17 @@ const bool CtrlrPanelModulatorList::isComponentOffPanel(const int indexInModulat
 
 void CtrlrPanelModulatorList::refresh()
 {
-	copyModulatorList();
-	modulatorList->updateContent();
+    copyModulatorList();
+    modulatorList->updateContent();
+        // JUCE 6 quirk: updateContent() alone doesn't force the internal Viewport
+    // to recalculate row positions after a deletion, causing rows to visually
+    // overlap. A 1px bounds nudge triggers resized() and fixes the layout.
+    // Force the internal ListBox to fully recalculate its layout
+    modulatorList->setModel(nullptr);
+    modulatorList->setModel(this);
+    modulatorList->updateContent();
+    
+    modulatorList->repaint();
 }
 
 const Identifier CtrlrPanelModulatorList::getColumnCtrlrId(const int columnId)
@@ -204,11 +255,15 @@ int CtrlrPanelModulatorList::getNumRows()
 
 void CtrlrPanelModulatorList::paintRowBackground (Graphics& g, int rowNumber, int width, int height, bool rowIsSelected)
 {
-	if (rowIsSelected)
-	{
-		gui::drawSelectionRectangle (g, width, height, Colour(0xffbfbba9));
-        //g.fillAll(Colours::red);
-	}
+    if (rowIsSelected)
+    {
+        // Fill the background. This is the small rectangle on the right side of the selected row??
+        g.fillAll (Colour(0xffd9d2e9));	// Updated v5.6.34.4 Was (Colours::steelblue) but doesn't seem to work...
+		// Was g.fillAll(Component::findColour(TextButton::buttonOnColourId).brighter(0.6f)); // Updated v5.6.34. Was (Colours::red)
+
+        // Optional: Keep the Ctrlr-specific selection outline	// @dobo365: don't know what this is doing...
+        gui::drawSelectionRectangle (g, width, height);
+    }
 }
 
 Component* CtrlrPanelModulatorList::refreshComponentForCell (int rowNumber, int columnId, bool isRowSelected, Component* existingComponentToUpdate)
@@ -242,8 +297,10 @@ Component* CtrlrPanelModulatorList::refreshComponentForCell (int rowNumber, int 
 
 	//label->setColour (Label::textColourId, isRowSelected ? Colours::white : Colours::black);
     label->setColour (Label::textColourId, isRowSelected ? findColour(TextButton::textColourOnId) : findColour(Label::textColourId)); // Added v5.6.31
-    label->setColour (Label::backgroundColourId, isRowSelected ? findColour(TextButton::buttonOnColourId) : findColour(Label::backgroundColourId)); // Added v5.6.31
-    
+	//label->setColour(Label::backgroundColourId, isRowSelected ? findColour(TextButton::buttonOnColourId) : findColour(Label::backgroundColourId)); // Added v5.6.31
+	label->setColour(Label::backgroundColourId, isRowSelected ? Colour(0xffd9d2e9) : findColour(Label::backgroundColourId)); // Changed v5.6.34.4 by @dobo365 DB
+	// findColour(TextEditor::highlightColourId) : this is giving the blue highlight as in 5.3.201
+
 	label->getTextValue().referTo(Value());
 	label->setText (getValueStringForColumn (m, getColumnCtrlrId (columnId-1)), dontSendNotification);
 	label->getProperties().set ("rowNumber", rowNumber);
@@ -445,34 +502,40 @@ void CtrlrPanelModulatorList::exportListItem(const int format)
 
 void CtrlrPanelModulatorList::deleteSelected()
 {
-	if (owner.getEditor())
-	{
-		if (owner.getEditor()->getCanvas() && owner.getEditor()->getSelection())
-		{
-			owner.getEditor()->getSelection()->deselectAll();
+    if (!owner.getEditor()) return;
+    if (!owner.getEditor()->getCanvas() || !owner.getEditor()->getSelection()) return;
 
-			SparseSet<int> selected = modulatorList->getSelectedRows();
+    SparseSet<int> selected = modulatorList->getSelectedRows();
+    if (selected.size() <= 0) return;
 
-			for (int range=selected.getNumRanges()-1; range>=0; range--)
-			{
-				for (int modulator=selected.getRange(range).getEnd()-1; modulator>=selected.getRange(range).getStart(); modulator--)
-				{
-					if (!copyOfModulatorList[modulator].wasObjectDeleted() && copyOfModulatorList[modulator]->getComponent())
-					{
-						owner.getEditor()->getCanvas()->removeComponent(copyOfModulatorList[modulator]->getComponent(), false);
-					}
-				}
-			}
+    // Stop the timer during deletion to prevent race conditions
+    stopTimer();
 
-			modulatorList->deselectAllRows();
-			refresh();
-		}
-	}
+    owner.getEditor()->getSelection()->deselectAll();
+
+    for (int range = selected.getNumRanges() - 1; range >= 0; --range)
+    {
+        for (int modulator = selected.getRange(range).getEnd() - 1;
+             modulator >= selected.getRange(range).getStart(); --modulator)
+        {
+            if (!copyOfModulatorList[modulator].wasObjectDeleted()
+                && copyOfModulatorList[modulator]->getComponent())
+            {
+                owner.getEditor()->getCanvas()->removeComponent(
+                    copyOfModulatorList[modulator]->getComponent(), false);
+            }
+        }
+    }
+
+    modulatorList->deselectAllRows();
+    refresh(); // copyModulatorList + updateContent + repaint
+
+    // Restart the timer after everything has settled
+    startTimer(200);
 }
 
 void CtrlrPanelModulatorList::restoreColumns(const String &columnState)
 {
-	//<TABLELAYOUT sortedCol="0" sortForwards="1"><COLUMN id="2" visible="1" width="100"/><COLUMN id="7" visible="1" width="60"/><COLUMN id="1" visible="1" width="60"/><COLUMN id="3" visible="1" width="100"/><COLUMN id="97" visible="1" width="80"/><COLUMN id="101" visible="1" width="60"/><COLUMN id="102" visible="1" width="60"/><COLUMN id="107" visible="1" width="60"/><COLUMN id="401" visible="1" width="60"/><COLUMN id="398" visible="1" width="60"/><COLUMN id="402" visible="1" width="100"/><COLUMN id="21" visible="1" width="60"/><COLUMN id="22" visible="1" width="60"/><COLUMN id="8" visible="1" width="60"/></TABLELAYOUT>
 	XmlDocument doc(columnState);
 	ScopedPointer <XmlElement> xml(doc.getDocumentElement().release());
 	if (xml)
@@ -618,4 +681,38 @@ void CtrlrPanelModulatorList::handleSortSelection(const int itemId)
 		owner.setProperty (Ids::panelModulatorListSortOption, false);
 
 	modulatorList->updateContent();
+}
+
+void CtrlrPanelModulatorList::timerCallback()
+{
+    if (owner.getEditor() == nullptr) return;
+
+    CtrlrPanelCanvas* canvas = owner.getEditor()->getCanvas();
+    if (canvas == nullptr) return;
+
+    SelectedItemSet<CtrlrComponent*>& selection = canvas->getSelection();
+    juce::SparseSet<int> newSelection;
+
+    for (int i = 0; i < copyOfModulatorList.size(); ++i)
+    {
+        CtrlrModulator* m = copyOfModulatorList[i].get();
+        if (m == nullptr) continue; // Skip deleted/stale entries safely
+
+        if (m->getComponent() != nullptr && selection.isSelected(m->getComponent()))
+        {
+            newSelection.addRange(juce::Range<int>(i, i + 1));
+        }
+    }
+
+    if (newSelection != modulatorList->getSelectedRows())
+    {
+        modulatorList->setSelectedRows(newSelection, juce::dontSendNotification);
+
+        if (newSelection.size() > 0)
+        {
+            modulatorList->selectRow(newSelection.getRange(0).getStart(), true, true);
+        }
+
+        modulatorList->repaint();
+    }
 }

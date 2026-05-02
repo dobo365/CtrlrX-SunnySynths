@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36310.24 d17.14
+VisualStudioVersion = 17.14.37203.1 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CtrlrX_StandalonePlugin", "CtrlrX_StandalonePlugin.vcxproj", "{96EE761C-BA88-ACCE-1077-F30C539905EC}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -99,8 +99,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B2DCECEF-D9B0-476B-9691-5FBA0713857F}
 	EndGlobalSection
 EndGlobal

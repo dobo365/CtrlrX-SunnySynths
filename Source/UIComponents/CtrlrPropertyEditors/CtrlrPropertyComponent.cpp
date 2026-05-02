@@ -238,6 +238,16 @@ Component *CtrlrPropertyComponent::getPropertyComponent()
 		case CtrlrIDManager::Numeric:
             // preferredHeight = 36;
             preferredHeight = roundDoubleToInt(propertyLineheightBaseValue * 1.0); // Updated v5.6.33.
+			if (propertyName == Ids::midiMessageCtrlrNumber)	// Added 5.6.34.4. Midi controler number is max 127 except for multi Midi messages
+			{
+				double maxValue = 127;
+				if (propertyElement.getProperty(Ids::midiMessageType, false) == "6")
+				{
+					maxValue = 16383;
+				}
+				return (new CtrlrSliderPropertyComponent(valueToControl, (double)identifierDefinition.getProperty("min", 0), maxValue, (double)identifierDefinition.getProperty("int", 1)));
+			}
+
 			return (new CtrlrSliderPropertyComponent(valueToControl, (double)identifierDefinition.getProperty ("min", 0), (double)identifierDefinition.getProperty ("max", 127), (double)identifierDefinition.getProperty ("int", 1)));
             
 		case CtrlrIDManager::VarNumeric:
