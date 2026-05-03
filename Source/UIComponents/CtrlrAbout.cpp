@@ -392,9 +392,10 @@ CtrlrAbout::~CtrlrAbout()
 //==============================================================================
 void CtrlrAbout::paint (Graphics& g)
 {
-    g.setColour (Colour (0xff4c4c4c)); // Removed v5.6.31
+    //g.setColour (Colour (0xff4c4c4c)); // Removed v5.6.31
     //g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId)); // Added v5.6.31
-    
+    g.fillAll (Colour (0xffaaaaaa)); // Added v5.6.31
+ 
     // Horizontal line separator
     g.setColour(getLookAndFeel().findColour (Label::textColourId).withAlpha(0.5f));
     g.drawHorizontalLine(340, 12, (float) getWidth()-12 );

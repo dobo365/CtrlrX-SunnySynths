@@ -29,13 +29,16 @@ CHANGES
 Changes done in comparison to initial 5.6.34
 
 *** About popup - VERIFIED AND OK
+Source - UIComponents - CtrlrAbout.cpp
 Line 18: addAndMakeVisible (ctrlrName = new Label ("", TRANS("CtrlrX - Sunny Synths")));
 Line 75: credits
     creditsLabel->setText ("CtrlrX - Sunny Synths is an adapted version of\n"
                            "CtrlrX by Damien Sellier which is an updated version of\n"
                            "Ctrlr by Roman Kubiak under BSD|GPL license.");
 Line 439: int creditsLabelheight = 48;
-
+Line 397:    g.fillAll (Colour (0xffaaaaaa)); // Added v5.6.34.4
+Strange is that the color is darker when a panel is loaded than when a panel is not loaded...
+0xaaaaaa is fine when a panel is loaded. A bit too light when there is no panel.
 
 *** Max value for Midi Controller number and value - VERIFIED AND OK
 Source - Resources - CtrlrIDs.xml
@@ -296,6 +299,7 @@ Line 930
 
 
 *** Modulator list popup - VERIFIED and OK
+Source - UIComponents - CtrlrPanel - CtrlrPanelModulatorList.cpp
 Line 63: adapted default columns
 	modulatorList->getHeader().removeAllColumns();
 	modulatorList->getHeader().addColumn ("name", getColumnIdForIdentifier("name")+1, 100);
