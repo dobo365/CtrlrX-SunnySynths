@@ -21,8 +21,7 @@ class CtrlrPanelEditor;
 
 
 class CtrlrPanelNotifier : public Component,
-                           public LookAndFeel_V4
-                             // Added back v5.6.31 for file management bottom notification bar
+                           public LookAndFeel_V4	// Added back v5.6.31 for file management bottom notification bar
 {
     public:
         CtrlrPanelNotifier(CtrlrPanelEditor &_owner);

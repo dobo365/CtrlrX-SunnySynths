@@ -8,7 +8,9 @@ CtrlrMIDIMon::CtrlrMIDIMon (CtrlrManager &_owner)
     : owner(_owner), logIn(false), logOut(false),
       resizer (0),
       outMon (0),
-      inMon (0)
+      inMon (0),
+	  outLabel(0),
+	  inLabel(0) 
 {
     addAndMakeVisible (resizer = new StretchableLayoutResizerBar (&layoutManager, 1, false));
 
@@ -17,6 +19,19 @@ CtrlrMIDIMon::CtrlrMIDIMon (CtrlrManager &_owner)
 
     addAndMakeVisible (inMon = new CodeEditorComponent (inputDocument, 0));
     inMon->setName (L"inMon");
+
+	// 5.6.35.1 Added labels to identify the In and OUT zones)
+	addAndMakeVisible(outLabel = new Label("outLabel", "MIDI OUT"));
+	outLabel->setFont(Font(14, Font::bold));
+	outLabel->setJustificationType(Justification::centred);
+	outLabel->setColour(Label::backgroundColourId, Colour(0xffffacac).darker(0.1f));
+	outLabel->setColour(Label::textColourId, Colours::black);
+
+	addAndMakeVisible(inLabel = new Label("inLabel", "MIDI IN"));
+	inLabel->setFont(Font(14, Font::bold));
+	inLabel->setJustificationType(Justification::centred);
+	inLabel->setColour(Label::backgroundColourId, Colour(0xffb3ffac).darker(0.1f));
+	inLabel->setColour(Label::textColourId, Colours::black);
 
 	layoutManager.setItemLayout (0, -0.001, -1.0, -0.49);
  	layoutManager.setItemLayout (1, -0.001, -0.01, -0.01);
@@ -38,6 +53,8 @@ CtrlrMIDIMon::~CtrlrMIDIMon()
     deleteAndZero (resizer);
     deleteAndZero (outMon);
     deleteAndZero (inMon);
+	deleteAndZero (outLabel);
+	deleteAndZero (inLabel);
 }
 
 void CtrlrMIDIMon::paint (Graphics& g)
@@ -46,11 +63,75 @@ void CtrlrMIDIMon::paint (Graphics& g)
 
 void CtrlrMIDIMon::resized()
 {
-    resizer->setBounds (0, proportionOfHeight (0.4900f), getWidth() - 0, proportionOfHeight (0.0100f));
-    outMon->setBounds (0, 0, getWidth() - 0, proportionOfHeight (0.4900f));
-    inMon->setBounds (0, proportionOfHeight (0.5000f), getWidth() - 0, proportionOfHeight (0.4900f));
-	Component* comps[] = { outMon, resizer, inMon  };
- 	layoutManager.layOutComponents (comps, 3, 0, 0, getWidth(), getHeight(), true, true);
+	const int labelHeight = 20;  // Height for the labels
+
+	// Get the current MIDI log options
+	int opts = (int)owner.getProperty(Ids::ctrlrLogOptions);
+	bool showInput = getBitOption(opts, midiLogInput);
+	bool showOutput = getBitOption(opts, midiLogOutput);
+
+	// Show/hide components based on options
+	outLabel->setVisible(showOutput);
+	outMon->setVisible(showOutput);
+	inLabel->setVisible(showInput);
+	inMon->setVisible(showInput);
+
+	// If both are shown, use the split layout
+	if (showInput && showOutput)
+	{
+		resizer->setVisible(true);
+
+		int topSectionHeight = proportionOfHeight(0.4900f);
+		int bottomSectionHeight = proportionOfHeight(0.4900f);
+
+		outLabel->setBounds(0, 0, getWidth(), labelHeight);
+		outMon->setBounds(0, labelHeight, getWidth(), topSectionHeight - labelHeight);
+
+		resizer->setBounds(0, topSectionHeight, getWidth(), proportionOfHeight(0.0100f));
+
+		int inMonStartY = proportionOfHeight(0.5000f);
+		inLabel->setBounds(0, inMonStartY, getWidth(), labelHeight);
+		inMon->setBounds(0, inMonStartY + labelHeight, getWidth(), bottomSectionHeight - labelHeight);
+	}
+	// If only output is shown
+	else if (showOutput && !showInput)
+	{
+		resizer->setVisible(false);
+
+		outLabel->setBounds(0, 0, getWidth(), labelHeight);
+		outMon->setBounds(0, labelHeight, getWidth(), getHeight() - labelHeight);
+	}
+	// If only input is shown
+	else if (showInput && !showOutput)
+	{
+		resizer->setVisible(false);
+
+		inLabel->setBounds(0, 0, getWidth(), labelHeight);
+		inMon->setBounds(0, labelHeight, getWidth(), getHeight() - labelHeight);
+	}
+	// If neither is shown (fallback - show both grayed out)
+	else
+	{
+		resizer->setVisible(true);
+
+		int topSectionHeight = proportionOfHeight(0.4900f);
+		int bottomSectionHeight = proportionOfHeight(0.4900f);
+
+		outLabel->setBounds(0, 0, getWidth(), labelHeight);
+		outMon->setBounds(0, labelHeight, getWidth(), topSectionHeight - labelHeight);
+
+		resizer->setBounds(0, topSectionHeight, getWidth(), proportionOfHeight(0.0100f));
+
+		int inMonStartY = proportionOfHeight(0.5000f);
+		inLabel->setBounds(0, inMonStartY, getWidth(), labelHeight);
+		inMon->setBounds(0, inMonStartY + labelHeight, getWidth(), bottomSectionHeight - labelHeight);
+
+		// Force them visible for the fallback case
+		outLabel->setVisible(true);
+		outMon->setVisible(true);
+		inLabel->setVisible(true);
+		inMon->setVisible(true);
+	}
 }
 
 void CtrlrMIDIMon::messageLogged(CtrlrLog::CtrlrLogMessage _message) // Updated v5.6.35. MIDI filters Support. Thanks to @dnaldoog
@@ -117,6 +198,9 @@ PopupMenu CtrlrMIDIMon::getMenuForIndex(int topLevelMenuIndex, const String &men
 
 	if (topLevelMenuIndex == 0)
 	{
+		menu.addItem(2, "Clear Input");		// Added 5.6.35.1
+		menu.addItem(3, "Clear Output");
+		menu.addSeparator();
 		menu.addItem(1, "Close");
 	}
 	else if (topLevelMenuIndex == 1)
@@ -162,6 +246,19 @@ void CtrlrMIDIMon::menuItemSelected(int menuItemID, int topLevelMenuIndex)
 		if (menuItemID == 1)
 		{
 			// Handle close
+			// Access the window manager through the owner (CtrlrManager)
+			// and tell it to hide the MIDI Monitor window.
+			owner.getWindowManager().hide(CtrlrManagerWindowManager::MidiMonWindow);	// Aded 5.6.35.1
+		}
+		if (menuItemID == 2)	// Aded 5.6.35.1
+		{
+			// Handle clear input log
+			inputDocument.replaceAllContent("");
+		}
+		if (menuItemID == 3)	// Aded 5.6.35.1
+		{
+			// Handle clear output log
+			outputDocument.replaceAllContent("");
 		}
 	}
 	else if (topLevelMenuIndex == 1) // View menu

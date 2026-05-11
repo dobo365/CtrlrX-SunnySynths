@@ -85,9 +85,9 @@ CtrlrPanelEditor::CtrlrPanelEditor(CtrlrPanel &_owner, CtrlrManager &_ctrlrManag
     ctrlrComponentSelection = new CtrlrComponentSelection(*this);
     //removeColour(TooltipWindow::textColourId);
     
-    addAndMakeVisible(ctrlrPanelViewport = new CtrlrPanelViewport(*this));
-    addAndMakeVisible(ctrlrPanelProperties = new CtrlrPanelProperties(*this));
-    addAndMakeVisible(spacerComponent = new StretchableLayoutResizerBar(&layoutManager, 1, true));
+    addAndMakeVisible (ctrlrPanelViewport = new CtrlrPanelViewport(*this));
+    addAndMakeVisible (ctrlrPanelProperties = new CtrlrPanelProperties(*this));
+    addAndMakeVisible (spacerComponent = new StretchableLayoutResizerBar(&layoutManager, 1, true));
     addAndMakeVisible (ctrlrPanelNotifier = new CtrlrPanelNotifier(*this));  // Added back v5.6.31 for file management bottom notification bar
     
     ctrlrPanelNotifier->setAlwaysOnTop (true);  // Added back v5.6.31 for file management bottom notification bar
@@ -183,7 +183,13 @@ CtrlrPanelEditor::CtrlrPanelEditor(CtrlrPanel &_owner, CtrlrManager &_ctrlrManag
         // Requires passing the colourScheme to the property uiPanelLookAndFeel from ctrlrColourScheme
         // Updated v5.6.34. For a generic method schemeName Property--> schemeName. Get the current colour scheme name from the property
         juce::String schemeName = ed.getProperty (Ids::ctrlrColourScheme).toString();
-        
+     
+        // Fallback for empty instances without any colourscheme yet defined
+        if (schemeName.isEmpty())
+        {
+            schemeName = "Light";
+        }
+    
         // Determine the LookAndFeel description string
         juce::String lookAndFeelDesc;
         

@@ -112,3 +112,4 @@ Panels/                   # Ignore the Panels directory and its contents
 # /Panels                 # If 'Panels' can also exist as a file in root and needs ignoring, use this
 Source/Misc/vst2sdk/
 Builds/MacOSX/build/Release/libCtrlrX.a
+/Builds/VisualStudio2019
