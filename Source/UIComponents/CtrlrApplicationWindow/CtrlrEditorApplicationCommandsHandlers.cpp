@@ -29,6 +29,14 @@ bool CtrlrEditor::perform (const InvocationInfo &info)
 			owner.getWindowManager().toggle(CtrlrManagerWindowManager::LogViewer, true);
 			break;
 
+		case showHelpViewer:
+			owner.getWindowManager().toggle(CtrlrManagerWindowManager::HelpViewer, true);
+			break;
+
+		case showHelpEditor:
+			owner.getWindowManager().toggle(CtrlrManagerWindowManager::HelpEditor, true);
+			break;
+
 		case showMidiCalculator:
 			owner.getWindowManager().toggle(CtrlrManagerWindowManager::MIDICalculator, true);
 			break;

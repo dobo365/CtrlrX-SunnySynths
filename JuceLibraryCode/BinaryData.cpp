@@ -7,8 +7,191 @@
 namespace BinaryData
 {
 
-//================== build_information.hpp.cmake_in ==================
+//================== README.md ==================
 static const unsigned char temp_binary_data_0[] =
+"# BarelyML - Sunny Synths markdown\r\n"
+"\r\n"
+"BarelyML - Sunny Synths markdown is an extension of the BarelyML library made by Friz Menzer in 2023. It is providing a more complete handling of the initialy supported markdwon tags but has also enhanced it with new ones.\r\n"
+"\r\n"
+"Version: 0.8 \r\n"
+"Date: June 15th 2026\r\n"
+"Author:  Dominique Bontemps - Sunny Synths\r\n"
+"\r\n"
+"- Corrected the usage of table background colours \r\n"
+"- Adapted to be closer to the Github Wiki layout\r\n"
+"- Added support for double tilde tag to indicate a strikethrough text\r\n"
+"- Handle right/center/left alignment in tables columns\r\n"
+"- Links are not in bold; they get a pointing hand cursor when hovered\r\n"
+"- Tables are rendered as in Github Wiki (even rows have a very light background, grid in light grey, header in bold) \r\n"
+"- Supports inline code using single back tick tag and code blocks using triple back tick tags\r\n"
+"- Code text is displayed in courier new font on a grey rectangle background\r\n"
+"- Ability to copy code block by pressing an icon\r\n"
+"- Added horizontal rule drawing using standard markdown \"---\" tag\r\n"
+"- Blockquote marking using standard markdown \"> \" tag\r\n"
+"- Adapted Admonition block tagging as \"!!! TYPE\" and \"!!!\"\r\n"
+"- Possible Admonition block types are: HINT, INFO, CAUTION, WARNING, OTHER, MISC \r\n"
+"- Completely rewritten Admonition blocks rendering that also covers blockquote\r\n"
+"- Modified H1 heading rendering to be more in line with GitHub's H1 rendering (with a line drawn below the text)\r\n"
+"\r\n"
+"This file is also used to test and verify all tags.\r\n"
+"\r\n"
+"# Level 1 Heading\r\n"
+"\r\n"
+"## Level 2 Heading\r\n"
+"\r\n"
+"### Level 3 Heading\r\n"
+"\r\n"
+"#### Level 4 Heading\r\n"
+"\r\n"
+"##### Level 5 Heading\r\n"
+"\r\n"
+"This is a standard paragraph. it is used to check the default spacing between text blocks and headings.\r\n"
+"\r\n"
+"This paragraph contains a forced new line jump achieved by inserting\r\n"
+"a return at the end of the text line\r\n"
+"and is thus directly continuing on this new line.\r\n"
+"\r\n"
+"## Table of contents\r\n"
+"* [Level 2 Heading](goto://## Level 2 Heading)\r\n"
+"  * [Level 3 Heading](goto://### Level 3 Heading)\r\n"
+"* [Styles and Formating](goto://## Styles and Formating)\r\n"
+"  * [Lists](goto://### Lists)\r\n"
+"  * [Tasks list](goto://### Tasks list)\r\n"
+"  * [Blockquote and Code](goto://### Blockquote and Code)\r\n"
+"  * [Links and Images](goto://### Links and Images)\r\n"
+"  * [Tables](goto://### Tables)\r\n"
+"  * [Predefined admonition blocks](goto://### Predefined admonition blocks)\r\n"
+"  * [Horizontal rule](goto://### Horizontal rule)\r\n"
+"  * [Pure HTML tags](goto://### Pure HTML tags)\r\n"
+"\r\n"
+"## Styles and Formating\r\n"
+"\r\n"
+"Verification and formatting possibilities :\r\n"
+"* This text is in **bold**.\r\n"
+"* This text is in *italique*.\r\n"
+"* This text combines ***bold and italic***.\r\n"
+"* This text is in ~~strikethrough~~.\r\n"
+"\r\n"
+"Colors:\r\n"
+"* <c:red>Red Text\r\n"
+"* <c#AA22FF>#AA22FF color Text\r\n"
+"\r\n"
+"Predefined colors can be used (CGA 16-colour palette with some extensions):\r\n"
+"black, blue, green, cyan, red, magenta, brown, lightgray, darkgray, lightblue, lightgreen, lightcyan, lightred, lightmagenta, yellow, white, orange, pink, darkyellow, purple, gray, linkcolour (by default set to blue)\r\n"
+"\r\n"
+"The syntax for a predefined color is <c followed by :color_name>\r\n"
+"The syntax for any color is <c followed by #RRGGBB>\r\n"
+"\r\n"
+"### Lists\r\n"
+"\r\n"
+"#### Unordered list\r\n"
+"* First bullet point \r\n"
+"* Second bullet point with `inline code`\r\n"
+"* Third bullet point with second level list :\r\n"
+"    * Second level A\r\n"
+"    * Second level B\r\n"
+"* Fourth bullet point with code block\r\n"
+"```\r\n"
+"qsqdqsdsd\r\n"
+"```\r\n"
+"\r\n"
+"* Fifth one containing a [Google](www.google.com) link...\r\n"
+"* Sixth one...\r\n"
+"\r\n"
+"#### Ordered/Numbered list\r\n"
+"1. First mandatory step\r\n"
+"2. Second step\r\n"
+"3. Third step with code block\r\n"
+"```\r\n"
+"qsqdqsdsd\r\n"
+"```\r\n"
+"\r\n"
+"4. Fourth step\r\n"
+"\r\n"
+"### Tasks list\r\n"
+"- [x] Completed task\r\n"
+"- [ ] To do...\r\n"
+"- [x] Completed task\r\n"
+"\r\n"
+"### Blockquote and Code\r\n"
+"> This is `an inline code` within a blockquote.\r\n"
+"> A blockquote can have any length. Each line is starting with >\r\n"
+"\r\n"
+"Inline code is identified by a sinlge back tick tag before and after the text while code blocks are using a triple back tick as first and last line.\r\n"
+"It is possible to copy the code by clicking on the icon.\r\n"
+"\r\n"
+"Hello `This is an inline code` Hello\r\n"
+"\r\n"
+"```\r\n"
+"This is a code block\r\n"
+"\r\n"
+"if xxx then\r\n"
+"  qsdqsd\r\n"
+"else\r\n"
+"  dsqdsqd\r\n"
+"end\r\n"
+"```\r\n"
+"\r\n"
+"### Links and Images\r\n"
+"\r\n"
+"Vous pouvez ins\xc3\xa9rer un [Lien Externe GitHub Docs](https://github.com) ou ajouter une image avec un texte alternatif :\r\n"
+"\r\n"
+"![Logo Placeholder](https://placeholder.com \"Survol\")\r\n"
+"\r\n"
+"### Tables\r\n"
+"\r\n"
+"| Identifiant | Nom du Produit | Statut |\r\n"
+"| :--- | :---: | ---: |\r\n"
+"| #001 | \xc3\x89l\xc3\xa9ment Gauche | En stock |\r\n"
+"| #002 | \xc3\x89l\xc3\xa9ment Centr\xc3\xa9 | *\xc3\x89puis\xc3\xa9* |\r\n"
+"| #003 | \xc3\x89l\xc3\xa9ment Droite | **Faible** |\r\n"
+"| #004 | \xc3\x89l\xc3\xa9ment Centr\xc3\xa9 | ~~Faible~~ |\r\n"
+"| #005 | \xc3\x89l\xc3\xa9ment Centr\xc3\xa9 | Go to [Google.com](www.google.com)!  |\r\n"
+"| #006 | \xc3\x89l\xc3\xa9ment de code | Go to `code` !  |\r\n"
+"\r\n"
+"### Predefined admonition blocks\r\n"
+"\r\n"
+"!!! INFORMATION\r\n"
+"INFO: Hello world\r\n"
+"!!!\r\n"
+"\r\n"
+"!!! HINT\r\n"
+"HINT: Hello world\r\n"
+"!!!\r\n"
+"\r\n"
+"!!! CAUTION\r\n"
+"CAUTION: Hello world\r\n"
+"!!!\r\n"
+"\r\n"
+"!!! WARNING\r\n"
+"WARNING: Hello world\r\n"
+"!!!\r\n"
+"\r\n"
+"!!! IMPORTANT\r\n"
+"IMPORTANT: Hello world\r\n"
+"!!!\r\n"
+"\r\n"
+"!!! OTHER\r\n"
+"OTHER: Hello world\r\n"
+"!!!\r\n"
+"\r\n"
+"!!! MISC\r\n"
+"MISC: Hello world\r\n"
+"!!!\r\n"
+"\r\n"
+"\r\n"
+"### Horizontal rule\r\n"
+"\r\n"
+"---\r\n"
+"\r\n"
+"### Pure HTML tags\r\n"
+"\r\n"
+"<c:red>HTML tags are not supported for the moment";
+
+const char* README_md = (const char*) temp_binary_data_0;
+
+//================== build_information.hpp.cmake_in ==================
+static const unsigned char temp_binary_data_1[] =
 "/** @file\r\n"
 "    @brief Generated header containing build options that change the library contents.\r\n"
 "\r\n"
@@ -65,10 +248,10 @@ static const unsigned char temp_binary_data_0[] =
 "#endif // INCLUDED_BuildInformation_hpp_GUID_90CCCE9E_4374_4090_36BA_3AA2C22271F7\r\n"
 "\r\n";
 
-const char* build_information_hpp_cmake_in = (const char*) temp_binary_data_0;
+const char* build_information_hpp_cmake_in = (const char*) temp_binary_data_1;
 
 //================== get-deps.sh ==================
-static const unsigned char temp_binary_data_1[] =
+static const unsigned char temp_binary_data_2[] =
 "#!/bin/sh\r\n"
 "\r\n"
 "set -ex\r\n"
@@ -90,10 +273,10 @@ static const unsigned char temp_binary_data_1[] =
 "make clean\r\n"
 "make linux MYCFLAGS=\"-DLUA_USE_APICHECK -g\"\r\n";
 
-const char* getdeps_sh = (const char*) temp_binary_data_1;
+const char* getdeps_sh = (const char*) temp_binary_data_2;
 
 //================== INSTALL.txt ==================
-static const unsigned char temp_binary_data_2[] =
+static const unsigned char temp_binary_data_3[] =
 "Note: The information in this file is outdated. Use CMake instead.\r\n"
 "\r\n"
 "luabind installation\r\n"
@@ -162,10 +345,10 @@ static const unsigned char temp_binary_data_2[] =
 "\r\n"
 "Will install to \"/usr/lib\" and \"/usr/include\".\r\n";
 
-const char* INSTALL_txt = (const char*) temp_binary_data_2;
+const char* INSTALL_txt = (const char*) temp_binary_data_3;
 
 //================== LICENSE.txt ==================
-static const unsigned char temp_binary_data_3[] =
+static const unsigned char temp_binary_data_4[] =
 "// Copyright (c) 2003 Daniel Wallin and Arvid Norberg\r\n"
 "\r\n"
 "// Copyright (c) 2012, 2013 Christian Neum\xc3\xbcller [bugfixes, small additions]\r\n"
@@ -190,10 +373,10 @@ static const unsigned char temp_binary_data_3[] =
 "// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE\r\n"
 "// OR OTHER DEALINGS IN THE SOFTWARE.\r\n";
 
-const char* LICENSE_txt = (const char*) temp_binary_data_3;
+const char* LICENSE_txt = (const char*) temp_binary_data_4;
 
 //================== README.md ==================
-static const unsigned char temp_binary_data_4[] =
+static const unsigned char temp_binary_data_5[] =
 "Luabind\r\n"
 "=======\r\n"
 "\r\n"
@@ -335,10 +518,10 @@ static const unsigned char temp_binary_data_4[] =
 "since it actually has become the master branch of development in this fork.\r\n"
 "The original master branch is now named old-master.\r\n";
 
-const char* README_md = (const char*) temp_binary_data_4;
+const char* README_md2 = (const char*) temp_binary_data_5;
 
 //================== CtrlrRevision.template ==================
-static const unsigned char temp_binary_data_5[] =
+static const unsigned char temp_binary_data_6[] =
 "#ifndef __CTRLR_REVISION__\r\n"
 "#define __CTRLR_REVISION__\r\n"
 "\r\n"
@@ -347,10 +530,10 @@ static const unsigned char temp_binary_data_5[] =
 "\r\n"
 "#endif\r\n";
 
-const char* CtrlrRevision_template = (const char*) temp_binary_data_5;
+const char* CtrlrRevision_template = (const char*) temp_binary_data_6;
 
 //================== FONT_60sekuntia.ttf ==================
-static const unsigned char temp_binary_data_6[] =
+static const unsigned char temp_binary_data_7[] =
 { 0,1,0,0,0,11,0,128,0,3,0,48,79,83,47,50,187,66,137,76,0,0,1,56,0,0,0,86,99,109,97,112,208,126,62,230,0,0,11,196,0,0,5,210,103,97,115,112,255,255,0,3,0,1,123,232,0,0,0,8,103,108,121,102,164,1,94,212,0,0,22,180,0,1,76,100,104,101,97,100,253,121,184,158,
 0,0,0,188,0,0,0,54,104,104,101,97,34,189,16,24,0,0,0,244,0,0,0,36,104,109,116,120,72,11,115,49,0,0,1,144,0,0,10,50,108,111,99,97,34,212,132,218,0,0,17,152,0,0,5,28,109,97,120,112,7,100,6,57,0,0,1,24,0,0,0,32,110,97,109,101,229,216,3,168,0,1,99,24,0,0,
 5,99,112,111,115,116,231,89,28,243,0,1,104,124,0,0,19,108,0,1,0,0,0,1,0,0,31,86,32,40,95,15,60,245,0,11,8,0,0,0,0,0,193,130,28,114,0,0,0,0,193,160,81,151,249,0,253,113,34,57,8,38,0,0,0,9,0,1,0,0,0,0,0,0,0,1,0,0,7,62,254,78,0,67,34,127,249,0,236,190,34,
@@ -1460,10 +1643,10 @@ static const unsigned char temp_binary_data_6[] =
 99,105,114,99,108,101,10,111,112,101,110,98,117,108,108,101,116,9,115,109,105,108,101,102,97,99,101,12,105,110,118,115,109,105,108,101,102,97,99,101,3,115,117,110,6,102,101,109,97,108,101,4,109,97,108,101,5,115,112,97,100,101,4,99,108,117,98,5,104,101,
 97,114,116,7,100,105,97,109,111,110,100,11,109,117,115,105,99,97,108,110,111,116,101,14,109,117,115,105,99,97,108,110,111,116,101,100,98,108,7,117,110,105,70,48,48,52,7,117,110,105,70,48,48,53,0,0,0,1,255,255,0,2,0,0 };
 
-const char* FONT_60sekuntia_ttf = (const char*) temp_binary_data_6;
+const char* FONT_60sekuntia_ttf = (const char*) temp_binary_data_7;
 
 //================== FONT_Computerfont.ttf ==================
-static const unsigned char temp_binary_data_7[] =
+static const unsigned char temp_binary_data_8[] =
 { 0,1,0,0,0,14,0,48,0,3,0,176,79,83,47,50,129,226,112,210,0,0,140,40,0,0,0,78,99,109,97,112,54,22,85,178,0,0,132,168,0,0,4,4,99,118,116,32,22,109,18,149,0,0,139,180,0,0,0,114,102,112,103,109,167,217,94,147,0,0,4,68,0,0,0,100,103,108,121,102,21,160,26,237,
 0,0,5,136,0,0,122,106,104,100,109,120,24,204,16,222,0,0,140,120,0,0,12,72,104,101,97,100,89,194,190,111,0,0,0,236,0,0,0,54,104,104,101,97,12,180,10,157,0,0,1,36,0,0,0,36,104,109,116,120,145,229,20,195,0,0,136,172,0,0,3,8,108,111,99,97,0,41,133,194,0,
 0,127,244,0,0,3,12,109,97,120,112,1,250,2,203,0,0,1,72,0,0,0,32,110,97,109,101,14,126,196,195,0,0,1,104,0,0,2,217,112,111,115,116,37,39,36,187,0,0,131,0,0,0,1,166,112,114,101,112,0,52,244,146,0,0,4,168,0,0,0,221,0,1,0,0,0,1,0,0,92,199,79,28,95,15,60,
@@ -1907,10 +2090,10 @@ static const unsigned char temp_binary_data_7[] =
 11,9,11,8,11,11,18,11,11,11,9,8,9,12,13,13,14,12,13,13,13,11,11,11,11,11,11,11,11,11,11,11,6,6,7,8,11,11,11,11,11,11,11,11,11,11,7,8,12,14,11,11,14,13,10,9,12,8,11,15,20,21,20,13,10,10,15,14,12,15,17,17,9,11,11,16,18,12,5,10,9,12,14,15,15,24,12,13,13,
 13,21,19,13,17,13,13,7,7,13,15,11,26,1,18,20,20,20,31,24,18,0,0 };
 
-const char* FONT_Computerfont_ttf = (const char*) temp_binary_data_7;
+const char* FONT_Computerfont_ttf = (const char*) temp_binary_data_8;
 
 //================== FONT_Digit.ttf ==================
-static const unsigned char temp_binary_data_8[] =
+static const unsigned char temp_binary_data_9[] =
 { 0,1,0,0,0,10,0,128,0,3,0,32,79,83,47,50,18,194,51,33,0,0,1,40,0,0,0,78,99,109,97,112,37,61,92,120,0,0,2,220,0,0,3,148,103,108,121,102,34,72,29,159,0,0,7,36,0,0,43,18,104,101,97,100,31,57,44,195,0,0,0,172,0,0,0,54,104,104,101,97,14,240,7,76,0,0,0,228,
 0,0,0,36,104,109,116,120,105,80,89,98,0,0,1,120,0,0,1,100,108,111,99,97,215,86,226,48,0,0,6,112,0,0,0,180,109,97,120,112,0,99,0,72,0,0,1,8,0,0,0,32,110,97,109,101,49,105,64,255,0,0,50,56,0,0,0,138,112,111,115,116,0,3,0,0,0,0,50,196,0,0,0,32,0,1,0,0,0,
 0,0,0,175,201,68,23,95,15,60,245,0,3,8,0,136,196,239,79,48,194,239,79,0,0,1,6,0,0,0,1,0,242,0,81,5,171,7,208,0,0,0,8,0,1,0,0,0,0,0,0,0,1,0,0,7,208,0,81,0,129,8,0,0,242,254,161,5,171,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,89,0,1,0,0,0,89,0,55,0,9,0,0,0,0,0,
@@ -2064,10 +2247,10 @@ static const unsigned char temp_binary_data_8[] =
 1,0,0,0,0,0,3,0,5,0,0,0,1,0,0,0,0,0,4,0,5,0,0,0,3,0,1,4,9,0,1,0,10,0,12,0,3,0,1,4,9,0,2,0,14,0,22,0,3,0,1,4,9,0,3,0,10,0,12,0,3,0,1,4,9,0,4,0,10,0,12,68,105,103,105,116,82,101,103,117,108,97,114,0,68,0,105,0,103,0,105,0,116,0,82,0,101,0,103,0,117,0,108,
 0,97,0,114,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
 
-const char* FONT_Digit_ttf = (const char*) temp_binary_data_8;
+const char* FONT_Digit_ttf = (const char*) temp_binary_data_9;
 
 //================== FONT_Digital-7.ttf ==================
-static const unsigned char temp_binary_data_9[] =
+static const unsigned char temp_binary_data_10[] =
 { 0,1,0,0,0,18,1,0,0,4,0,32,76,84,83,72,240,166,166,191,0,0,3,180,0,0,0,111,79,83,47,50,103,42,240,61,0,0,1,168,0,0,0,96,80,67,76,84,205,150,238,76,0,0,134,0,0,0,0,54,86,68,77,88,107,106,115,5,0,0,4,36,0,0,5,224,99,109,97,112,144,91,213,101,0,0,20,28,0,
 0,2,80,99,118,116,32,18,117,12,61,0,0,42,140,0,0,0,102,102,112,103,109,52,68,22,133,0,0,22,108,0,0,19,59,103,97,115,112,0,23,0,9,0,0,133,240,0,0,0,16,103,108,121,102,222,233,125,16,0,0,42,244,0,0,82,192,104,100,109,120,175,52,50,25,0,0,10,4,0,0,10,24,
 104,101,97,100,240,54,239,57,0,0,1,44,0,0,0,54,104,104,101,97,5,121,3,190,0,0,1,100,0,0,0,36,104,109,116,120,191,130,20,80,0,0,2,8,0,0,1,172,108,111,99,97,79,38,102,12,0,0,125,180,0,0,0,216,109,97,120,112,3,14,19,209,0,0,1,136,0,0,0,32,110,97,109,101,
@@ -2467,10 +2650,10 @@ static const unsigned char temp_binary_data_9[] =
 0,80,0,81,0,82,0,83,0,84,0,85,0,86,0,87,0,88,0,89,0,90,0,91,0,92,0,93,0,94,0,95,0,96,0,97,0,198,0,182,0,183,0,180,0,181,0,135,0,178,0,179,0,139,4,78,85,76,76,0,0,0,0,0,0,3,0,8,0,2,0,16,0,1,255,255,0,3,0,1,0,0,0,0,0,0,1,4,2,188,0,0,111,28,2,188,1,53,68,
 105,103,105,116,97,108,45,55,32,32,32,32,32,32,32,0,0,0,0,0,0,0,0,68,105,103,105,116,97,0,0,1,0,0,0,0,0 };
 
-const char* FONT_Digital7_ttf = (const char*) temp_binary_data_9;
+const char* FONT_Digital7_ttf = (const char*) temp_binary_data_10;
 
 //================== FONT_DottyShadow.ttf ==================
-static const unsigned char temp_binary_data_10[] =
+static const unsigned char temp_binary_data_11[] =
 { 0,1,0,0,0,16,1,0,0,4,0,0,76,84,83,72,226,202,227,159,0,0,1,12,0,0,0,247,79,83,47,50,16,178,186,192,0,0,2,4,0,0,0,78,99,109,97,112,66,223,164,63,0,0,2,84,0,0,1,244,99,118,116,32,3,239,0,55,0,0,4,72,0,0,0,20,102,112,103,109,249,199,205,28,0,0,4,92,0,0,
 0,233,103,108,121,102,5,107,181,21,0,0,5,72,0,8,12,218,104,100,109,120,95,216,39,44,0,8,18,36,0,0,15,136,104,101,97,100,222,27,36,190,0,8,33,172,0,0,0,54,104,104,101,97,8,129,5,76,0,8,33,228,0,0,0,36,104,109,116,120,145,175,71,206,0,8,34,8,0,0,3,204,
 107,101,114,110,80,34,98,201,0,8,37,212,0,0,130,74,108,111,99,97,3,172,239,90,0,8,168,32,0,0,3,208,109,97,120,112,3,65,9,82,0,8,171,240,0,0,0,32,110,97,109,101,203,104,244,237,0,8,172,16,0,0,2,28,112,111,115,116,205,60,191,240,0,8,174,44,0,0,2,36,112,
@@ -8604,10 +8787,10 @@ static const unsigned char temp_binary_data_10[] =
 0,149,0,152,0,153,0,154,0,155,0,156,0,159,0,165,0,167,1,4,0,185,6,109,97,99,114,111,110,14,112,101,114,105,111,100,99,101,110,116,101,114,101,100,5,68,101,108,116,97,187,0,0,0,2,0,2,0,0,43,43,187,0,1,0,32,0,54,0,5,43,187,0,0,0,32,0,54,0,5,43,186,0,2,
 0,4,0,7,43,0,0,0 };
 
-const char* FONT_DottyShadow_ttf = (const char*) temp_binary_data_10;
+const char* FONT_DottyShadow_ttf = (const char*) temp_binary_data_11;
 
 //================== FONT_Electronic Highway Sign.ttf ==================
-static const unsigned char temp_binary_data_11[] =
+static const unsigned char temp_binary_data_12[] =
 { 0,1,0,0,0,14,1,0,0,4,0,16,79,83,47,50,90,147,135,16,0,0,0,236,0,0,0,96,80,67,76,84,46,137,233,28,0,0,1,76,0,0,0,54,99,109,97,112,241,125,54,61,0,0,1,132,0,0,2,184,99,118,116,32,0,29,0,0,0,0,4,60,0,0,0,2,102,112,103,109,6,83,156,49,0,0,4,64,0,0,1,115,
 103,108,121,102,173,38,71,227,0,0,5,180,0,1,12,84,104,101,97,100,228,81,129,31,0,1,18,8,0,0,0,54,104,104,101,97,8,42,2,231,0,1,18,64,0,0,0,36,104,109,116,120,3,235,61,192,0,1,18,100,0,0,2,86,108,111,99,97,39,227,228,152,0,1,20,188,0,0,1,206,109,97,120,
 112,3,5,2,173,0,1,22,140,0,0,0,32,110,97,109,101,172,10,101,115,0,1,22,172,0,0,3,106,112,111,115,116,72,90,235,165,0,1,26,24,0,0,3,71,112,114,101,112,184,0,0,43,0,1,29,96,0,0,0,4,0,3,3,84,1,144,0,5,0,0,3,212,3,142,0,0,0,200,3,212,3,142,0,0,2,122,0,70,
@@ -9472,10 +9655,10 @@ static const unsigned char temp_binary_data_11[] =
 103,108,121,112,104,49,50,50,8,103,108,121,112,104,49,50,51,8,103,108,121,112,104,49,50,52,8,103,108,121,112,104,49,50,53,8,103,108,121,112,104,49,50,54,8,103,108,121,112,104,49,50,55,8,103,108,121,112,104,49,50,56,8,103,108,121,112,104,49,50,57,8,103,
 108,121,112,104,49,51,48,8,103,108,121,112,104,49,51,49,8,103,108,121,112,104,49,52,52,4,69,117,114,111,0,184,0,0,43,0,0 };
 
-const char* FONT_Electronic_Highway_Sign_ttf = (const char*) temp_binary_data_11;
+const char* FONT_Electronic_Highway_Sign_ttf = (const char*) temp_binary_data_12;
 
 //================== FONT_Invasion2000.ttf ==================
-static const unsigned char temp_binary_data_12[] =
+static const unsigned char temp_binary_data_13[] =
 { 0,1,0,0,0,15,0,48,0,3,0,192,79,83,47,50,81,90,92,221,0,0,119,104,0,0,0,86,80,67,76,84,50,40,123,31,0,0,119,192,0,0,0,54,99,109,97,112,60,222,65,145,0,0,109,92,0,0,3,66,99,118,116,32,96,249,97,40,0,0,3,224,0,0,0,36,102,112,103,109,131,51,194,79,0,0,3,
 204,0,0,0,20,103,108,121,102,54,55,104,32,0,0,4,84,0,0,100,170,104,100,109,120,95,52,139,50,0,0,112,160,0,0,6,200,104,101,97,100,215,186,157,2,0,0,119,248,0,0,0,54,104,104,101,97,6,252,3,168,0,0,120,48,0,0,0,36,104,109,116,120,244,135,246,38,0,0,106,
 168,0,0,1,164,108,111,99,97,0,20,229,240,0,0,105,0,0,0,1,168,109,97,120,112,1,74,1,202,0,0,120,84,0,0,0,32,110,97,109,101,141,240,84,235,0,0,0,252,0,0,2,208,112,111,115,116,4,125,241,95,0,0,108,76,0,0,1,14,112,114,101,112,171,141,32,159,0,0,4,4,0,0,0,
@@ -9819,10 +10002,10 @@ static const unsigned char temp_binary_data_12[] =
 255,255,255,55,255,255,254,65,65,66,82,48,48,0,0,0,0,0,0,0,1,0,0,0,1,0,0,25,103,136,128,95,15,60,245,0,0,3,232,0,0,0,0,186,107,44,219,0,0,0,0,186,107,44,219,255,186,255,66,4,22,3,41,0,0,0,3,0,2,0,1,0,0,0,0,0,1,0,0,3,41,255,56,0,0,4,40,255,186,255,222,
 4,22,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,105,0,1,0,0,0,105,0,36,0,5,0,0,0,0,0,2,0,8,0,64,0,10,0,0,0,200,1,99,0,1,0,1,0,0 };
 
-const char* FONT_Invasion2000_ttf = (const char*) temp_binary_data_12;
+const char* FONT_Invasion2000_ttf = (const char*) temp_binary_data_13;
 
 //================== FONT_Karmatic Arcade.ttf ==================
-static const unsigned char temp_binary_data_13[] =
+static const unsigned char temp_binary_data_14[] =
 { 0,1,0,0,0,11,0,128,0,3,0,48,79,83,47,50,187,66,138,151,0,0,1,56,0,0,0,86,99,109,97,112,208,126,62,230,0,0,11,196,0,0,5,210,103,97,115,112,255,255,0,3,0,0,222,68,0,0,0,8,103,108,121,102,171,112,136,1,0,0,22,180,0,0,178,104,104,101,97,100,228,150,235,65,
 0,0,0,188,0,0,0,54,104,104,101,97,15,82,8,210,0,0,0,244,0,0,0,36,104,109,116,120,152,253,1,201,0,0,1,144,0,0,10,50,108,111,99,97,6,6,50,200,0,0,17,152,0,0,5,28,109,97,120,112,7,80,1,193,0,0,1,24,0,0,0,32,110,97,109,101,94,157,70,174,0,0,201,28,0,0,1,
 186,112,111,115,116,231,89,28,243,0,0,202,216,0,0,19,108,0,1,0,0,0,1,0,0,15,108,241,63,95,15,60,245,0,11,8,0,0,0,0,0,190,213,72,134,0,0,0,0,190,213,89,10,0,0,254,116,7,206,6,63,0,0,0,9,0,1,0,0,0,0,0,0,0,1,0,0,7,62,254,78,0,67,8,192,0,0,255,55,7,206,0,
@@ -10561,10 +10744,10 @@ static const unsigned char temp_binary_data_13[] =
 108,101,10,111,112,101,110,98,117,108,108,101,116,9,115,109,105,108,101,102,97,99,101,12,105,110,118,115,109,105,108,101,102,97,99,101,3,115,117,110,6,102,101,109,97,108,101,4,109,97,108,101,5,115,112,97,100,101,4,99,108,117,98,5,104,101,97,114,116,7,
 100,105,97,109,111,110,100,11,109,117,115,105,99,97,108,110,111,116,101,14,109,117,115,105,99,97,108,110,111,116,101,100,98,108,7,117,110,105,70,48,48,52,7,117,110,105,70,48,48,53,0,0,0,1,255,255,0,2,0,0 };
 
-const char* FONT_Karmatic_Arcade_ttf = (const char*) temp_binary_data_13;
+const char* FONT_Karmatic_Arcade_ttf = (const char*) temp_binary_data_14;
 
 //================== FONT_LCD.ttf ==================
-static const unsigned char temp_binary_data_14[] =
+static const unsigned char temp_binary_data_15[] =
 { 0,1,0,0,0,14,0,48,0,3,0,176,79,83,47,50,129,250,111,201,0,0,107,68,0,0,0,78,99,109,97,112,21,80,71,96,0,0,99,64,0,0,2,60,99,118,116,32,245,27,90,45,0,0,3,248,0,0,0,40,102,112,103,109,131,51,194,79,0,0,3,228,0,0,0,20,103,108,121,102,205,139,241,112,0,
 0,4,76,0,0,91,70,104,100,109,120,27,116,61,4,0,0,101,124,0,0,5,200,104,101,97,100,14,225,31,17,0,0,107,148,0,0,0,54,104,104,101,97,6,179,2,240,0,0,107,204,0,0,0,36,104,109,116,120,156,133,1,126,0,0,97,0,0,0,1,104,108,111,99,97,0,15,81,72,0,0,95,148,0,
 0,1,108,109,97,120,112,0,251,1,131,0,0,107,240,0,0,0,32,110,97,109,101,199,61,183,151,0,0,0,236,0,0,2,247,112,111,115,116,8,197,8,134,0,0,98,104,0,0,0,214,112,114,101,112,161,251,91,153,0,0,4,32,0,0,0,44,0,0,0,21,1,2,0,0,0,0,0,0,0,0,0,126,0,63,0,0,0,
@@ -10876,10 +11059,10 @@ static const unsigned char temp_binary_data_14[] =
 0,37,0,0,0,1,0,0,0,1,0,0,199,91,191,169,95,15,60,245,0,0,3,232,0,1,0,0,180,64,109,136,67,224,0,0,180,64,109,136,255,236,255,219,3,127,3,69,0,0,0,3,0,2,0,1,0,0,0,0,0,1,0,0,3,69,255,56,0,0,3,113,255,236,255,236,3,127,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,90,
 0,1,0,0,0,90,0,66,0,10,0,0,0,0,0,2,0,8,0,64,0,10,0,0,0,131,0,254,0,1,0,1,0,0 };
 
-const char* FONT_LCD_ttf = (const char*) temp_binary_data_14;
+const char* FONT_LCD_ttf = (const char*) temp_binary_data_15;
 
 //================== FONT_Warenhaus-Standard.ttf ==================
-static const unsigned char temp_binary_data_15[] =
+static const unsigned char temp_binary_data_16[] =
 { 0,1,0,0,0,14,0,128,0,3,0,96,70,70,84,77,105,128,130,247,0,0,110,24,0,0,0,28,71,68,69,70,0,15,0,30,0,0,109,248,0,0,0,30,79,83,47,50,89,148,1,247,0,0,1,104,0,0,0,96,99,109,97,112,14,130,53,233,0,0,6,168,0,0,4,246,99,118,116,32,0,34,2,136,0,0,11,160,0,0,
 0,4,103,97,115,112,255,255,0,3,0,0,109,240,0,0,0,8,103,108,121,102,198,77,146,139,0,0,14,32,0,0,84,252,104,101,97,100,4,209,39,252,0,0,0,236,0,0,0,54,104,104,101,97,9,10,6,95,0,0,1,36,0,0,0,36,104,109,116,120,124,60,48,167,0,0,1,200,0,0,4,224,108,111,
 99,97,155,182,135,36,0,0,11,164,0,0,2,122,109,97,120,112,1,132,0,167,0,0,1,72,0,0,0,32,110,97,109,101,231,107,138,167,0,0,99,28,0,0,4,117,112,111,115,116,111,92,139,1,0,0,103,148,0,0,6,92,0,1,0,0,0,1,0,0,32,210,222,71,95,15,60,245,0,11,4,0,0,0,0,0,207,
@@ -11190,10 +11373,10 @@ static const unsigned char temp_binary_data_15[] =
 117,110,105,50,48,65,54,7,117,110,105,50,48,65,57,4,69,117,114,111,7,117,110,105,50,48,65,68,7,117,110,105,50,48,66,49,7,117,110,105,50,48,66,51,0,0,0,1,255,255,0,2,0,1,0,0,0,0,0,0,0,14,0,22,0,0,0,4,0,0,0,2,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,201,
 137,111,49,0,0,0,0,207,248,33,100,0,0,0,0,207,254,242,97,0,0 };
 
-const char* FONT_WarenhausStandard_ttf = (const char*) temp_binary_data_15;
+const char* FONT_WarenhausStandard_ttf = (const char*) temp_binary_data_16;
 
 //================== FONT_ZX81.ttf ==================
-static const unsigned char temp_binary_data_16[] =
+static const unsigned char temp_binary_data_17[] =
 { 0,1,0,0,0,14,0,128,0,3,0,96,79,83,47,50,24,153,64,49,0,0,66,200,0,0,0,78,80,67,76,84,97,64,65,46,0,0,11,92,0,0,0,54,99,109,97,112,24,127,221,58,0,0,0,236,0,0,2,232,99,118,116,32,56,18,62,107,0,0,3,212,0,0,0,76,102,112,103,109,2,17,194,97,0,0,4,32,0,0,
 1,216,103,108,121,102,181,113,24,251,0,0,11,148,0,0,52,250,104,101,97,100,202,133,83,130,0,0,5,248,0,0,0,54,104,104,101,97,15,233,8,81,0,0,66,164,0,0,0,36,104,109,116,120,202,22,52,63,0,0,64,144,0,0,1,244,108,111,99,97,0,12,168,82,0,0,6,48,0,0,1,248,
 109,97,120,112,1,108,0,151,0,0,66,132,0,0,0,32,110,97,109,101,94,15,186,63,0,0,9,104,0,0,1,242,112,111,115,116,18,227,19,125,0,0,8,76,0,0,1,28,112,114,101,112,224,34,204,185,0,0,8,40,0,0,0,36,0,0,0,2,0,1,0,0,0,0,0,20,0,3,0,1,0,0,1,26,0,0,1,6,0,0,1,0,
@@ -11379,10 +11562,10 @@ static const unsigned char temp_binary_data_16[] =
 0,0,7,231,0,0,7,231,0,0,7,231,0,0,0,1,0,0,0,125,0,44,0,4,0,0,0,0,0,2,0,12,0,6,0,22,0,0,0,196,0,98,0,4,0,1,0,1,0,0,8,0,255,236,0,0,7,231,0,0,0,0,7,231,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,125,0,0,7,231,1,244,0,5,0,6,1,154,1,113,0,0,0,0,1,154,1,113,0,0,7,
 128,0,102,2,18,0,0,2,11,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,0,32,38,107,8,0,0,0,0,0,8,0,0,0,0,0,0,0 };
 
-const char* FONT_ZX81_ttf = (const char*) temp_binary_data_16;
+const char* FONT_ZX81_ttf = (const char*) temp_binary_data_17;
 
 //================== github_line.svg ==================
-static const unsigned char temp_binary_data_17[] =
+static const unsigned char temp_binary_data_18[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->\r\n"
 "<svg fill=\"#000000\" width=\"800px\" height=\"800px\" viewBox=\"-6 0 32 32\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\r\n"
@@ -11395,10 +11578,10 @@ static const unsigned char temp_binary_data_17[] =
 "-0.32 0.84-0.76 0.16-1.76 0.28-4.48-0.28-6.2 2.32-0.48 4.56-2.040 5.16-4.76 0.64-3-0.040-4.68-1-5.96z\"></path>\r\n"
 "</svg>";
 
-const char* github_line_svg = (const char*) temp_binary_data_17;
+const char* github_line_svg = (const char*) temp_binary_data_18;
 
 //================== paypal_colour.svg ==================
-static const unsigned char temp_binary_data_18[] =
+static const unsigned char temp_binary_data_19[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->\n"
 "<svg width=\"800px\" height=\"800px\" viewBox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\r\n"
 "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"#0070BA\"/>\r\n"
@@ -11413,10 +11596,10 @@ static const unsigned char temp_binary_data_18[] =
 "L14.0079 32.5969C13.9467 32.9866 14.2473 33.3381 14.6402 33.3381H19.2458L20.4022 26.0014L21.6461 18.1231Z\" fill=\"white\"/>\r\n"
 "</svg>";
 
-const char* paypal_colour_svg = (const char*) temp_binary_data_18;
+const char* paypal_colour_svg = (const char*) temp_binary_data_19;
 
 //================== paypal_bw.svg ==================
-static const unsigned char temp_binary_data_19[] =
+static const unsigned char temp_binary_data_20[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n"
 "<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->\r\n"
 "<svg width=\"800px\" height=\"800px\" viewBox=\"-1.5 0 20 20\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\r\n"
@@ -11440,10 +11623,10 @@ static const unsigned char temp_binary_data_19[] =
 "    </g>\r\n"
 "</svg>";
 
-const char* paypal_bw_svg = (const char*) temp_binary_data_19;
+const char* paypal_bw_svg = (const char*) temp_binary_data_20;
 
 //================== github_colour.svg ==================
-static const unsigned char temp_binary_data_20[] =
+static const unsigned char temp_binary_data_21[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n"
 "<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->\r\n"
 "<svg width=\"800px\" height=\"800px\" viewBox=\"0 0 20 20\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\r\n"
@@ -11468,10 +11651,10 @@ static const unsigned char temp_binary_data_20[] =
 "    </g>\r\n"
 "</svg>";
 
-const char* github_colour_svg = (const char*) temp_binary_data_20;
+const char* github_colour_svg = (const char*) temp_binary_data_21;
 
 //================== github_bw.svg ==================
-static const unsigned char temp_binary_data_21[] =
+static const unsigned char temp_binary_data_22[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n"
 "<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->\r\n"
 "<svg width=\"800px\" height=\"800px\" viewBox=\"0 0 20 20\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\r\n"
@@ -11496,10 +11679,10 @@ static const unsigned char temp_binary_data_21[] =
 "    </g>\r\n"
 "</svg>";
 
-const char* github_bw_svg = (const char*) temp_binary_data_21;
+const char* github_bw_svg = (const char*) temp_binary_data_22;
 
 //================== vst3_au_juce_mini_logo_bg_rnd.svg ==================
-static const unsigned char temp_binary_data_22[] =
+static const unsigned char temp_binary_data_23[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<svg version=\"1.1\" id=\"Calque_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
 "\t width=\"1093px\" height=\"250px\" viewBox=\"291 132 1093 250\" xml:space=\"preserve\">\r\n"
@@ -11592,10 +11775,10 @@ static const unsigned char temp_binary_data_22[] =
 "</g>\r\n"
 "</svg>\r\n";
 
-const char* vst3_au_juce_mini_logo_bg_rnd_svg = (const char*) temp_binary_data_22;
+const char* vst3_au_juce_mini_logo_bg_rnd_svg = (const char*) temp_binary_data_23;
 
 //================== ctrlrx_logo.svg ==================
-static const unsigned char temp_binary_data_23[] =
+static const unsigned char temp_binary_data_24[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<svg version=\"1.1\" id=\"CtrlrX\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
 "\t width=\"512px\" height=\"512px\" viewBox=\"0 0 512 512\"  xml:space=\"preserve\">\r\n"
@@ -11620,17 +11803,17 @@ static const unsigned char temp_binary_data_23[] =
 "\t353.2,248.6 365.4,236.4 \"/>\r\n"
 "</svg>\r\n";
 
-const char* ctrlrx_logo_svg = (const char*) temp_binary_data_23;
+const char* ctrlrx_logo_svg = (const char*) temp_binary_data_24;
 
 //================== add.svg ==================
-static const unsigned char temp_binary_data_24[] =
+static const unsigned char temp_binary_data_25[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4"
 "V7h2v4h4v2z\"/></svg>";
 
-const char* add_svg = (const char*) temp_binary_data_24;
+const char* add_svg = (const char*) temp_binary_data_25;
 
 //================== appbar.debug.restart.png ==================
-static const unsigned char temp_binary_data_25[] =
+static const unsigned char temp_binary_data_26[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,76,0,0,0,76,8,6,0,0,0,199,151,81,43,0,0,0,1,115,82,71,66,0,174,206,28,233,0,0,0,4,103,65,77,65,0,0,177,143,11,252,97,5,0,0,0,9,112,72,89,115,0,0,14,195,0,0,14,195,1,199,111,168,100,0,0,1,73,73,68,65,
 84,120,94,237,216,177,73,5,81,16,133,225,213,204,84,176,1,83,65,140,172,195,64,48,19,49,179,0,67,27,176,19,109,64,176,2,43,48,176,4,83,49,49,80,207,192,46,44,151,179,143,59,193,202,27,252,63,248,89,120,94,46,206,32,184,188,1,0,0,0,0,0,0,0,0,0,0,86,182,
 51,62,215,244,51,62,255,202,170,51,237,142,79,116,98,97,73,44,44,137,133,37,177,176,164,109,92,216,221,248,252,183,226,181,162,183,91,21,220,207,122,43,207,13,213,246,173,110,212,196,157,233,173,60,55,212,188,88,214,181,154,115,231,122,43,207,13,53,245,
@@ -11638,10 +11821,10 @@ static const unsigned char temp_binary_data_25[] =
 121,110,168,121,75,255,37,63,213,179,58,142,15,140,39,213,222,21,149,231,134,106,219,244,30,246,161,142,84,235,74,205,207,77,149,231,134,90,106,233,77,255,81,181,98,137,237,185,168,60,55,212,166,98,105,237,103,239,170,117,160,218,115,209,170,42,125,69,
 237,126,87,119,55,95,81,111,19,22,150,196,194,146,88,88,18,11,75,98,97,73,44,44,137,133,1,0,0,0,0,0,0,0,0,0,192,86,25,134,95,71,167,239,137,131,56,135,16,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* appbar_debug_restart_png = (const char*) temp_binary_data_25;
+const char* appbar_debug_restart_png = (const char*) temp_binary_data_26;
 
 //================== appbar.debug.step.into.png ==================
-static const unsigned char temp_binary_data_26[] =
+static const unsigned char temp_binary_data_27[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,76,0,0,0,76,8,6,0,0,0,199,151,81,43,0,0,0,1,115,82,71,66,0,174,206,28,233,0,0,0,4,103,65,77,65,0,0,177,143,11,252,97,5,0,0,0,9,112,72,89,115,0,0,14,195,0,0,14,195,1,199,111,168,100,0,0,1,129,73,68,65,
 84,120,94,237,216,49,74,196,64,24,134,225,104,161,182,138,8,118,226,17,60,128,149,104,103,35,118,94,197,11,120,1,59,177,19,59,79,96,103,99,47,90,217,88,120,0,27,173,244,27,54,35,195,240,15,155,152,25,25,157,247,129,151,44,100,216,77,126,150,108,54,29,
 0,0,0,0,0,0,0,0,0,0,160,46,11,253,54,183,61,117,164,118,213,166,90,85,78,234,243,62,251,109,105,165,206,247,199,182,213,173,114,3,176,74,177,214,150,168,42,59,234,85,89,7,234,75,177,214,150,168,26,91,106,222,176,92,41,214,218,18,85,227,78,89,7,24,151,
@@ -11650,10 +11833,10 @@ static const unsigned char temp_binary_data_26[] =
 214,228,170,42,67,158,135,165,58,85,158,181,63,87,213,153,247,196,213,170,217,111,88,104,95,157,171,39,245,166,172,131,119,197,195,114,172,117,185,250,115,194,131,111,250,87,114,40,134,53,146,27,22,127,143,70,72,13,203,127,243,74,55,89,142,231,97,57,
 100,57,153,1,120,30,246,219,24,216,72,12,12,0,0,0,0,0,0,0,0,0,24,169,235,190,0,29,91,147,129,227,74,136,41,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* appbar_debug_step_into_png = (const char*) temp_binary_data_26;
+const char* appbar_debug_step_into_png = (const char*) temp_binary_data_27;
 
 //================== appbar.debug.step.out.png ==================
-static const unsigned char temp_binary_data_27[] =
+static const unsigned char temp_binary_data_28[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,76,0,0,0,76,8,6,0,0,0,199,151,81,43,0,0,0,1,115,82,71,66,0,174,206,28,233,0,0,0,4,103,65,77,65,0,0,177,143,11,252,97,5,0,0,0,9,112,72,89,115,0,0,14,195,0,0,14,195,1,199,111,168,100,0,0,1,106,73,68,65,
 84,120,94,237,217,63,74,196,64,24,134,241,104,161,214,178,88,139,71,240,12,162,157,157,157,87,241,2,94,192,78,236,196,206,19,216,217,216,139,86,54,22,118,219,216,104,165,239,224,6,134,225,155,144,100,38,59,193,121,126,240,176,203,238,16,146,143,253,147,
 236,54,0,0,0,0,0,0,0,0,0,192,90,93,174,110,209,211,143,98,104,3,184,129,185,174,213,166,123,0,221,218,129,49,52,207,145,186,82,207,106,169,252,33,133,221,169,45,85,165,3,245,160,172,193,116,117,175,170,27,218,161,250,80,214,64,250,116,161,170,177,175,
@@ -11662,10 +11845,10 @@ static const unsigned char temp_binary_data_27[] =
 141,98,172,181,185,154,133,177,23,223,49,214,218,92,205,198,152,159,119,98,172,181,185,154,157,99,229,126,64,124,85,159,202,218,233,182,24,107,109,174,0,252,47,69,175,173,60,235,250,124,73,62,94,254,234,26,136,129,13,196,192,6,98,96,0,0,0,0,0,0,0,0,0,
 0,48,43,77,243,11,47,213,156,14,120,145,79,154,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* appbar_debug_step_out_png = (const char*) temp_binary_data_27;
+const char* appbar_debug_step_out_png = (const char*) temp_binary_data_28;
 
 //================== appbar.debug.step.over.png ==================
-static const unsigned char temp_binary_data_28[] =
+static const unsigned char temp_binary_data_29[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,76,0,0,0,76,8,6,0,0,0,199,151,81,43,0,0,0,1,115,82,71,66,0,174,206,28,233,0,0,0,4,103,65,77,65,0,0,177,143,11,252,97,5,0,0,0,9,112,72,89,115,0,0,14,195,0,0,14,195,1,199,111,168,100,0,0,1,126,73,68,65,
 84,120,94,237,218,191,46,5,65,24,134,241,69,226,79,68,226,50,92,131,90,73,167,209,185,29,10,151,160,81,81,233,36,116,46,67,161,17,149,66,161,33,18,188,195,74,38,147,239,200,124,118,71,102,205,243,75,158,28,178,89,217,253,178,231,216,179,187,29,0,0,0,
 0,0,0,0,0,0,80,204,146,218,85,39,234,70,61,170,119,5,195,142,186,85,97,64,105,136,204,171,3,245,166,172,97,133,16,57,82,214,144,226,208,219,83,214,128,210,32,171,234,94,89,3,186,84,219,106,93,253,196,90,183,68,85,216,87,214,198,29,170,92,214,250,37,170,
@@ -11674,71 +11857,71 @@ static const unsigned char temp_binary_data_28[] =
 84,16,47,107,122,104,185,55,114,211,78,213,162,106,82,206,163,2,86,231,106,50,67,91,232,95,199,112,165,86,212,166,242,156,81,111,168,87,117,253,249,91,131,194,115,97,179,30,119,178,154,212,17,86,74,252,64,93,24,222,147,98,88,191,16,15,171,233,255,146,
 185,24,150,83,24,22,95,143,28,24,22,0,0,0,0,0,0,48,25,93,247,1,62,94,2,242,227,172,124,82,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* appbar_debug_step_over_png = (const char*) temp_binary_data_28;
+const char* appbar_debug_step_over_png = (const char*) temp_binary_data_29;
 
 //================== bold.svg ==================
-static const unsigned char temp_binary_data_29[] =
+static const unsigned char temp_binary_data_30[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-"
 "3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z\"/></svg>";
 
-const char* bold_svg = (const char*) temp_binary_data_29;
+const char* bold_svg = (const char*) temp_binary_data_30;
 
 //================== bug.svg ==================
-static const unsigned char temp_binary_data_30[] =
+static const unsigned char temp_binary_data_31[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12"
 " 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H2"
 "0V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z\"/></svg>";
 
-const char* bug_svg = (const char*) temp_binary_data_30;
+const char* bug_svg = (const char*) temp_binary_data_31;
 
 //================== camera.svg ==================
-static const unsigned char temp_binary_data_31[] =
+static const unsigned char temp_binary_data_32[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><circle cx=\"12\" cy=\"12\" r=\"3.2\"/><path d=\"M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c"
 "1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z\"/></svg>";
 
-const char* camera_svg = (const char*) temp_binary_data_31;
+const char* camera_svg = (const char*) temp_binary_data_32;
 
 //================== camera_special.svg ==================
-static const unsigned char temp_binary_data_32[] =
+static const unsigned char temp_binary_data_33[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><circle cx=\"12\" cy=\"14\" r=\"3.2\"/><circle cx=\"12\" cy=\"14\" fill=\"none\" r=\"5\"/><path d=\"M16 3.33c2.58 0 4.67 2.09 4.67 4.67H22c0"
 "-3.31-2.69-6-6-6v1.33M16 6c1.11 0 2 .89 2 2h1.33c0-1.84-1.49-3.33-3.33-3.33V6\"/><path d=\"M24 0H0v24h24V0z\" fill=\"none\"/><path d=\"M17 9c0-1.11-.89-2-2-2V4H9L7.17 6H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9h-5zm-5 10c-2.76 0-5-2.24-5"
 "-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z\"/></svg>";
 
-const char* camera_special_svg = (const char*) temp_binary_data_32;
+const char* camera_special_svg = (const char*) temp_binary_data_33;
 
 //================== cleanup.svg ==================
-static const unsigned char temp_binary_data_33[] =
+static const unsigned char temp_binary_data_34[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><g><rect fill=\"none\" height=\"24\" width=\"24\"/></g><g><path d=\"M16,11h-1V3c0-1.1-0.9-2-2-2h-2C9.9,1"
 ",9,1.9,9,3v8H8c-2.76,0-5,2.24-5,5v7h18v-7C21,13.24,18.76,11,16,11z M19,21h-2v-3 c0-0.55-0.45-1-1-1s-1,0.45-1,1v3h-2v-3c0-0.55-0.45-1-1-1s-1,0.45-1,1v3H9v-3c0-0.55-0.45-1-1-1s-1,0.45-1,1v3H5v-5 c0-1.65,1.35-3,3-3h8c1.65,0,3,1.35,3,3V21z\"/></g></svg>";
 
-const char* cleanup_svg = (const char*) temp_binary_data_33;
+const char* cleanup_svg = (const char*) temp_binary_data_34;
 
 //================== clear.svg ==================
-static const unsigned char temp_binary_data_34[] =
+static const unsigned char temp_binary_data_35[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17."
 "59 13.41 12z\"/></svg>";
 
-const char* clear_svg = (const char*) temp_binary_data_34;
+const char* clear_svg = (const char*) temp_binary_data_35;
 
 //================== cog.svg ==================
-static const unsigned char temp_binary_data_35[] =
+static const unsigned char temp_binary_data_36[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><g><path d=\"M0,0h24v24H0V0z\" fill=\"none\"/><path d=\"M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.9"
 "4l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33"
 "c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0"
 ".36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6"
 "-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z\"/></g></svg>";
 
-const char* cog_svg = (const char*) temp_binary_data_35;
+const char* cog_svg = (const char*) temp_binary_data_36;
 
 //================== copy.svg ==================
-static const unsigned char temp_binary_data_36[] =
+static const unsigned char temp_binary_data_37[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9"
 " 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z\"/></svg>";
 
-const char* copy_svg = (const char*) temp_binary_data_36;
+const char* copy_svg = (const char*) temp_binary_data_37;
 
 //================== ctrlr_logo.svg ==================
-static const unsigned char temp_binary_data_37[] =
+static const unsigned char temp_binary_data_38[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n"
 "<!-- Created with Inkscape (http://www.inkscape.org/) -->\r\n"
 "\r\n"
@@ -12089,60 +12272,60 @@ static const unsigned char temp_binary_data_37[] =
 "  </g>\r\n"
 "</svg>\r\n";
 
-const char* ctrlr_logo_svg = (const char*) temp_binary_data_37;
+const char* ctrlr_logo_svg = (const char*) temp_binary_data_38;
 
 //================== cut.svg ==================
-static const unsigned char temp_binary_data_38[] =
+static const unsigned char temp_binary_data_39[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><circle cx=\"6\" cy=\"18\" fill=\"none\" r=\"2\"/><circle cx=\"12\" cy=\"12\" fill=\"none\" r=\".5\""
 "/><circle cx=\"6\" cy=\"6\" fill=\"none\" r=\"2\"/><path d=\"M9.64 7.64c.23-.5.36-1.05.36-1.64 0-2.21-1.79-4-4-4S2 3.79 2 6s1.79 4 4 4c.59 0 1.14-.13 1.64-.36L10 12l-2.36 2.36C7.14 14.13 6.59 14 6 14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4c0-.59-.13"
 "-1.14-.36-1.64L12 14l7 7h3v-1L9.64 7.64zM6 8c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm0 12c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm6-7.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zM19 3l-6 6 2 2 7-7V3z\"/></svg>";
 
-const char* cut_svg = (const char*) temp_binary_data_38;
+const char* cut_svg = (const char*) temp_binary_data_39;
 
 //================== done.svg ==================
-static const unsigned char temp_binary_data_39[] =
+static const unsigned char temp_binary_data_40[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M0 0h24v24H0V0z\" fill=\"none\"/><path d=\"M19.77 5.03l1.4 1.4L8.43 19.17l-5.6-5.6 1.4-1.4 4.2 4.2L19.77 5.03m0-2.83L8.43 13.54l-4.2-4.2L0 13.57 8.43"
 " 22 24 6.43 19.77 2.2z\"/></svg>";
 
-const char* done_svg = (const char*) temp_binary_data_39;
+const char* done_svg = (const char*) temp_binary_data_40;
 
 //================== edit.svg ==================
-static const unsigned char temp_binary_data_40[] =
+static const unsigned char temp_binary_data_41[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2"
 ".34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z\"/></svg>";
 
-const char* edit_svg = (const char*) temp_binary_data_40;
+const char* edit_svg = (const char*) temp_binary_data_41;
 
 //================== file.svg ==================
-static const unsigned char temp_binary_data_41[] =
+static const unsigned char temp_binary_data_42[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5"
 " 9H13z\"/></svg>";
 
-const char* file_svg = (const char*) temp_binary_data_41;
+const char* file_svg = (const char*) temp_binary_data_42;
 
 //================== folder.svg ==================
-static const unsigned char temp_binary_data_42[] =
+static const unsigned char temp_binary_data_43[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-"
 "2z\"/></svg>";
 
-const char* folder_svg = (const char*) temp_binary_data_42;
+const char* folder_svg = (const char*) temp_binary_data_43;
 
 //================== folder_open.svg ==================
-static const unsigned char temp_binary_data_43[] =
+static const unsigned char temp_binary_data_44[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-"
 "2zm0 12H4V8h16v10z\"/></svg>";
 
-const char* folder_open_svg = (const char*) temp_binary_data_43;
+const char* folder_open_svg = (const char*) temp_binary_data_44;
 
 //================== gradient.svg ==================
-static const unsigned char temp_binary_data_44[] =
+static const unsigned char temp_binary_data_45[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M11 9h2v2h-2zm-2 2h2v2H9zm4 0h2v2h-2zm2-2h2v2h-2zM7 9h2v2H7zm12-6H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 "
 "0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 18H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm2-7h-2v2h2v2h-2v-2h-2v2h-2v-2h-2v2H9v-2H7v2H5v-2h2v-2H5V5h14v6z\"/></svg>";
 
-const char* gradient_svg = (const char*) temp_binary_data_44;
+const char* gradient_svg = (const char*) temp_binary_data_45;
 
 //================== ico_ctrlr_mac.icns ==================
-static const unsigned char temp_binary_data_45[] =
+static const unsigned char temp_binary_data_46[] =
 { 105,99,110,115,0,0,250,64,84,79,67,32,0,0,0,88,105,99,48,57,0,0,90,211,105,99,48,56,0,0,41,101,105,116,51,50,0,0,23,228,116,56,109,107,0,0,64,8,105,104,51,50,0,0,8,70,104,56,109,107,0,0,9,8,105,108,51,50,0,0,5,63,108,56,109,107,0,0,4,8,105,115,51,50,
 0,0,2,31,115,56,109,107,0,0,1,8,105,99,48,57,0,0,90,211,137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,2,0,0,0,2,0,8,6,0,0,0,244,120,212,250,0,0,4,36,105,67,67,80,73,67,67,32,80,114,111,102,105,108,101,0,0,56,17,133,85,223,111,219,84,20,62,137,111,
 82,164,22,63,32,88,71,135,138,197,175,85,83,91,185,27,26,173,198,6,73,147,165,237,74,22,165,233,216,42,36,228,58,55,137,169,27,7,219,233,182,170,79,123,129,55,6,252,1,64,217,3,15,72,60,33,13,6,98,123,217,246,192,180,73,83,135,42,170,73,72,123,232,196,
@@ -12974,31 +13157,31 @@ static const unsigned char temp_binary_data_45[] =
 112,0,0,0,0,255,255,255,0,0,0,255,255,175,32,143,175,48,0,0,0,0,0,0,0,0,0,191,255,255,32,239,255,175,112,112,0,0,0,0,0,0,0,96,255,255,191,128,239,143,255,255,64,0,0,0,0,0,0,0,207,255,255,191,32,32,223,223,32,32,207,207,16,0,0,0,32,239,255,255,255,175,
 128,128,175,255,255,255,175,0,0,0,0,32,207,255,255,255,255,255,255,255,255,207,32,0,0,0,0,0,0,96,175,255,255,255,255,175,96,0,0,0,0,0,0 };
 
-const char* ico_ctrlr_mac_icns = (const char*) temp_binary_data_45;
+const char* ico_ctrlr_mac_icns = (const char*) temp_binary_data_46;
 
 //================== invisible.svg ==================
-static const unsigned char temp_binary_data_46[] =
+static const unsigned char temp_binary_data_47[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0z\" fill=\"none\"/><path d=\"M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2."
 "92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27z"
 "M7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z\"/></svg>";
 
-const char* invisible_svg = (const char*) temp_binary_data_46;
+const char* invisible_svg = (const char*) temp_binary_data_47;
 
 //================== italic.svg ==================
-static const unsigned char temp_binary_data_47[] =
+static const unsigned char temp_binary_data_48[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z\"/></svg>";
 
-const char* italic_svg = (const char*) temp_binary_data_47;
+const char* italic_svg = (const char*) temp_binary_data_48;
 
 //================== memory.svg ==================
-static const unsigned char temp_binary_data_48[] =
+static const unsigned char temp_binary_data_49[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M15 9H9v6h6V9zm-2 4h-2v-2h2v2zm8-2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9v2H7c-1.1 0-2 .9"
 "-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2zm-4 6H7V7h10v10z\"/></svg>";
 
-const char* memory_svg = (const char*) temp_binary_data_48;
+const char* memory_svg = (const char*) temp_binary_data_49;
 
 //================== midi.svg ==================
-static const unsigned char temp_binary_data_49[] =
+static const unsigned char temp_binary_data_50[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n"
 "<svg\r\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\r\n"
@@ -13099,130 +13282,130 @@ static const unsigned char temp_binary_data_49[] =
 "     inkscape:connector-curvature=\"0\" />\r\n"
 "</svg>\r\n";
 
-const char* midi_svg = (const char*) temp_binary_data_49;
+const char* midi_svg = (const char*) temp_binary_data_50;
 
 //================== nav_next.svg ==================
-static const unsigned char temp_binary_data_50[] =
+static const unsigned char temp_binary_data_51[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z\"/></svg>";
 
-const char* nav_next_svg = (const char*) temp_binary_data_50;
+const char* nav_next_svg = (const char*) temp_binary_data_51;
 
 //================== nav_prev.svg ==================
-static const unsigned char temp_binary_data_51[] =
+static const unsigned char temp_binary_data_52[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z\"/></svg>";
 
-const char* nav_prev_svg = (const char*) temp_binary_data_51;
+const char* nav_prev_svg = (const char*) temp_binary_data_52;
 
 //================== new_folder.svg ==================
-static const unsigned char temp_binary_data_52[] =
+static const unsigned char temp_binary_data_53[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0V0z\" fill=\"none\"/><path d=\"M20 6h-8l-2-2H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.1"
 "1-.89-2-2-2zm-1 8h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z\"/></svg>";
 
-const char* new_folder_svg = (const char*) temp_binary_data_52;
+const char* new_folder_svg = (const char*) temp_binary_data_53;
 
 //================== open_in_new.svg ==================
-static const unsigned char temp_binary_data_53[] =
+static const unsigned char temp_binary_data_54[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.5"
 "9l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z\"/></svg>";
 
-const char* open_in_new_svg = (const char*) temp_binary_data_53;
+const char* open_in_new_svg = (const char*) temp_binary_data_54;
 
 //================== paste.svg ==================
-static const unsigned char temp_binary_data_54[] =
+static const unsigned char temp_binary_data_55[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h1"
 "4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z\"/></svg>";
 
-const char* paste_svg = (const char*) temp_binary_data_54;
+const char* paste_svg = (const char*) temp_binary_data_55;
 
 //================== play.svg ==================
-static const unsigned char temp_binary_data_55[] =
+static const unsigned char temp_binary_data_56[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M8 5v14l11-7z\"/></svg>";
 
-const char* play_svg = (const char*) temp_binary_data_55;
+const char* play_svg = (const char*) temp_binary_data_56;
 
 //================== radio.svg ==================
-static const unsigned char temp_binary_data_56[] =
+static const unsigned char temp_binary_data_57[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-"
 "8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z\"/></svg>";
 
-const char* radio_svg = (const char*) temp_binary_data_56;
+const char* radio_svg = (const char*) temp_binary_data_57;
 
 //================== radio_checked.svg ==================
-static const unsigned char temp_binary_data_57[] =
+static const unsigned char temp_binary_data_58[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10"
 " 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z\"/></svg>";
 
-const char* radio_checked_svg = (const char*) temp_binary_data_57;
+const char* radio_checked_svg = (const char*) temp_binary_data_58;
 
 //================== receive.svg ==================
-static const unsigned char temp_binary_data_58[] =
+static const unsigned char temp_binary_data_59[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M20 5.41L18.59 4 7 15.59V9H5v10h10v-2H8.41z\"/></svg>";
 
-const char* receive_svg = (const char*) temp_binary_data_58;
+const char* receive_svg = (const char*) temp_binary_data_59;
 
 //================== search.svg ==================
-static const unsigned char temp_binary_data_59[] =
+static const unsigned char temp_binary_data_60[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 "
 "3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z\"/></svg>";
 
-const char* search_svg = (const char*) temp_binary_data_59;
+const char* search_svg = (const char*) temp_binary_data_60;
 
 //================== search_off.svg ==================
-static const unsigned char temp_binary_data_60[] =
+static const unsigned char temp_binary_data_61[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><g><rect fill=\"none\" height=\"24\" width=\"24\"/></g><g><g><path d=\"M15.5,14h-0.79l-0.28-0.27C15.41,12.59,16,11.11,16,9."
 "5C16,5.91,13.09,3,9.5,3C6.08,3,3.28,5.64,3.03,9h2.02 C5.3,6.75,7.18,5,9.5,5C11.99,5,14,7.01,14,9.5S11.99,14,9.5,14c-0.17,0-0.33-0.03-0.5-0.05v2.02C9.17,15.99,9.33,16,9.5,16 c1.61,0,3.09-0.59,4.23-1.57L14,14.71v0.79l5,4.99L20.49,19L15.5,14z\"/><polygo"
 "n points=\"6.47,10.82 4,13.29 1.53,10.82 0.82,11.53 3.29,14 0.82,16.47 1.53,17.18 4,14.71 6.47,17.18 7.18,16.47 4.71,14 7.18,11.53\"/></g></g></svg>";
 
-const char* search_off_svg = (const char*) temp_binary_data_60;
+const char* search_off_svg = (const char*) temp_binary_data_61;
 
 //================== send.svg ==================
-static const unsigned char temp_binary_data_61[] =
+static const unsigned char temp_binary_data_62[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5z\"/></svg>";
 
-const char* send_svg = (const char*) temp_binary_data_61;
+const char* send_svg = (const char*) temp_binary_data_62;
 
 //================== stop.svg ==================
-static const unsigned char temp_binary_data_62[] =
+static const unsigned char temp_binary_data_63[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M6 6h12v12H6z\"/></svg>";
 
-const char* stop_svg = (const char*) temp_binary_data_62;
+const char* stop_svg = (const char*) temp_binary_data_63;
 
 //================== sync.svg ==================
-static const unsigned char temp_binary_data_63[] =
+static const unsigned char temp_binary_data_64[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57"
 " 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z\"/></svg>";
 
-const char* sync_svg = (const char*) temp_binary_data_63;
+const char* sync_svg = (const char*) temp_binary_data_64;
 
 //================== trash.svg ==================
-static const unsigned char temp_binary_data_64[] =
+static const unsigned char temp_binary_data_65[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z\"/></svg>";
 
-const char* trash_svg = (const char*) temp_binary_data_64;
+const char* trash_svg = (const char*) temp_binary_data_65;
 
 //================== underline.svg ==================
-static const unsigned char temp_binary_data_65[] =
+static const unsigned char temp_binary_data_66[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2"
 ".69 6 6 6zm-7 2v2h14v-2H5z\"/></svg>";
 
-const char* underline_svg = (const char*) temp_binary_data_65;
+const char* underline_svg = (const char*) temp_binary_data_66;
 
 //================== visible.svg ==================
-static const unsigned char temp_binary_data_66[] =
+static const unsigned char temp_binary_data_67[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"black\" width=\"24px\" height=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-"
 "7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z\"/></svg>";
 
-const char* visible_svg = (const char*) temp_binary_data_66;
+const char* visible_svg = (const char*) temp_binary_data_67;
 
 //================== wysiwyg.svg ==================
-static const unsigned char temp_binary_data_67[] =
+static const unsigned char temp_binary_data_68[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><g><rect fill=\"none\" height=\"24\" width=\"24\"/><path d=\"M19,3H5C3.89,3,3,3.9,3,5v14c0,1.1,0.89,2,2,2h14c1.1,0,2-0.9,2-"
 "2V5C21,3.9,20.11,3,19,3z M19,19H5V7h14V19z M17,12H7v-2 h10V12z M13,16H7v-2h6V16z\"/></g></svg>";
 
-const char* wysiwyg_svg = (const char*) temp_binary_data_67;
+const char* wysiwyg_svg = (const char*) temp_binary_data_68;
 
 //================== debugger.lua ==================
-static const unsigned char temp_binary_data_68[] =
+static const unsigned char temp_binary_data_69[] =
 { 13,10,45,45,123,123,123,32,32,104,105,115,116,111,114,121,13,10,13,10,45,45,49,53,47,48,51,47,48,54,32,68,67,78,32,67,114,101,97,116,101,100,32,98,97,115,101,100,32,111,110,32,82,101,109,68,101,98,117,103,13,10,45,45,50,56,47,48,52,47,48,54,32,68,67,
 78,32,85,112,100,97,116,101,32,102,111,114,32,76,117,97,32,53,46,49,13,10,45,45,48,49,47,48,54,47,48,54,32,68,67,78,32,70,105,120,32,99,111,109,109,97,110,100,32,97,114,103,117,109,101,110,116,32,112,97,114,115,105,110,103,13,10,45,45,32,32,32,32,32,
 32,32,32,32,32,32,32,32,65,100,100,32,115,116,101,112,47,111,118,101,114,32,78,32,102,97,99,105,108,105,116,121,13,10,45,45,32,32,32,32,32,32,32,32,32,32,32,32,32,65,100,100,32,116,114,97,99,101,32,108,105,110,101,115,32,102,97,99,105,108,105,116,121,
@@ -13851,10 +14034,10 @@ static const unsigned char temp_binary_data_68[] =
 116,109,115,103,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,45,45,99,97,114,114,121,32,111,110,13,10,101,110,100,13,10,13,10,95,84,82,65,67,69,66,65,67,75,32,61,32,100,101,98,117,103,46,116,114,97,99,101,98,97,99,107,32,32,32,
 32,32,32,32,32,32,32,32,32,32,45,45,76,117,97,32,53,46,48,32,102,117,110,99,116,105,111,110,13,10,13,10,45,45,125,125,125,13,10,0,0 };
 
-const char* debugger_lua = (const char*) temp_binary_data_68;
+const char* debugger_lua = (const char*) temp_binary_data_69;
 
 //================== LICENSE ==================
-static const unsigned char temp_binary_data_69[] =
+static const unsigned char temp_binary_data_70[] =
 "The MIT License (MIT)\r\n"
 "\r\n"
 "Copyright (c) 2006 Dave Nichols\r\n"
@@ -13876,10 +14059,10 @@ static const unsigned char temp_binary_data_69[] =
 "IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\r\n"
 "CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\r\n";
 
-const char* LICENSE = (const char*) temp_binary_data_69;
+const char* LICENSE = (const char*) temp_binary_data_70;
 
 //================== README.md ==================
-static const unsigned char temp_binary_data_70[] =
+static const unsigned char temp_binary_data_71[] =
 "clidebugger\r\n"
 "===========\r\n"
 "\r\n"
@@ -13887,10 +14070,10 @@ static const unsigned char temp_binary_data_70[] =
 "\r\n"
 "Author is Dave Nichols.\r\n";
 
-const char* README_md2 = (const char*) temp_binary_data_70;
+const char* README_md3 = (const char*) temp_binary_data_71;
 
 //================== test.lua ==================
-static const unsigned char temp_binary_data_71[] =
+static const unsigned char temp_binary_data_72[] =
 "require (\"debugger\")\r\n"
 "\r\n"
 "function stopNow()\r\n"
@@ -13899,10 +14082,10 @@ static const unsigned char temp_binary_data_71[] =
 "\r\n"
 "stopNow()";
 
-const char* test_lua = (const char*) temp_binary_data_71;
+const char* test_lua = (const char*) temp_binary_data_72;
 
 //================== json.lua ==================
-static const unsigned char temp_binary_data_72[] =
+static const unsigned char temp_binary_data_73[] =
 "-----------------------------------------------------------------------------\r\n"
 "-- JSON4Lua: JSON encoding / decoding support for the Lua language.\r\n"
 "-- json Module.\r\n"
@@ -14323,10 +14506,10 @@ static const unsigned char temp_binary_data_72[] =
 "end\r\n"
 "\r\n";
 
-const char* json_lua = (const char*) temp_binary_data_72;
+const char* json_lua = (const char*) temp_binary_data_73;
 
 //================== LICENCE.txt ==================
-static const unsigned char temp_binary_data_73[] =
+static const unsigned char temp_binary_data_74[] =
 "The MIT License\r\n"
 "\r\n"
 "Copyright (c) 2009 Craig Mason-Jones\r\n"
@@ -14349,10 +14532,10 @@ static const unsigned char temp_binary_data_73[] =
 "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\r\n"
 "THE SOFTWARE.";
 
-const char* LICENCE_txt = (const char*) temp_binary_data_73;
+const char* LICENCE_txt = (const char*) temp_binary_data_74;
 
 //================== gen_LLookAndFeel.cpp.sh ==================
-static const unsigned char temp_binary_data_74[] =
+static const unsigned char temp_binary_data_75[] =
 "#!/bin/bash\r\n"
 "HEADER=\"$1\"\r\n"
 "\r\n"
@@ -14493,10 +14676,10 @@ static const unsigned char temp_binary_data_74[] =
 "echo\r\n"
 "echo \"}\"";
 
-const char* gen_LLookAndFeel_cpp_sh = (const char*) temp_binary_data_74;
+const char* gen_LLookAndFeel_cpp_sh = (const char*) temp_binary_data_75;
 
 //================== gen_LLookAndFeel.h.sh ==================
-static const unsigned char temp_binary_data_75[] =
+static const unsigned char temp_binary_data_76[] =
 "#!/bin/bash\r\n"
 "HEADER=\"$1\"\r\n"
 "\r\n"
@@ -14685,10 +14868,10 @@ static const unsigned char temp_binary_data_75[] =
 "echo\r\n"
 "echo \"#endif\"";
 
-const char* gen_LLookAndFeel_h_sh = (const char*) temp_binary_data_75;
+const char* gen_LLookAndFeel_h_sh = (const char*) temp_binary_data_76;
 
 //================== gen_LookAndFeel.lua.sh ==================
-static const unsigned char temp_binary_data_76[] =
+static const unsigned char temp_binary_data_77[] =
 "#!/bin/bash\r\n"
 "HEADER=\"$1\"\r\n"
 "\r\n"
@@ -14819,10 +15002,10 @@ static const unsigned char temp_binary_data_76[] =
 "\tprintf (\"-- end\\n\\n\");\r\n"
 "}'\r\n";
 
-const char* gen_LookAndFeel_lua_sh = (const char*) temp_binary_data_76;
+const char* gen_LookAndFeel_lua_sh = (const char*) temp_binary_data_77;
 
 //================== gen_LookAndFeelBase.cpp.sh ==================
-static const unsigned char temp_binary_data_77[] =
+static const unsigned char temp_binary_data_78[] =
 "#!/bin/bash\r\n"
 "HEADER=\"$1\"\r\n"
 "\r\n"
@@ -15000,10 +15183,10 @@ static const unsigned char temp_binary_data_77[] =
 "\r\n"
 "echo\r\n";
 
-const char* gen_LookAndFeelBase_cpp_sh = (const char*) temp_binary_data_77;
+const char* gen_LookAndFeelBase_cpp_sh = (const char*) temp_binary_data_78;
 
 //================== gen_LookAndFeelBase.h.sh ==================
-static const unsigned char temp_binary_data_78[] =
+static const unsigned char temp_binary_data_79[] =
 "#!/bin/bash\r\n"
 "HEADER=\"$1\"\r\n"
 "\r\n"
@@ -15108,10 +15291,10 @@ static const unsigned char temp_binary_data_78[] =
 "echo\r\n"
 "echo \"#endif\"";
 
-const char* gen_LookAndFeelBase_h_sh = (const char*) temp_binary_data_78;
+const char* gen_LookAndFeelBase_h_sh = (const char*) temp_binary_data_79;
 
 //================== gen_LookAndFeelParamWrapper-Lua-Member-Binding.sh ==================
-static const unsigned char temp_binary_data_79[] =
+static const unsigned char temp_binary_data_80[] =
 "#!/bin/bash\r\n"
 "cat << _EOF_\r\n"
 "\tstatic void wrapForLua (lua_State *L)\r\n"
@@ -15140,10 +15323,10 @@ static const unsigned char temp_binary_data_79[] =
 "echo -e \"\\t\\t\\t];\"\r\n"
 "echo -e \"\\t\\t}\"";
 
-const char* gen_LookAndFeelParamWrapperLuaMemberBinding_sh = (const char*) temp_binary_data_79;
+const char* gen_LookAndFeelParamWrapperLuaMemberBinding_sh = (const char*) temp_binary_data_80;
 
 //================== gen_LookAndFeelParamWrapper.h.sh ==================
-static const unsigned char temp_binary_data_80[] =
+static const unsigned char temp_binary_data_81[] =
 "#!/bin/bash\r\n"
 "HEADER=\"$1\"\r\n"
 "\r\n"
@@ -15523,10 +15706,10 @@ static const unsigned char temp_binary_data_80[] =
 "echo \"#endif\"\r\n"
 "echo";
 
-const char* gen_LookAndFeelParamWrapper_h_sh = (const char*) temp_binary_data_80;
+const char* gen_LookAndFeelParamWrapper_h_sh = (const char*) temp_binary_data_81;
 
 //================== inspect.lua ==================
-static const unsigned char temp_binary_data_81[] =
+static const unsigned char temp_binary_data_82[] =
 "function getInspect()\r\n"
 "local inspect ={\r\n"
 "  _VERSION = 'inspect.lua 3.0.0',\r\n"
@@ -15859,10 +16042,10 @@ static const unsigned char temp_binary_data_81[] =
 "\r\n"
 "inspect = getInspect()";
 
-const char* inspect_lua = (const char*) temp_binary_data_81;
+const char* inspect_lua = (const char*) temp_binary_data_82;
 
 //================== lf.template ==================
-static const unsigned char temp_binary_data_82[] =
+static const unsigned char temp_binary_data_83[] =
 "        static Colour def_findColour (LookAndFeel_V3 *ptr, int colourId)\r\n"
 "        static void def_setColour (LookAndFeel_V3 *ptr, int colourId, Colour colour)\r\n"
 "        static bool def_isColourSpecified (LookAndFeel_V3 *ptr, int colourId)\r\n"
@@ -15969,10 +16152,10 @@ static const unsigned char temp_binary_data_82[] =
 "        static void def_drawLevelMeter (LookAndFeel_V3 *ptr, Graphics &g, int width, int height, float level)\r\n"
 "        static void def_drawKeymapChangeButton (LookAndFeel_V3 *ptr, Graphics &g, int width, int height, Button &button, const String &keyDescription)\r\n";
 
-const char* lf_template = (const char*) temp_binary_data_82;
+const char* lf_template = (const char*) temp_binary_data_83;
 
 //================== LookAndFeel.lua ==================
-static const unsigned char temp_binary_data_83[] =
+static const unsigned char temp_binary_data_84[] =
 "class '__method_name' (LookAndFeel)\r\n"
 "\r\n"
 "function __method_name:__init()\r\n"
@@ -16330,10 +16513,10 @@ static const unsigned char temp_binary_data_83[] =
 "-- end\r\n"
 "\r\n";
 
-const char* LookAndFeel_lua = (const char*) temp_binary_data_83;
+const char* LookAndFeel_lua = (const char*) temp_binary_data_84;
 
 //================== paramWrapper.template ==================
-static const unsigned char temp_binary_data_84[] =
+static const unsigned char temp_binary_data_85[] =
 "\tGraphics *g;\r\n"
 "\tint x;\r\n"
 "\tint y;\r\n"
@@ -16477,10 +16660,10 @@ static const unsigned char temp_binary_data_84[] =
 "\tPropertyComponent *propertyComponent;\r\n"
 "\tCallOutBox *callOutBox;";
 
-const char* paramWrapper_template = (const char*) temp_binary_data_84;
+const char* paramWrapper_template = (const char*) temp_binary_data_85;
 
 //================== RSRC.zip ==================
-static const unsigned char temp_binary_data_85[] =
+static const unsigned char temp_binary_data_86[] =
 { 80,75,3,4,20,0,0,0,8,0,202,128,4,69,232,71,224,189,228,0,0,0,217,2,0,0,13,0,28,0,114,101,115,117,108,116,95,49,46,114,115,114,99,85,84,9,0,3,92,147,223,83,92,147,223,83,117,120,11,0,1,4,245,1,0,0,4,20,0,0,0,99,96,96,100,96,96,96,82,97,96,96,4,98,134,
 173,12,35,15,176,178,248,90,41,248,1,25,156,28,206,37,69,57,69,186,142,161,64,14,47,152,237,24,234,154,87,82,84,9,82,22,148,88,154,91,234,28,18,228,227,233,23,28,130,106,66,112,72,144,2,243,11,48,249,18,102,40,19,136,228,4,179,153,4,128,68,74,78,78,42,
 243,11,6,54,36,54,7,144,41,37,233,153,87,92,146,153,158,88,146,95,100,165,0,179,95,33,44,51,181,156,160,172,32,212,137,32,46,178,51,203,202,113,59,147,253,2,152,188,136,207,153,236,23,16,206,4,178,57,112,134,156,12,195,52,6,38,144,121,12,204,12,82,32,
@@ -17114,10 +17297,10 @@ static const unsigned char temp_binary_data_85[] =
 82,25,142,119,233,0,0,0,155,3,0,0,14,0,24,0,0,0,0,0,0,0,0,0,164,129,252,149,0,0,114,101,115,117,108,116,95,57,56,46,114,115,114,99,85,84,5,0,3,100,147,223,83,117,120,11,0,1,4,245,1,0,0,4,20,0,0,0,80,75,1,2,30,3,20,0,0,0,8,0,207,128,4,69,212,116,58,233,
 233,0,0,0,157,3,0,0,14,0,24,0,0,0,0,0,0,0,0,0,164,129,45,151,0,0,114,101,115,117,108,116,95,57,57,46,114,115,114,99,85,84,5,0,3,101,147,223,83,117,120,11,0,1,4,245,1,0,0,4,20,0,0,0,80,75,5,6,0,0,0,0,128,0,128,0,20,42,0,0,94,152,0,0,0,0,0,0 };
 
-const char* RSRC_zip = (const char*) temp_binary_data_85;
+const char* RSRC_zip = (const char*) temp_binary_data_86;
 
 //================== CtrlrIDs.xml ==================
-static const unsigned char temp_binary_data_86[] =
+static const unsigned char temp_binary_data_87[] =
 { 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,110,99,111,100,105,110,103,61,34,85,84,70,45,56,34,63,62,13,10,13,10,60,99,116,114,108,114,73,100,115,62,13,10,32,32,60,33,45,45,32,77,111,100,117,108,97,116,111,114,32,112,114,
 111,112,101,114,116,105,101,115,32,45,45,62,13,10,32,32,60,105,100,32,110,97,109,101,61,34,109,111,100,117,108,97,116,111,114,86,97,108,117,101,34,32,9,9,9,9,9,116,101,120,116,61,34,67,117,114,114,101,110,116,32,109,111,100,117,108,97,116,111,114,32,
 118,97,108,117,101,34,32,116,121,112,101,61,34,82,101,97,100,79,110,108,121,34,47,62,13,10,32,32,60,105,100,32,110,97,109,101,61,34,109,111,100,117,108,97,116,111,114,73,115,83,116,97,116,105,99,34,32,9,9,9,9,9,116,101,120,116,61,34,77,111,100,117,108,
@@ -18401,10 +18584,10 @@ static const unsigned char temp_binary_data_86[] =
 44,70,120,124,82,101,115,116,111,114,97,116,105,111,110,44,70,120,124,82,101,118,101,114,98,44,70,120,124,83,112,97,116,105,97,108,44,70,120,124,83,121,110,116,104,44,70,120,124,84,111,111,108,115,34,32,47,62,13,10,32,32,60,47,99,111,110,115,116,97,110,
 116,115,62,13,10,13,10,60,47,99,116,114,108,114,73,100,115,62,13,10,0,0 };
 
-const char* CtrlrIDs_xml = (const char*) temp_binary_data_86;
+const char* CtrlrIDs_xml = (const char*) temp_binary_data_87;
 
 //================== CtrlrLuaClassTemplates.xml ==================
-static const unsigned char temp_binary_data_87[] =
+static const unsigned char temp_binary_data_88[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<classes>\r\n"
 "  <class name=\"LookAndFeel_V3\">\r\n"
@@ -18412,10 +18595,10 @@ static const unsigned char temp_binary_data_87[] =
 "  </class>\r\n"
 "</methods>\r\n";
 
-const char* CtrlrLuaClassTemplates_xml = (const char*) temp_binary_data_87;
+const char* CtrlrLuaClassTemplates_xml = (const char*) temp_binary_data_88;
 
 //================== CtrlrLuaMethodTemplates.xml ==================
-static const unsigned char temp_binary_data_88[] =
+static const unsigned char temp_binary_data_89[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<methods>\r\n"
 "  <luaMethod name=\"luaModulatorValueChange\">\r\n"
@@ -19162,10 +19345,10 @@ static const unsigned char temp_binary_data_88[] =
 "  </utilityMethods>\r\n"
 "</methods>\r\n";
 
-const char* CtrlrLuaMethodTemplates_xml = (const char*) temp_binary_data_88;
+const char* CtrlrLuaMethodTemplates_xml = (const char*) temp_binary_data_89;
 
 //================== CtrlrMidiMultiTemplate.xml ==================
-static const unsigned char temp_binary_data_89[] =
+static const unsigned char temp_binary_data_90[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n"
 "<templates>\r\n"
 "  <template name=\"RPN\">\r\n"
@@ -19187,10 +19370,10 @@ static const unsigned char temp_binary_data_89[] =
 "  </template>\r\n"
 "</templates>";
 
-const char* CtrlrMidiMultiTemplate_xml = (const char*) temp_binary_data_89;
+const char* CtrlrMidiMultiTemplate_xml = (const char*) temp_binary_data_90;
 
 //================== CtrlrMIDITransactions.xml ==================
-static const unsigned char temp_binary_data_90[] =
+static const unsigned char temp_binary_data_91[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n"
 "<transactions>\r\n"
 "\t<trans \t\tname=\"Request Identity\"\r\n"
@@ -19272,10 +19455,10 @@ static const unsigned char temp_binary_data_90[] =
 "\t\t/>\r\n"
 "</transactions>\r\n";
 
-const char* CtrlrMIDITransactions_xml = (const char*) temp_binary_data_90;
+const char* CtrlrMIDITransactions_xml = (const char*) temp_binary_data_91;
 
 //================== CtrlrMIDIVendors.xml ==================
-static const unsigned char temp_binary_data_91[] =
+static const unsigned char temp_binary_data_92[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n"
 "<vendors>\r\n"
 "\t\t<vendor name=\"Ta Horng Musical Instrument\" id=\"000074\" />\r\n"
@@ -19584,7 +19767,7 @@ static const unsigned char temp_binary_data_91[] =
 "\t\t<vendor name=\"SD Card Association\"\tid=\"5F\" />\r\n"
 "</vendors>\r\n";
 
-const char* CtrlrMIDIVendors_xml = (const char*) temp_binary_data_91;
+const char* CtrlrMIDIVendors_xml = (const char*) temp_binary_data_92;
 
 
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes);
@@ -19598,11 +19781,12 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
 
     switch (hash)
     {
+        case 0x64791dc8:  numBytes = 5174; return README_md;
         case 0x7e1fea2e:  numBytes = 2087; return build_information_hpp_cmake_in;
         case 0x373d421a:  numBytes = 477; return getdeps_sh;
         case 0x002b6dac:  numBytes = 2121; return INSTALL_txt;
         case 0x5a320952:  numBytes = 1230; return LICENSE_txt;
-        case 0x64791dc8:  numBytes = 7609; return README_md;
+        case 0x2aaa9b6a:  numBytes = 7609; return README_md2;
         case 0xcb59a7d7:  numBytes = 199; return CtrlrRevision_template;
         case 0x97c5c86b:  numBytes = 97264; return FONT_60sekuntia_ttf;
         case 0x02bc5c21:  numBytes = 39104; return FONT_Computerfont_ttf;
@@ -19668,7 +19852,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
         case 0x4e772532:  numBytes = 326; return wysiwyg_svg;
         case 0xce0aceda:  numBytes = 44867; return debugger_lua;
         case 0x34bc1021:  numBytes = 1099; return LICENSE;
-        case 0x2aaa9b6a:  numBytes = 272; return README_md2;
+        case 0x2aaa9b6b:  numBytes = 272; return README_md3;
         case 0xbbaa7ecb:  numBytes = 77; return test_lua;
         case 0x8a4e0c21:  numBytes = 17174; return json_lua;
         case 0x3ee47f62:  numBytes = 1097; return LICENCE_txt;
@@ -19699,11 +19883,12 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
 
 const char* namedResourceList[] =
 {
+    "README_md",
     "build_information_hpp_cmake_in",
     "getdeps_sh",
     "INSTALL_txt",
     "LICENSE_txt",
-    "README_md",
+    "README_md2",
     "CtrlrRevision_template",
     "FONT_60sekuntia_ttf",
     "FONT_Computerfont_ttf",
@@ -19769,7 +19954,7 @@ const char* namedResourceList[] =
     "wysiwyg_svg",
     "debugger_lua",
     "LICENSE",
-    "README_md2",
+    "README_md3",
     "test_lua",
     "json_lua",
     "LICENCE_txt",
@@ -19795,6 +19980,7 @@ const char* namedResourceList[] =
 
 const char* originalFilenames[] =
 {
+    "README.md",
     "build_information.hpp.cmake_in",
     "get-deps.sh",
     "INSTALL.txt",

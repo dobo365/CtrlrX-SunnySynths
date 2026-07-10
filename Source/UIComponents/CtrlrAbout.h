@@ -77,10 +77,10 @@ private:
     ScopedPointer<DrawableButton> ctrlrLogo;
     ScopedPointer<DrawableButton> vst3AuJuceLogo;
     ScopedPointer<DrawableButton> githubLogo;
-    ScopedPointer<DrawableButton> paypalLogo;
+//    ScopedPointer<DrawableButton> paypalLogo;
         
     ScopedPointer<HyperlinkButton> ctrlrxUrl;
-    ScopedPointer<HyperlinkButton> ctrlrxDonateUrl;
+//    ScopedPointer<HyperlinkButton> ctrlrxDonateUrl;
     ScopedPointer<HyperlinkButton> instanceUrl;
     ScopedPointer<HyperlinkButton> instanceAuthorDonateUrl;
     ScopedPointer<HyperlinkButton> instanceAuthorEmail;

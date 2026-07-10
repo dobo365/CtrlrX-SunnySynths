@@ -88,7 +88,7 @@ CtrlrAbout::CtrlrAbout (CtrlrManager &_owner)
     ctrlrxUrl->setFont(14.00f, Font::plain);
     ctrlrxUrl->setJustificationType(Justification::topLeft);
     ctrlrxUrl->setColour (HyperlinkButton::textColourId, Colour(getLookAndFeel().findColour (PopupMenu::highlightedBackgroundColourId)));
-    
+/*    
     // PayPal LOGO SVG
     addAndMakeVisible (paypalLogo = gui::createDrawableButton("PayPal Logo", BIN2STR(paypal_colour_svg))); // Updated v5.6.31. It required to drag drop SVG file in the projucer in the icon folder to be embedded
     paypalLogo->addListener (this);
@@ -101,7 +101,7 @@ CtrlrAbout::CtrlrAbout (CtrlrManager &_owner)
     ctrlrxDonateUrl->setFont(14.00f, Font::plain);
     ctrlrxDonateUrl->setJustificationType(Justification::topLeft);
     ctrlrxDonateUrl->setColour (HyperlinkButton::textColourId, Colour(getLookAndFeel().findColour (PopupMenu::highlightedBackgroundColourId)));
-    
+ */   
     // description Label
     addAndMakeVisible (descriptionLabel = new TextEditor (""));
     descriptionLabel->setFont (Font (13.00f, Font::plain));
@@ -357,7 +357,7 @@ CtrlrAbout::~CtrlrAbout()
     
 	if (ctrlrLogo)         ctrlrLogo->removeListener(this);
 	if (githubLogo)        githubLogo->removeListener(this);
-	if (paypalLogo)        paypalLogo->removeListener(this);
+	//if (paypalLogo)        paypalLogo->removeListener(this);
 	if (vst3AuJuceLogo)    vst3AuJuceLogo->removeListener(this);
     
     ctrlrName = nullptr;
@@ -369,7 +369,7 @@ CtrlrAbout::~CtrlrAbout()
     ctrlrxVersionLabel = nullptr;
     ctrlrxReleaseDateLabel = nullptr;
     ctrlrxUrl = nullptr;
-    ctrlrxDonateUrl = nullptr;
+    //ctrlrxDonateUrl = nullptr;
     descriptionLabel = nullptr;
     copyrightLabel = nullptr;
     
@@ -445,12 +445,12 @@ void CtrlrAbout::resized()
     heightPosition += ( creditsLabelheight + paddingSize );
     githubLogo->setBounds (ctrlrLogoSize + paddingSize*3, heightPosition -1, ctrlrxUrlHeight +2, ctrlrxUrlHeight +2);
     ctrlrxUrl->setBounds (ctrlrLogoSize + paddingSize*5 +4, heightPosition, rightColumnWidth, ctrlrxUrlHeight);
-    
+/*
     int ctrlrxDonateUrlHeight = 18;
     heightPosition += ( ctrlrxUrlHeight );
     paypalLogo->setBounds (ctrlrLogoSize + paddingSize*3, heightPosition -1, ctrlrxUrlHeight +2, ctrlrxDonateUrlHeight +2);
     ctrlrxDonateUrl->setBounds (ctrlrLogoSize + paddingSize*5 +4, heightPosition, rightColumnWidth, ctrlrxDonateUrlHeight);
-    
+*/    
     
     // Centered
     int descriptionLabelheight = 48;

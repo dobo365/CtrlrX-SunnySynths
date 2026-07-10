@@ -3,6 +3,7 @@
 #include "CtrlrLua/MethodEditor/CtrlrLuaMethodEditor.h"
 #include "CtrlrLuaManager.h"
 #include "CtrlrInlineUtilitiesGUI.h"
+#include "CtrlrHelpViewer.h"
 
 CtrlrPropertyComponent::CtrlrPropertyComponent (const Identifier &_propertyName,
 								const ValueTree &_propertyElement,
@@ -115,10 +116,41 @@ void CtrlrPropertyComponent::mouseDown(const MouseEvent& e)		// v5.6.34 Added ba
 		}*/
 
 		/* My proposal
-		- Open window like Midi Monitor. So, can stay opened with possibility to copy/paste from it
-		- Display code and explanations coming from some .xml file OR displaying a page in the wiki (based on URL)
+		- Open Help viewer non modal window. So, can stay opened with possibility to copy/paste from it
+		- Display code and explanations coming from some .md file (the same .md file can be used in the wiki)
 		*/
-		//panel->getOwner().getWindowManager().toggle(CtrlrManagerWindowManager::MidiMonWindow, true);
+		panel->getOwner().getWindowManager().toggle(CtrlrManagerWindowManager::HelpViewer, true);
+		const String propId = propertyName.toString();
+
+		// Try to retrieve the HelpViewer component and instruct it to load the markdown for the property
+		Component* helpComp = nullptr;
+
+		// Ensure panel and window manager exist
+		if (panel != nullptr)
+			helpComp = panel->getOwner().getWindowManager().getContent(CtrlrManagerWindowManager::HelpViewer);
+
+		if (helpComp != nullptr)
+		{
+			CtrlrHelpViewer* helpViewer = dynamic_cast<CtrlrHelpViewer*>(helpComp);
+			if (helpViewer != nullptr)
+			{
+				// Search for a markdown file named "<propId>.md"
+				File appDir = File::getSpecialLocation(File::currentApplicationFile).getParentDirectory();
+				File helpFile = appDir.getChildFile("Help").getChildFile(propId + ".md");
+
+				//if (!helpFile.existsAsFile())
+				//	helpFile = appDir.getChildFile("Resources").getChildFile("help").getChildFile(propId + ".md");
+
+				//if (!helpFile.existsAsFile())
+				//	helpFile = File::getSpecialLocation(File::userDocumentsDirectory).getChildFile("CtrlrHelp").getChildFile(propId + ".md");
+
+				// Load file in Help viewer if it exists. If not, the Help viewer will just show a default message
+				//if (helpFile.existsAsFile())
+				//{
+				helpViewer->loadMarkdownFile(helpFile);
+				//}
+			}
+		}
 	}
 }
 

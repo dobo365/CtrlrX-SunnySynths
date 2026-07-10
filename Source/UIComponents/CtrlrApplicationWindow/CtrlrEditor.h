@@ -50,7 +50,10 @@ class CtrlrEditor  : public AudioProcessorEditor,
 			showLogViewer				= 0x2006,
 			showMidiCalculator          = 0x2007,
 			showAboutDialog             = 0x2008,
+			showHelpViewer				= 0x2009,
 			showKeyboardMappingDialog	= 0x200a,
+			doRefreshDeviceList			= 0x200b,
+			showHelpEditor				= 0x200c,
 
 			/* Panel commands */
 
@@ -68,7 +71,6 @@ class CtrlrEditor  : public AudioProcessorEditor,
 			doPanelLock					= 0x300b,
 			doPanelDisableCombosOnEdit	= 0x3027,
 			doSendSnapshot				= 0x300c,
-			doRefreshDeviceList			= 0x200b,
 			showLuaEditor				= 0x3011,
 			showMidiLibrary				= 0x3012,
 			showModulatorList			= 0x3013,

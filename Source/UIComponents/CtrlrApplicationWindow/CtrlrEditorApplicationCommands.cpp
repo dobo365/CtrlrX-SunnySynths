@@ -12,7 +12,9 @@ void CtrlrEditor::getAllCommands (Array< CommandID > &commands)
                                 showGlobalSettingsDialog,
                                 showMidiMonitor,
                                 showLogViewer,
-                                showMidiCalculator,
+								showHelpViewer,
+								showHelpEditor,
+								showMidiCalculator,
                                 showAboutDialog,
 								showKeyboardMappingDialog,
 								doViewPropertyDisplayIDs,
@@ -121,6 +123,16 @@ void CtrlrEditor::getCommandInfo (CommandID commandID, ApplicationCommandInfo &r
 		case showLogViewer:
 			result.setInfo ("Log viewer", "You can view diagnostic messages here, useful when debugging problems", globalCategory, 0);
 			result.addDefaultKeypress ('l', ModifierKeys::commandModifier);
+			break;
+
+		case showHelpViewer:
+			result.setInfo("Help viewer", "You can get help on the meaning of properties and get some code snippets", globalCategory, 0);
+			result.addDefaultKeypress('l', ModifierKeys::commandModifier);
+			break;
+
+		case showHelpEditor:
+			result.setInfo("Help editor", "A markdown text editor to build help pages", globalCategory, 0);
+			result.addDefaultKeypress('e', ModifierKeys::commandModifier);
 			break;
 
 		case showMidiCalculator:

@@ -21,8 +21,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.35.1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062301&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;1&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -86,8 +86,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.35.1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062301&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;1&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -153,8 +153,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.35.1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062301&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -217,8 +217,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.35.1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062301&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;1&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -281,8 +281,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.35.1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062301&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;1&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -347,8 +347,8 @@
           <Add option="-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=&quot;1&quot;"/>
           <Add option="-DBOOST_BIND_GLOBAL_PLACEHOLDERS=&quot;1&quot;"/>
           <Add option="-DJUCER_CODEBLOCKS_LINUX_191E0897=&quot;1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION=&quot;5.6.35.1&quot;"/>
-          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x5062301&quot;"/>
+          <Add option="-DJUCE_APP_VERSION=&quot;5.6.34&quot;"/>
+          <Add option="-DJUCE_APP_VERSION_HEX=&quot;0x50622&quot;"/>
           <Add option="-DJucePlugin_Build_VST=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_VST3=&quot;0&quot;"/>
           <Add option="-DJucePlugin_Build_AU=&quot;0&quot;"/>
@@ -415,22 +415,6 @@
       <Add library="udev"/>
       <Add library="bfd"/>
     </Linker>
-    <Unit filename="../../../../BarelyML/BarelyML-main/BarelyML.cpp">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-    </Unit>
-    <Unit filename="../../../../BarelyML/BarelyML-main/BarelyML.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="../../../../BarelyML/BarelyML-main/README.md">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
     <Unit filename="../../Source/Misc/luabind/luabind/detail/call.hpp">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
@@ -3496,16 +3480,6 @@
       <Option target="Shared Code | Release"/>
     </Unit>
     <Unit filename="../../Source/UIComponents/CtrlrPanel/CtrlrPanelEditor.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="../../Source/UIComponents/CtrlrPanel/CtrlrPanelEditorIcons.cpp">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-    </Unit>
-    <Unit filename="../../Source/UIComponents/CtrlrPanel/CtrlrPanelEditorIcons.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>

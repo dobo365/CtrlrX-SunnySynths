@@ -6,6 +6,8 @@
 #include "CtrlrDialogWindow.h"
 #include "CtrlrMIDI/CtrlrMIDIMon.h"
 #include "CtrlrLogViewer.h"
+#include "CtrlrHelpViewer.h"
+#include "CtrlrHelpEditor.h"
 #include "CtrlrMIDI/CtrlrMIDICalculator.h"
 
 CtrlrManagerWindowManager::CtrlrManagerWindowManager(CtrlrManager &_owner)
@@ -120,6 +122,10 @@ const String CtrlrManagerWindowManager::getWindowName(const CtrlrManagerWindowMa
 			return ("MidiMonWindow");
 		case LogViewer:
 			return ("LogViewer");
+		case HelpViewer:
+			return ("HelpViewer");
+		case HelpEditor:
+			return ("HelpEditor");
 		case MIDICalculator:
 			return ("MIDICalculator");
 		default:
@@ -135,6 +141,10 @@ CtrlrManagerWindowManager::WindowType CtrlrManagerWindowManager::getWindowType(c
 		return (MidiMonWindow);
 	if (windowName == "LogViewer")
 		return (LogViewer);
+	if (windowName == "HelpViewer")
+		return (HelpViewer);
+	if (windowName == "HelpEditor")
+		return (HelpEditor);
 	if (windowName == "MIDICalculator")
 		return (MIDICalculator);
 	return (MidiMonWindow);
@@ -187,6 +197,14 @@ CtrlrChildWindow *CtrlrManagerWindowManager::createWindow(const CtrlrManagerWind
 
 		case CtrlrManagerWindowManager::LogViewer:
 			w->setContent (new CtrlrLogViewer (owner));
+			break;
+
+		case CtrlrManagerWindowManager::HelpViewer:
+			w->setContent(new CtrlrHelpViewer(owner));
+			break;
+
+		case CtrlrManagerWindowManager::HelpEditor:
+			w->setContent(new CtrlrHelpEditor(owner));
 			break;
 
 		case CtrlrManagerWindowManager::MIDICalculator:

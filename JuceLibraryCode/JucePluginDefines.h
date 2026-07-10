@@ -38,19 +38,19 @@
  #define JucePlugin_Enable_IAA             0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "CtrlrX                          "
+ #define JucePlugin_Name                   "CtrlrX - Sunny Synths"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "CtrlrX"
+ #define JucePlugin_Desc                   "CtrlrX - Sunny Synths"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "Sunny Synths"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
- #define JucePlugin_ManufacturerWebsite    ""
+ #define JucePlugin_ManufacturerWebsite    "www.sunnysynths.com"
 #endif
 #ifndef  JucePlugin_ManufacturerEmail
- #define JucePlugin_ManufacturerEmail      ""
+ #define JucePlugin_ManufacturerEmail      "sunny.synths@gmail.com"
 #endif
 #ifndef  JucePlugin_ManufacturerCode
  #define JucePlugin_ManufacturerCode       0x53755379
@@ -74,13 +74,13 @@
  #define JucePlugin_EditorRequiresKeyboardFocus  1
 #endif
 #ifndef  JucePlugin_Version
- #define JucePlugin_Version                5.6.35.1
+ #define JucePlugin_Version                5.6.36.1
 #endif
 #ifndef  JucePlugin_VersionCode
- #define JucePlugin_VersionCode            0x5062301
+ #define JucePlugin_VersionCode            0x5062401
 #endif
 #ifndef  JucePlugin_VersionString
- #define JucePlugin_VersionString          "5.6.35.1"
+ #define JucePlugin_VersionString          "5.6.36.1"
 #endif
 #ifndef  JucePlugin_VSTUniqueID
  #define JucePlugin_VSTUniqueID            JucePlugin_PluginCode
@@ -107,7 +107,7 @@
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.CtrlrX.CtrlrX
+ #define JucePlugin_CFBundleIdentifier     com.SunnySynths.CtrlrX
 #endif
 #ifndef  JucePlugin_RTASCategory
  #define JucePlugin_RTASCategory           0
@@ -149,7 +149,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "Sunny Synths: CtrlrX                          "
+ #define JucePlugin_IAAName                "Sunny Synths: CtrlrX - Sunny Synths"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16

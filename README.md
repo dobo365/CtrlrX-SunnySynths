@@ -5,7 +5,6 @@
 ## Table of Contents
 * [About CtrlrX - Sunny Synths](#about-ctrlrx-sunnysynths)
 * [About CtrlrX](#about-ctrlrx)
-* [Donations](#donations)
 * [Licensing](#licensing)
   * [JUCE Framework Licensing](#juce-framework-licensing)
   * [Crucial Note for Commercial Distribution of JUCE based softwares](#crucial-note-for-commercial-distribution-of-juce-based-softwares-including-those-based-on-this-project)
@@ -56,14 +55,6 @@ Ctrlr allows you to control any MIDI-enabled hardware: synthesizers, drum machin
 
 ---
 
-## Donations
-
-Development and maintenance of [CtrlrX](https://github.com/damiensellier/CtrlrX) are supported by the community. If you find this project useful and would like to support [Damien Sellier](https://github.com/DamienSellier/), the main person behind [CtrlrX](https://github.com/damiensellier/CtrlrX), any donations are greatly appreciated.
-
-You can donate via PayPal using this link: **[paypal.me/damiensellier/10](https://paypal.me/damiensellier/10)**
-
----
-
 ## Licensing
 
 The [CtrlrX](https://github.com/damiensellier/CtrlrX) project by [Damien Sellier](https://github.com/DamienSellier/) is a fork of [Ctrlr](https://github.com/RomanKubiak/ctrlr) by [Roman Kubiak](https://github.com/RomanKubiak). The original creator has generously granted permission for derivative works (forks) to choose their own licensing terms.
@@ -76,7 +67,7 @@ Specifically, Roman Kubiak stated the following regarding the Ctrlr license:
 >
 > "The other licence means that you can do whatever you want with the code, you don’t need to publish the source code, you just need to mention where did the code come from."
 >
-> "Panels are not covered by this license, you can do whatever you want with them, sell them, give them away whatever, noone else has the rights to them, they are your intelectual property."
+> "Panels are not covered by this license, you can do whatever you want with them, sell them, give them away whatever, noone else has the rights to them, they are your intellectual property."
 >
 > [Source](https://web.archive.org/web/20240213071445/https://ctrlr.org/forums/topic/ctrlr-licence/#post-37755) (2015-02-11 11:58)
 

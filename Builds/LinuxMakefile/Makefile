@@ -35,7 +35,7 @@ ifeq ($(CONFIG),Debug)
     TARGET_ARCH := 
   endif
 
-  JUCE_CPPFLAGS := $(DEPFLAGS) "-DLINUX=1" "-DDEBUG=1" "-D_DEBUG=1" "-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1" "-DBOOST_BIND_GLOBAL_PLACEHOLDERS=1" "-DJUCER_LINUX_MAKE_6D53C8B4=1" "-DJUCE_APP_VERSION=5.6.35.1" "-DJUCE_APP_VERSION_HEX=0x5062301" $(shell pkg-config --cflags alsa freetype2 libcurl) -pthread -I../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK -I../../Source/Misc/vst2sdk -I../../JuceLibraryCode -I../../JUCE/modules -I../../Source -I../../Source/Misc -I../../Source/Misc/include -I../../Source/Misc/lua/include -I../../Source/Misc/luabind -I../../Source/Misc/libusb/include -I../../Source/Misc/boost -I../../Source/MIDI -I../../Source/Core -I../../Source/Native -I../../Source/Plugin -I../../Source/UIComponents -I../../Source/Lua $(CPPFLAGS)
+  JUCE_CPPFLAGS := $(DEPFLAGS) "-DLINUX=1" "-DDEBUG=1" "-D_DEBUG=1" "-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1" "-DBOOST_BIND_GLOBAL_PLACEHOLDERS=1" "-DJUCER_LINUX_MAKE_6D53C8B4=1" "-DJUCE_APP_VERSION=5.6.36.1" "-DJUCE_APP_VERSION_HEX=0x5062401" $(shell pkg-config --cflags alsa freetype2 libcurl) -pthread -I../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK -I../../Source/Misc/vst2sdk -I../../JuceLibraryCode -I../../JUCE/modules -I../../Source -I../../Source/Misc -I../../Source/Misc/include -I../../Source/Misc/lua/include -I../../Source/Misc/luabind -I../../Source/Misc/libusb/include -I../../Source/Misc/boost -I../../Source/MIDI -I../../Source/Core -I../../Source/Native -I../../Source/Plugin -I../../Source/UIComponents -I../../Source/Lua $(CPPFLAGS)
 
   JUCE_CPPFLAGS_VST :=  "-DJucePlugin_Build_VST=1" "-DJucePlugin_Build_VST3=0" "-DJucePlugin_Build_AU=0" "-DJucePlugin_Build_AUv3=0" "-DJucePlugin_Build_RTAS=0" "-DJucePlugin_Build_AAX=0" "-DJucePlugin_Build_Standalone=0" "-DJucePlugin_Build_Unity=0"
   JUCE_CFLAGS_VST := -fPIC -fvisibility=hidden
@@ -77,7 +77,7 @@ ifeq ($(CONFIG),Release)
     TARGET_ARCH := 
   endif
 
-  JUCE_CPPFLAGS := $(DEPFLAGS) "-DLINUX=1" "-DNDEBUG=1" "-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1" "-DBOOST_BIND_GLOBAL_PLACEHOLDERS=1" "-DJUCER_LINUX_MAKE_6D53C8B4=1" "-DJUCE_APP_VERSION=5.6.35.1" "-DJUCE_APP_VERSION_HEX=0x5062301" $(shell pkg-config --cflags alsa freetype2 libcurl) -pthread -I../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK -I../../Source/Misc/vst2sdk -I../../JuceLibraryCode -I../../JUCE/modules -I../../Source -I../../Source/Misc -I../../Source/Misc/include -I../../Source/Misc/lua/include -I../../Source/Misc/luabind -I../../Source/Misc/libusb/include -I../../Source/Misc/boost -I../../Source/MIDI -I../../Source/Core -I../../Source/Native -I../../Source/Plugin -I../../Source/UIComponents -I../../Source/Lua $(CPPFLAGS)
+  JUCE_CPPFLAGS := $(DEPFLAGS) "-DLINUX=1" "-DNDEBUG=1" "-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1" "-DBOOST_BIND_GLOBAL_PLACEHOLDERS=1" "-DJUCER_LINUX_MAKE_6D53C8B4=1" "-DJUCE_APP_VERSION=5.6.36.1" "-DJUCE_APP_VERSION_HEX=0x5062401" $(shell pkg-config --cflags alsa freetype2 libcurl) -pthread -I../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK -I../../Source/Misc/vst2sdk -I../../JuceLibraryCode -I../../JUCE/modules -I../../Source -I../../Source/Misc -I../../Source/Misc/include -I../../Source/Misc/lua/include -I../../Source/Misc/luabind -I../../Source/Misc/libusb/include -I../../Source/Misc/boost -I../../Source/MIDI -I../../Source/Core -I../../Source/Native -I../../Source/Plugin -I../../Source/UIComponents -I../../Source/Lua $(CPPFLAGS)
 
   JUCE_CPPFLAGS_VST :=  "-DJucePlugin_Build_VST=1" "-DJucePlugin_Build_VST3=0" "-DJucePlugin_Build_AU=0" "-DJucePlugin_Build_AUv3=0" "-DJucePlugin_Build_RTAS=0" "-DJucePlugin_Build_AAX=0" "-DJucePlugin_Build_Standalone=0" "-DJucePlugin_Build_Unity=0"
   JUCE_CFLAGS_VST := -fPIC -fvisibility=hidden
@@ -121,7 +121,7 @@ OBJECTS_STANDALONE_PLUGIN := \
   $(JUCE_OBJDIR)/include_juce_audio_plugin_client_Standalone_1a871192.o \
 
 OBJECTS_SHARED_CODE := \
-  $(JUCE_OBJDIR)/BarelyML_3550836b.o \
+  $(JUCE_OBJDIR)/BarelyML\ -\ Sunny\ Synths_9ca77101.o \
   $(JUCE_OBJDIR)/class_51e55959.o \
   $(JUCE_OBJDIR)/class_info_e81f919e.o \
   $(JUCE_OBJDIR)/class_registry_cf7ee82d.o \
@@ -317,6 +317,8 @@ OBJECTS_SHARED_CODE := \
   $(JUCE_OBJDIR)/CtrlrPanelWindowManager_d36a6b52.o \
   $(JUCE_OBJDIR)/CtrlrAbout_dbdebdec.o \
   $(JUCE_OBJDIR)/CtrlrComponentSelection_86f225a.o \
+  $(JUCE_OBJDIR)/CtrlrHelpEditor_a30fe7d9.o \
+  $(JUCE_OBJDIR)/CtrlrHelpViewer_af641dfe.o \
   $(JUCE_OBJDIR)/CtrlrLogViewer_9aac1755.o \
   $(JUCE_OBJDIR)/CtrlrTextEditor_e95be6c5.o \
   $(JUCE_OBJDIR)/CtrlrValueMap_3b250f6.o \
@@ -349,7 +351,7 @@ Standalone : $(JUCE_OUTDIR)/$(JUCE_TARGET_STANDALONE_PLUGIN)
 $(JUCE_OUTDIR)/$(JUCE_TARGET_VST) : $(OBJECTS_VST) $(RESOURCES) $(JUCE_OUTDIR)/$(JUCE_TARGET_SHARED_CODE)
 	@command -v pkg-config >/dev/null 2>&1 || { echo >&2 "pkg-config not installed. Please, install it."; exit 1; }
 	@pkg-config --print-errors alsa freetype2 libcurl
-	@echo Linking "CtrlrX - VST"
+	@echo Linking "CtrlrX - Sunny Synths - VST"
 	-$(V_AT)mkdir -p $(JUCE_BINDIR)
 	-$(V_AT)mkdir -p $(JUCE_LIBDIR)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
@@ -360,7 +362,7 @@ $(JUCE_OUTDIR)/$(JUCE_TARGET_VST) : $(OBJECTS_VST) $(RESOURCES) $(JUCE_OUTDIR)/$
 $(JUCE_OUTDIR)/$(JUCE_TARGET_VST3) : $(OBJECTS_VST3) $(RESOURCES) $(JUCE_OUTDIR)/$(JUCE_TARGET_SHARED_CODE)
 	@command -v pkg-config >/dev/null 2>&1 || { echo >&2 "pkg-config not installed. Please, install it."; exit 1; }
 	@pkg-config --print-errors alsa freetype2 libcurl
-	@echo Linking "CtrlrX - VST3"
+	@echo Linking "CtrlrX - Sunny Synths - VST3"
 	-$(V_AT)mkdir -p $(JUCE_BINDIR)
 	-$(V_AT)mkdir -p $(JUCE_LIBDIR)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
@@ -372,7 +374,7 @@ $(JUCE_OUTDIR)/$(JUCE_TARGET_VST3) : $(OBJECTS_VST3) $(RESOURCES) $(JUCE_OUTDIR)
 $(JUCE_OUTDIR)/$(JUCE_TARGET_STANDALONE_PLUGIN) : $(OBJECTS_STANDALONE_PLUGIN) $(RESOURCES) $(JUCE_OUTDIR)/$(JUCE_TARGET_SHARED_CODE)
 	@command -v pkg-config >/dev/null 2>&1 || { echo >&2 "pkg-config not installed. Please, install it."; exit 1; }
 	@pkg-config --print-errors alsa freetype2 libcurl
-	@echo Linking "CtrlrX - Standalone Plugin"
+	@echo Linking "CtrlrX - Sunny Synths - Standalone Plugin"
 	-$(V_AT)mkdir -p $(JUCE_BINDIR)
 	-$(V_AT)mkdir -p $(JUCE_LIBDIR)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
@@ -381,7 +383,7 @@ $(JUCE_OUTDIR)/$(JUCE_TARGET_STANDALONE_PLUGIN) : $(OBJECTS_STANDALONE_PLUGIN) $
 $(JUCE_OUTDIR)/$(JUCE_TARGET_SHARED_CODE) : $(OBJECTS_SHARED_CODE) $(RESOURCES)
 	@command -v pkg-config >/dev/null 2>&1 || { echo >&2 "pkg-config not installed. Please, install it."; exit 1; }
 	@pkg-config --print-errors alsa freetype2 libcurl
-	@echo Linking "CtrlrX - Shared Code"
+	@echo Linking "CtrlrX - Sunny Synths - Shared Code"
 	-$(V_AT)mkdir -p $(JUCE_BINDIR)
 	-$(V_AT)mkdir -p $(JUCE_LIBDIR)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
@@ -402,9 +404,9 @@ $(JUCE_OBJDIR)/include_juce_audio_plugin_client_Standalone_1a871192.o: ../../Juc
 	@echo "Compiling include_juce_audio_plugin_client_Standalone.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_STANDALONE_PLUGIN) $(JUCE_CFLAGS_STANDALONE_PLUGIN) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/BarelyML_3550836b.o: ../../../../BarelyML/BarelyML-main/BarelyML.cpp
+$(JUCE_OBJDIR)/BarelyML\ -\ Sunny\ Synths_9ca77101.o: ../../Source/Misc/BarelyML\ -\ Sunny\ Synths/BarelyML\ -\ Sunny\ Synths.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling BarelyML.cpp"
+	@echo "Compiling BarelyML - Sunny Synths.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_SHARED_CODE) $(JUCE_CFLAGS_SHARED_CODE) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/class_51e55959.o: ../../Source/Misc/luabind/src/class.cpp
@@ -1382,6 +1384,16 @@ $(JUCE_OBJDIR)/CtrlrComponentSelection_86f225a.o: ../../Source/UIComponents/Ctrl
 	@echo "Compiling CtrlrComponentSelection.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_SHARED_CODE) $(JUCE_CFLAGS_SHARED_CODE) -o "$@" -c "$<"
 
+$(JUCE_OBJDIR)/CtrlrHelpEditor_a30fe7d9.o: ../../Source/UIComponents/CtrlrHelpEditor.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling CtrlrHelpEditor.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_SHARED_CODE) $(JUCE_CFLAGS_SHARED_CODE) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/CtrlrHelpViewer_af641dfe.o: ../../Source/UIComponents/CtrlrHelpViewer.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling CtrlrHelpViewer.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_SHARED_CODE) $(JUCE_CFLAGS_SHARED_CODE) -o "$@" -c "$<"
+
 $(JUCE_OBJDIR)/CtrlrLogViewer_9aac1755.o: ../../Source/UIComponents/CtrlrLogViewer.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CtrlrLogViewer.cpp"
@@ -1478,11 +1490,11 @@ $(JUCE_OBJDIR)/include_juce_product_unlocking_8278fcdc.o: ../../JuceLibraryCode/
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_SHARED_CODE) $(JUCE_CFLAGS_SHARED_CODE) -o "$@" -c "$<"
 
 clean:
-	@echo Cleaning CtrlrX
+	@echo Cleaning CtrlrX - Sunny Synths
 	$(V_AT)$(CLEANCMD)
 
 strip:
-	@echo Stripping CtrlrX
+	@echo Stripping CtrlrX - Sunny Synths
 	-$(V_AT)$(STRIP) --strip-unneeded $(JUCE_OUTDIR)/$(TARGET)
 
 -include $(OBJECTS_VST:%.o=%.d)

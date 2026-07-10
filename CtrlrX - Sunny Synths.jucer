@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="hrcYoO" name="CtrlrX" reportAppUsage="1" projectType="audioplug"
-              version="5.6.34" bundleIdentifier="com.CtrlrX.CtrlrX" includeBinaryInAppConfig="1"
-              buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
-              buildAAX="1" buildStandalone="1" enableIAA="0" pluginName="CtrlrX                          "
-              pluginManufacturer="CtrlrX Project                  " pluginManufacturerCode="cTrX"
-              pluginCode="cTrl" pluginIsSynth="1" pluginWantsMidiIn="1" pluginProducesMidiOut="1"
-              pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="1" pluginAUExportPrefix="CtrlrXAU"
-              pluginRTASCategory="" aaxIdentifier="com.CtrlrX.CtrlrX" companyName="CtrlrX"
+<JUCERPROJECT id="hrcYoO" name="CtrlrX - Sunny Synths" reportAppUsage="1" projectType="audioplug"
+              version="5.6.36.1" bundleIdentifier="com.SunnySynths.CtrlrX"
+              includeBinaryInAppConfig="1" buildVST="1" buildVST3="1" buildAU="1"
+              buildAUv3="0" buildRTAS="0" buildAAX="1" buildStandalone="1"
+              enableIAA="0" pluginName="CtrlrX - Sunny Synths" pluginManufacturer="Sunny Synths"
+              pluginManufacturerCode="SuSy" pluginCode="cTrX" pluginIsSynth="1"
+              pluginWantsMidiIn="1" pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="0"
+              pluginEditorRequiresKeys="1" pluginAUExportPrefix="CtrlrXAU"
+              pluginRTASCategory="" aaxIdentifier="com.CtrlrX.CtrlrX" companyName="Sunny Synths"
               pluginFormats="buildAAX,buildAU,buildStandalone,buildVST,buildVST3"
               jucerFormatVersion="1" pluginAUMainType="'aumu'" displaySplashScreen="1"
               pluginRTASDisableBypass="0" pluginRTASDisableMultiMono="0" pluginAAXDisableBypass="0"
               pluginAAXDisableMultiMono="0" cppLanguageStandard="14" pluginVST3Category="Instrument,Tools"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn,pluginProducesMidiOut,pluginEditorRequiresKeys"
-              pluginAAXCategory="2048">
-  <MAINGROUP id="SRLsFb" name="CtrlrX">
+              pluginAAXCategory="2048" companyEmail="sunny.synths@gmail.com"
+              companyWebsite="www.sunnysynths.com">
+  <MAINGROUP id="SRLsFb" name="CtrlrX - Sunny Synths">
     <GROUP id="{BE407432-92DD-AEAB-3C70-AAE03FCD0B1D}" name="Source">
       <GROUP id="{F4D7C0F1-7F03-CB3F-30C6-F728F0E39FE2}" name="Misc">
+        <GROUP id="{7F1E7F51-816F-EAE9-444C-21A244C029B6}" name="BarelyML - Sunny Synths">
+          <FILE id="vNBOeO" name="BarelyML - Sunny Synths.cpp" compile="1" resource="0"
+                file="Source/Misc/BarelyML - Sunny Synths/BarelyML - Sunny Synths.cpp"/>
+          <FILE id="RAsgPp" name="BarelyML - Sunny Synths.h" compile="0" resource="0"
+                file="Source/Misc/BarelyML - Sunny Synths/BarelyML - Sunny Synths.h"/>
+          <FILE id="xlBCQh" name="README.md" compile="0" resource="1" file="Source/Misc/BarelyML - Sunny Synths/README.md"/>
+        </GROUP>
         <GROUP id="{E0E4DD68-0D44-4709-7B14-B00F9E7420BF}" name="luabind">
           <GROUP id="{2091F07D-D8F8-5C6F-EEAF-33E046D84C00}" name="luabind">
             <GROUP id="{3D1DEE58-7341-D84F-43D9-D93F78FFDB5B}" name="detail">
@@ -988,6 +997,10 @@
                 file="Source/UIComponents/CtrlrPanel/CtrlrPanelEditor.cpp"/>
           <FILE id="hv7qCr" name="CtrlrPanelEditor.h" compile="0" resource="0"
                 file="Source/UIComponents/CtrlrPanel/CtrlrPanelEditor.h"/>
+          <FILE id="knzrRB" name="CtrlrPanelEditorIcons.cpp" compile="1" resource="0"
+                file="Source/UIComponents/CtrlrPanel/CtrlrPanelEditorIcons.cpp"/>
+          <FILE id="QWpENy" name="CtrlrPanelEditorIcons.h" compile="0" resource="0"
+                file="Source/UIComponents/CtrlrPanel/CtrlrPanelEditorIcons.h"/>
           <FILE id="iDNFSe" name="CtrlrPanelFindProperty.cpp" compile="1" resource="0"
                 file="Source/UIComponents/CtrlrPanel/CtrlrPanelFindProperty.cpp"/>
           <FILE id="DP5ROh" name="CtrlrPanelFindProperty.h" compile="0" resource="0"
@@ -1066,6 +1079,14 @@
               file="Source/UIComponents/CtrlrComponentSelection.cpp"/>
         <FILE id="Q0Bt0V" name="CtrlrComponentSelection.h" compile="0" resource="0"
               file="Source/UIComponents/CtrlrComponentSelection.h"/>
+        <FILE id="Ry5y5N" name="CtrlrHelpEditor.cpp" compile="1" resource="0"
+              file="Source/UIComponents/CtrlrHelpEditor.cpp"/>
+        <FILE id="TMvJ7h" name="CtrlrHelpEditor.h" compile="0" resource="0"
+              file="Source/UIComponents/CtrlrHelpEditor.h"/>
+        <FILE id="Wlz09D" name="CtrlrHelpViewer.cpp" compile="1" resource="0"
+              file="Source/UIComponents/CtrlrHelpViewer.cpp"/>
+        <FILE id="pWkUxT" name="CtrlrHelpViewer.h" compile="0" resource="0"
+              file="Source/UIComponents/CtrlrHelpViewer.h"/>
         <FILE id="T5Q5Dn" name="CtrlrLogViewer.cpp" compile="1" resource="0"
               file="Source/UIComponents/CtrlrLogViewer.cpp"/>
         <FILE id="FEt5Md" name="CtrlrLogViewer.h" compile="0" resource="0"
@@ -1141,7 +1162,7 @@
         <MODULEPATH id="juce_product_unlocking" path="JUCE/modules"/>
       </MODULEPATHS>
     </VS2019>
-    <VS2022 targetFolder="Builds/VisualStudio2022" vstLegacyFolder="Source/Misc/vst2sdk"
+    <VS2022 targetFolder="Builds/VisualStudio2022" vstLegacyFolder="..\..\vstsdk2.4"
             extraDefs="JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1 BOOST_BIND_GLOBAL_PLACEHOLDERS=1"
             extraCompilerFlags="/bigobj /Fpstadfx.h" smallIcon="eqFQC1" bigIcon="eqFQC1">
       <CONFIGURATIONS>
