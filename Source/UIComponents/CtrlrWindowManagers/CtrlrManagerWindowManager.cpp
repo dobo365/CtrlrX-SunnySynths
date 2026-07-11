@@ -215,7 +215,7 @@ CtrlrChildWindow *CtrlrManagerWindowManager::createWindow(const CtrlrManagerWind
             break;
 	}
 
-	w->setName("Ctrlr/" + w->getContent()->getContentName());
+	w->setName("CtrlrX - " + w->getContent()->getContentName());
 	windows.add (w);
 
 	return (w);

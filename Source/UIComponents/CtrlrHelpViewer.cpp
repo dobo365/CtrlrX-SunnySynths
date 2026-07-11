@@ -172,7 +172,7 @@ CtrlrHelpViewer::CtrlrHelpViewer(CtrlrManager &_owner)
     bmlDisplay.setURLHandler(urlHandlerInstance.get());
 
     addAndMakeVisible(bmlDisplay);
-    setSize(600, 400);
+    setSize(600, 800);
 }
 
 CtrlrHelpViewer::~CtrlrHelpViewer()
@@ -278,11 +278,14 @@ void CtrlrHelpViewer::menuItemSelected(int menuItemID, int topLevelMenuIndex)
                     headerHasItems = false;
                 }
             }
-            // CtrlrX roperty. Use JUCE XmlElement to locate its attributes safely
+            // CtrlrX property. Use JUCE XmlElement to locate its attributes safely
             else if (line.startsWith("<id"))
             {
+                // Clean the line for \r, \n et invisible spaces at end of line to be safe on Mac and Windows
+                String cleanedLine = line.trimEnd();
+                
                 // Isolate the element text to parse it safely via JUCE XML Engine
-                XmlDocument smallParser(line);
+                XmlDocument smallParser(cleanedLine);
                 std::unique_ptr<XmlElement> propElement = smallParser.getDocumentElement();
 
                 if (propElement != nullptr && propElement->hasTagName("id"))
@@ -338,7 +341,6 @@ void CtrlrHelpViewer::loadMarkdownFile(const File helpFile)
         else
         {
             bmlDisplay.setMarkdownString(helpContent);
-            //viewPort.setViewPosition(0, 0);     // Reposition the display at the top
         }
     }
 }

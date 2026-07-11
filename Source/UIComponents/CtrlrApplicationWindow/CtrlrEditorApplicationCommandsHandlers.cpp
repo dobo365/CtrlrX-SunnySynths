@@ -68,7 +68,7 @@ bool CtrlrEditor::perform (const InvocationInfo &info)
 			break;
 
 		 case showGlobalSettingsDialog:
-			owner.getWindowManager().showModalDialog ("Ctrlr/Settings", ScopedPointer <CtrlrSettings> (new CtrlrSettings(owner)), true, this);
+			owner.getWindowManager().showModalDialog ("CtrlrX - Settings", ScopedPointer <CtrlrSettings> (new CtrlrSettings(owner)), true, this);
 			break;
 		 
 
@@ -111,7 +111,7 @@ bool CtrlrEditor::perform (const InvocationInfo &info)
 			
 			// 3. Show the modal dialog, passing the raw pointer.
 			// The JUCE framework will now manage the lifetime of 'aboutWindow'.
-			owner.getWindowManager().showModalDialog ("Ctrlr/About", aboutWindow, false, this); // Is not resizable
+			owner.getWindowManager().showModalDialog ("CtrlrX - About", aboutWindow, false, this); // Is not resizable
 		}
 			break;
 

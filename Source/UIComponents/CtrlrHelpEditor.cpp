@@ -1,4 +1,4 @@
-﻿/*
+/*
   ==============================================================================
 
     CtrlrHelpEditor.cpp
@@ -48,7 +48,7 @@ CtrlrHelpEditor::CtrlrHelpEditor(CtrlrManager &_owner)
     bmlDisplay.setURLHandler(this);
     bmlDisplay.setMarkdownString(helpContent);
 
-    setSize(600, 400);
+    setSize(1300, 800);
 
     // Apply the selection/highlight rules immediately
     lookAndFeelChanged();

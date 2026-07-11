@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AudioComponents</key>
+	<array>
+		<dict>
+			<key>description</key>
+			<string>CtrlrX - Sunny Synths</string>
+			<key>factoryFunction</key>
+			<string>CtrlrXAUFactory</string>
+			<key>manufacturer</key>
+			<string>SuSy</string>
+			<key>name</key>
+			<string>Sunny Synths: CtrlrX - Sunny Synths</string>
+			<key>resourceUsage</key>
+			<dict>
+				<key>network.client</key>
+				<true/>
+				<key>temporary-exception.files.all.read-write</key>
+				<true/>
+			</dict>
+			<key>subtype</key>
+			<string>cTrX</string>
+			<key>type</key>
+			<string>aumu</string>
+			<key>version</key>
+			<integer>329252</integer>
+		</dict>
+	</array>
+	<key>BuildMachineOSBuild</key>
+	<string>23H723</string>
+	<key>CFBundleDisplayName</key>
+	<string>CtrlrX - Sunny Synths</string>
+	<key>CFBundleExecutable</key>
+	<string>CtrlrX - Sunny Synths</string>
+	<key>CFBundleIconFile</key>
+	<string>Icon.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.SunnySynths.CtrlrX</string>
+	<key>CFBundleName</key>
+	<string>CtrlrX - Sunny Synths</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>5.6.36.1</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>5.6.36.1</string>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string></string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
+	<key>DTPlatformVersion</key>
+	<string>14.5</string>
+	<key>DTSDKBuild</key>
+	<string>23F73</string>
+	<key>DTSDKName</key>
+	<string>macosx14.5</string>
+	<key>DTXcode</key>
+	<string>1540</string>
+	<key>DTXcodeBuild</key>
+	<string>15F31d</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+</dict>
+</plist>

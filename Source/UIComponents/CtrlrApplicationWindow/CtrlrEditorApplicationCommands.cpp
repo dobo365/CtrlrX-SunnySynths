@@ -108,7 +108,7 @@ void CtrlrEditor::getCommandInfo (CommandID commandID, ApplicationCommandInfo &r
 			break;
 
 		case showGlobalSettingsDialog:
-			result.setInfo ("Preferences", "Show global CTRLR preferences", globalCategory, 0);
+			result.setInfo ("Preferences", "Show global CTRLRX preferences", globalCategory, 0);
             if (!isRestricted()) // Added v5.6.32. Disable shortcut on restricted instance
             {
                 result.addDefaultKeypress ('p', ModifierKeys::commandModifier);
@@ -121,18 +121,18 @@ void CtrlrEditor::getCommandInfo (CommandID commandID, ApplicationCommandInfo &r
 			break;
 
 		case showLogViewer:
-			result.setInfo ("Log viewer", "You can view diagnostic messages here, useful when debugging problems", globalCategory, 0);
+			result.setInfo ("Log Viewer", "You can view diagnostic messages here, useful when debugging problems", globalCategory, 0);
 			result.addDefaultKeypress ('l', ModifierKeys::commandModifier);
 			break;
 
 		case showHelpViewer:
-			result.setInfo("Help viewer", "You can get help on the meaning of properties and get some code snippets", globalCategory, 0);
-			result.addDefaultKeypress('l', ModifierKeys::commandModifier);
+			result.setInfo("Help Viewer", "You can get help on the meaning of properties and get some code snippets", globalCategory, 0);
+			result.addDefaultKeypress('h', ModifierKeys::commandModifier);
 			break;
 
 		case showHelpEditor:
-			result.setInfo("Help editor", "A markdown text editor to build help pages", globalCategory, 0);
-			result.addDefaultKeypress('e', ModifierKeys::commandModifier);
+			result.setInfo("Help Editor", "A markdown text editor to build help pages", globalCategory, 0);
+			result.addDefaultKeypress('h', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
 			break;
 
 		case showMidiCalculator:
@@ -141,12 +141,12 @@ void CtrlrEditor::getCommandInfo (CommandID commandID, ApplicationCommandInfo &r
 			break;
 
 		case showAboutDialog:
-			result.setInfo ("About", "About CTRLR", globalCategory, 0);
+			result.setInfo ("About", "About CTRLRX", globalCategory, 0);
 			result.addDefaultKeypress ('a', ModifierKeys::commandModifier);
 			break;
 
 		case showKeyboardMappingDialog:
-			result.setInfo ("Keyboard mapping", "Change default keyboard mappings", globalCategory, 0);
+			result.setInfo ("Keyboard Mapping", "Change default keyboard mappings", globalCategory, 0);
             if (!isRestricted()) // Added v5.6.32. Disable shortcut on restricted instance
             {
                 result.addDefaultKeypress ('k', ModifierKeys::commandModifier);
