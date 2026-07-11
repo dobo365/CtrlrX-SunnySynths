@@ -1,10 +1,11 @@
 5.6.36.1
 ========
 Added BarelyML - Sunny Synths markdown reader library
-Added CtrlrX Help editor
-Added CtrlrX Help viewer
+Added CtrlrX Help Editor
+Added CtrlrX Help Viewer (Note: Help viewer TOC not working on Mac. Under investigation)
 Adapted Help menu
 Removed Donate logo and URL from About popup
+Adapted windows header bar from Ctrlr/ to CtrlrX -
 
 To check:
 commit 6fb34c4 5.6.34 FIXED assertions and leak detections when closing CtrlrPanelEditor
