@@ -1,0 +1,9 @@
+Ctrlrx - Sunny Synths backlog
+=============================
+
+. Panel Open: should remove the isDirty as the panel just opened
+
+Done 5.6.36.2:
+. Panel Save As: should remove the isDirty as the panelFilePath is replaced
+. Panel export restricted: pressing cancel in dialog box should not return any error
+. Panel export compressed binary: pressing cancel in dialog box should not return any error

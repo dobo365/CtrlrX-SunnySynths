@@ -92,6 +92,8 @@ const Result CtrlrWindows::exportWithDefaultPanel(CtrlrPanel*  panelToWrite, con
 		return (Result::fail("Windows Native: exportWithDefaultPanel got nullptr for panel"));
 	}
 
+	// 1. Setup Variables & Logger
+	CtrlrManager& manager = panelToWrite->getOwner();
 	File	me = File::getSpecialLocation(File::currentExecutableFile);
 	File	newMe;
 	HANDLE	hResource;
@@ -101,29 +103,68 @@ const Result CtrlrWindows::exportWithDefaultPanel(CtrlrPanel*  panelToWrite, con
 	logger.log("Starting exportWithDefaultPanel");
 	String fileExtension = me.getFileExtension();
 	logger.log("CtrlrX source fileExtension is :" + fileExtension);
-	//MemoryBlock iconData(BinaryData::ico_midi_png, BinaryData::ico_midi_pngSize);
 
+	// 2. Check if panelToWrite is a valid ptr
 	if (panelToWrite == nullptr)
 	{
 		logger.log("Error: panelToWrite is nullptr");
 		return (Result::fail("Windows Native: exportWithDefaultPanel got nullptr for panel"));
 	}
-
-	FileChooser exportFc(CTRLR_NEW_INSTANCE_DIALOG_TITLE,
-		me.getParentDirectory().getChildFile(File::createLegalFileName(panelToWrite->getProperty(Ids::name))).withFileExtension(me.getFileExtension()),
-		"*" + me.getFileExtension(),
-		panelToWrite->getOwner().getProperty(Ids::ctrlrNativeFileDialogs));
-
+	
+	// 3. Determine Initial Directory (Sticky Logic)
+	String lastPath = manager.getProperty("lastExportPath").toString();
+	File targetDir;
+	
+	if (lastPath.isNotEmpty() && File(lastPath).isDirectory())
+	{
+		targetDir = File(lastPath);
+	}
+	else
+	{
+		// First time run logic:
+		if (fileExtension.equalsIgnoreCase(".vst3") || fileExtension.equalsIgnoreCase(".dll"))
+		{
+			// Ternary to pick the folder name based on extension
+			String subFolder = fileExtension.equalsIgnoreCase(".vst3") ? "VST3" : "VST2";
+			
+			targetDir = File::getSpecialLocation(File::globalApplicationsDirectory)
+			.getChildFile("Common Files")
+			.getChildFile(subFolder);
+			
+			// Final fallback if the path is missing or restricted
+			if (!targetDir.exists())
+				targetDir = File::getSpecialLocation(File::userDocumentsDirectory);
+		}
+		else
+		{
+			targetDir = File::getSpecialLocation(File::userDocumentsDirectory);
+		}
+	}
+	
+	// 4. File Chooser
+	String defaultFileName = File::createLegalFileName(panelToWrite->getProperty(Ids::name));
+	File defaultFile = targetDir.getChildFile(defaultFileName).withFileExtension(fileExtension);
+	
+	FileChooser exportFc (CTRLR_NEW_INSTANCE_DIALOG_TITLE,
+						  defaultFile,
+						  "*" + fileExtension,
+						  manager.getProperty(Ids::ctrlrNativeFileDialogs));
+	
 	if (exportFc.browseForFileToSave(true))
 	{
 		newMe = exportFc.getResult();
-		logger.log("File selected: " + newMe.getFullPathName());
-
-		if (!newMe.hasFileExtension(me.getFileExtension()))
-		{
-			newMe = newMe.withFileExtension(me.getFileExtension());
-		}
-
+		
+		// Save sticky path
+		manager.setProperty("lastExportPath", newMe.getParentDirectory().getFullPathName());
+		// This forces Ctrlr to write the new path to the actual settings file on disk
+		
+		// Optional: Persist this to the global XML settings file on disk
+		// Disable the following line if you prefer session-only memory.
+		manager.saveState();
+		
+		if (!newMe.hasFileExtension(fileExtension))
+			newMe = newMe.withFileExtension(fileExtension);
+		
 		if (!me.copyFileTo(newMe))
 		{
 			logger.log("Error: Failed to copy executable");
@@ -134,45 +175,16 @@ const Result CtrlrWindows::exportWithDefaultPanel(CtrlrPanel*  panelToWrite, con
 	else
 	{
 		logger.log("Error: File selection dialog failed");
-		return (Result::fail("Windows Native: exportMeWithNewResource \"Save file\" dialog failed"));
+		// return (Result::fail("Windows Native: exportMeWithNewResource \"Save file\" dialog failed"));
+		return Result::fail("User cancelled the export operation.");
 	}
 
-	// Export panel data and resources
+	// 5. Update Win32 Resources (Panel Injection)
 	hResource = BeginUpdateResource(newMe.getFullPathName().toUTF8(), FALSE);
 	if (hResource)
 	{
 		if ((error = CtrlrPanel::exportPanel(panelToWrite, File(), newMe, &panelExportData, &panelResourcesData, isRestricted)) == "")
 		{
-			// Encrypt panel data and resources using JUCE BlowFish directly on copies
-			//String keyString = "yourkey"; // Replace with your actual key (security!).
-			//juce::BlowFish blowfish(keyString.toUTF8(), keyString.getNumBytesAsUTF8());
-			//
-			//if (panelExportData.getSize() > 0)
-			//{
-			//	MemoryBlock encryptedPanelData = panelExportData;
-			//	blowfish.encrypt(encryptedPanelData);
-			//	panelExportData = encryptedPanelData;
-			//	logger.log("Panel data encrypted.");
-			//}
-			//else
-			//{
-			//	logger.log("Error: panelExportData is empty");
-			//	return Result::fail("Error: panelExportData is empty");
-			//}
-			//
-			//if (panelResourcesData.getSize() > 0)
-			//{
-			//	MemoryBlock encryptedResourcesData = panelResourcesData;
-			//	blowfish.encrypt(encryptedResourcesData);
-			//	panelResourcesData = encryptedResourcesData;
-			//	logger.log("Panel resources encrypted.");
-			//}
-			//else
-			//{
-			//	logger.log("Error: panelResourcesData is empty");
-			//	return Result::fail("Error: panelResourcesData is empty");
-			//}
-
 			if (writeResource(hResource, MAKEINTRESOURCE(CTRLR_INTERNAL_PANEL_RESID), RT_RCDATA, panelExportData)
 				&& writeResource(hResource, MAKEINTRESOURCE(CTRLR_INTERNAL_RESOURCES_RESID), RT_RCDATA, panelResourcesData))
 			{
@@ -197,7 +209,7 @@ const Result CtrlrWindows::exportWithDefaultPanel(CtrlrPanel*  panelToWrite, con
 	} // End if (hResource)
 
 
-
+	// 6. Binary String Replacement (Rebranding)
 	// Introduce a delay before modifying the executable
 	logger.log("Thread sleep to delay binary modification task.");
 	juce::Thread::sleep(500); // milliseconds (250ms should be ok, adjust as needed)
@@ -225,6 +237,8 @@ const Result CtrlrWindows::exportWithDefaultPanel(CtrlrPanel*  panelToWrite, con
 					String pluginCode = panelToWrite->getProperty(Ids::panelInstanceUID).toString();
 					String manufacturerName = panelToWrite->getProperty(Ids::panelAuthorName).toString();
 					String manufacturerCode = panelToWrite->getProperty(Ids::panelInstanceManufacturerID).toString();
+					String manufacturerEmail = panelToWrite->getProperty(Ids::panelAuthorEmail).toString();
+					String manufacturerUrl = panelToWrite->getProperty(Ids::panelAuthorUrl).toString();
 					String versionMajor = panelToWrite->getProperty(Ids::panelVersionMajor).toString();
 					String versionMinor = panelToWrite->getProperty(Ids::panelVersionMinor).toString();
 					String plugType = panelToWrite->getProperty(Ids::panelPlugType).toString();
@@ -233,36 +247,47 @@ const Result CtrlrWindows::exportWithDefaultPanel(CtrlrPanel*  panelToWrite, con
 					logger.log("Plugin code: " + pluginCode);
 					logger.log("Manufacturer name: " + manufacturerName);
 					logger.log("Manufacturer code: " + manufacturerCode);
+					logger.log("Manufacturer email: " + manufacturerEmail);
+					logger.log("Manufacturer URL: " + manufacturerUrl);
 					logger.log("Version major: " + versionMajor);
 					logger.log("Version minor: " + versionMinor);
 					logger.log("Plug type: " + plugType);
 
-					MemoryBlock pluginNameHex, pluginCodeHex, manufacturerNameHex, manufacturerCodeHex, versionMajorHex, versionMinorHex, plugTypeHex;
+					MemoryBlock pluginNameHex, pluginCodeHex, manufacturerNameHex, manufacturerCodeHex, manufacturerEmailHex, manufacturerUrlHex, versionMajorHex, versionMinorHex, plugTypeHex;
 
-					hexStringToBytes(pluginName, 32, pluginNameHex);
+					hexStringToBytes(pluginName, 24, pluginNameHex);
 					hexStringToBytes(pluginCode, 4, pluginCodeHex);
-					hexStringToBytes(manufacturerName, 16, manufacturerNameHex);
+					hexStringToBytes(manufacturerName, 32, manufacturerNameHex);
 					hexStringToBytes(manufacturerCode, 4, manufacturerCodeHex);
+					hexStringToBytes(manufacturerEmail, 32, manufacturerEmailHex);
+					hexStringToBytes(manufacturerUrl, 32, manufacturerUrlHex);
 					hexStringToBytes(versionMajor, 2, versionMajorHex);
 					hexStringToBytes(versionMinor, 2, versionMinorHex);
 					hexStringToBytes(plugType, 16, plugTypeHex);
 
-					MemoryBlock searchPluginNameHex, searchPluginCodeHex, searchManufacturerNameHex, searchManufacturerCodeHex, searchPlugTypeHex;
+					MemoryBlock searchPluginNameHex, searchPluginCodeHex, searchManufacturerNameHex, searchManufacturerCodeHex, searchManufacturerEmailHex, searchManufacturerUrlHex, searchPlugTypeHex;
 
-					// Replace CtrlrX plugin name "CtrlrX          "
-					hexStringToBytes("43 74 72 6C 72 58 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20", searchPluginNameHex);
-					// Replace CtrlrX plugin manufacturer code "cTrX"
+					// Replace plugin name "CtrlrX - Sunny Synths" by the one of the panel to export (21 bytes so will be extended to 24 bytes in the vst3 file)
+					hexStringToBytes("43 74 72 6C 72 58 20 2D 20 53 75 6E 6E 79 20 53 79 6E 74 68 73 00 00 00", searchPluginNameHex);
+					// Replace plugin code "cTrX" by the one of the panel to export
 					hexStringToBytes("63 54 72 58", searchPluginCodeHex);
-					// Replace "CtrlrX Project  "
-					hexStringToBytes("43 74 72 6C 72 58 20 50 72 6F 6A 65 63 74 20 20", searchManufacturerNameHex);
-					// Replace CtrlrX plugin code "cTrl"
-					hexStringToBytes("63 54 72 6C", searchManufacturerCodeHex);
-					
-					// Replace plugType "Instrument|Tools"
+					// Replace plugin manufacturer name "Sunny Synths - D.Bontemps" by the one of the panel to export (25 bytes so will be extended to 32 bytes in the vst3 file)
+					hexStringToBytes("53 75 6E 6E 79 20 53 79 6E 74 68 73 20 2D 20 44 2E 42 6F 6E 74 65 6D 70 73 00 00 00 00 00 00 00", searchManufacturerNameHex);
+					// Replace plugin manufacturer code "SuSy" by the one of the panel to export
+					hexStringToBytes("53 75 53 79", searchManufacturerCodeHex);
+					// Replace plugin manufacturer email "sunny.synths@gmail.com   " by the one of the panel to export (written on 25 bytes with spaces to get 32 bytes in the vst3 file)
+					hexStringToBytes("73 75 6E 6E 79 2E 73 79 6E 74 68 73 40 67 6D 61 69 6C 2E 63 6F 6D 20 20 20 00 00 00 00 00 00 00", searchManufacturerEmailHex);
+					// Replace plugin manufacturer URL "www.sunnysynths.com      " by the one of the panel to export (written on 25 bytes with spaces to get 32 bytes in the vst3 file)
+					hexStringToBytes("77 77 77 2E 73 75 6E 6E 79 73 79 6E 74 68 73 2E 63 6F 6D 20 20 20 20 20 20 00 00 00 00 00 00 00", searchManufacturerUrlHex);
+					// Replace plugin type "Instrument|Tools" by the one of the panel to export
 					hexStringToBytes("49 6E 73 74 72 75 6D 65 6E 74 7C 54 6F 6F 6C 73", searchPlugTypeHex);
 					
 					// Replace plugType "Instrument|Synth"
 					// hexStringToBytes("49 6E 73 74 72 75 6D 65 6E 74 7C 53 79 6E 74 68", searchPlugTypeHex);
+
+					// Keeping the version of CtrlrX in ther panel export in order to know which CtrlrX version was used to export the panel. 
+					// This is useful for debugging and support purposes.
+					// The panel version can be displayed in the About panel of the plugin, or in the plugin's GUI, or in the plugin's settings.
 
 					logger.log("Starting string replacement process...");
 
@@ -270,6 +295,8 @@ const Result CtrlrWindows::exportWithDefaultPanel(CtrlrPanel*  panelToWrite, con
 					replaceAllOccurrences(executableData, searchPluginCodeHex, pluginCodeHex);
 					replaceAllOccurrences(executableData, searchManufacturerNameHex, manufacturerNameHex);
 					replaceAllOccurrences(executableData, searchManufacturerCodeHex, manufacturerCodeHex);
+					replaceAllOccurrences(executableData, searchManufacturerEmailHex, manufacturerEmailHex);
+					replaceAllOccurrences(executableData, searchManufacturerUrlHex, manufacturerUrlHex);
 					replaceAllOccurrences(executableData, searchPlugTypeHex, plugTypeHex);
 
 					logger.log("String replacement process completed.");
@@ -519,11 +546,6 @@ const Result CtrlrWindows::getDefaultResources(MemoryBlock& dataToWrite)
 #endif
 
 	return (readResource (nullptr, MAKEINTRESOURCE(CTRLR_INTERNAL_RESOURCES_RESID), RT_RCDATA, dataToWrite));
-}
-
-const Result CtrlrWindows::getSignature(MemoryBlock &dataToWrite)
-{
-	return (readResource (nullptr, MAKEINTRESOURCE(CTRLR_INTERNAL_SIGNATURE_RESID), RT_RCDATA, dataToWrite));
 }
 
 const Result CtrlrWindows::registerFileHandler()

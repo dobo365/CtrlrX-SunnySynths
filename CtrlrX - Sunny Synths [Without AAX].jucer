@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="hrcYoO" name="CtrlrX - Sunny Synths" reportAppUsage="1" projectType="audioplug"
-              version="5.6.36.1" bundleIdentifier="com.SunnySynths.CtrlrX"
-              includeBinaryInAppConfig="1" buildVST="1" buildVST3="1" buildAU="1"
-              buildAUv3="0" buildRTAS="0" buildAAX="0" buildStandalone="1"
-              enableIAA="0" pluginName="CtrlrX - Sunny Synths" pluginManufacturer="Sunny Synths"
-              pluginManufacturerCode="SuSy" pluginCode="cTrX" pluginIsSynth="1"
-              pluginWantsMidiIn="1" pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="0"
-              pluginEditorRequiresKeys="1" pluginAUExportPrefix="CtrlrXAU"
+              version="5.6.36.2" bundleIdentifier="com.CtrlrX.CtrlrX" includeBinaryInAppConfig="1"
+              buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
+              buildAAX="0" buildStandalone="1" enableIAA="0" pluginName="CtrlrX - Sunny Synths"
+              pluginManufacturer="Sunny Synths - D.Bontemps" pluginManufacturerCode="SuSy"
+              pluginCode="cTrX" pluginIsSynth="1" pluginWantsMidiIn="1" pluginProducesMidiOut="1"
+              pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="1" pluginAUExportPrefix="CtrlrXAU"
               pluginRTASCategory="" aaxIdentifier="com.CtrlrX.CtrlrX" companyName="Sunny Synths"
               pluginFormats="buildAU,buildStandalone,buildVST,buildVST3" jucerFormatVersion="1"
               pluginAUMainType="'aumu'" displaySplashScreen="1" pluginRTASDisableBypass="0"
               pluginRTASDisableMultiMono="0" pluginAAXDisableBypass="0" pluginAAXDisableMultiMono="0"
               cppLanguageStandard="14" pluginVST3Category="Instrument,Tools"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn,pluginProducesMidiOut,pluginEditorRequiresKeys"
-              pluginAAXCategory="2048" companyEmail="sunny.synths@gmail.com"
-              companyWebsite="www.sunnysynths.com">
+              pluginAAXCategory="2048" companyWebsite="www.sunnysynths.com      "
+              companyEmail="sunny.synths@gmail.com   ">
   <MAINGROUP id="SRLsFb" name="CtrlrX - Sunny Synths">
     <GROUP id="{BE407432-92DD-AEAB-3C70-AAE03FCD0B1D}" name="Source">
       <GROUP id="{F4D7C0F1-7F03-CB3F-30C6-F728F0E39FE2}" name="Misc">
-        <GROUP id="{7F1E7F51-816F-EAE9-444C-21A244C029B6}" name="BarelyML - Sunny Synths">
-          <FILE id="vNBOeO" name="BarelyML - Sunny Synths.cpp" compile="1" resource="0"
+        <GROUP id="{B38D2DEB-5D4D-F184-A349-66C89B260D11}" name="BarelyML - Sunny Synths">
+          <FILE id="vCMCPu" name="BarelyML - Sunny Synths.cpp" compile="1" resource="0"
                 file="Source/Misc/BarelyML - Sunny Synths/BarelyML - Sunny Synths.cpp"/>
-          <FILE id="RAsgPp" name="BarelyML - Sunny Synths.h" compile="0" resource="0"
+          <FILE id="tODDwj" name="BarelyML - Sunny Synths.h" compile="0" resource="0"
                 file="Source/Misc/BarelyML - Sunny Synths/BarelyML - Sunny Synths.h"/>
-          <FILE id="xlBCQh" name="README.md" compile="0" resource="1" file="Source/Misc/BarelyML - Sunny Synths/README.md"/>
+          <FILE id="bebwOW" name="README.md" compile="0" resource="1" file="Source/Misc/BarelyML - Sunny Synths/README.md"/>
         </GROUP>
         <GROUP id="{E0E4DD68-0D44-4709-7B14-B00F9E7420BF}" name="luabind">
           <GROUP id="{2091F07D-D8F8-5C6F-EEAF-33E046D84C00}" name="luabind">
@@ -997,10 +996,6 @@
                 file="Source/UIComponents/CtrlrPanel/CtrlrPanelEditor.cpp"/>
           <FILE id="hv7qCr" name="CtrlrPanelEditor.h" compile="0" resource="0"
                 file="Source/UIComponents/CtrlrPanel/CtrlrPanelEditor.h"/>
-          <FILE id="knzrRB" name="CtrlrPanelEditorIcons.cpp" compile="1" resource="0"
-                file="Source/UIComponents/CtrlrPanel/CtrlrPanelEditorIcons.cpp"/>
-          <FILE id="QWpENy" name="CtrlrPanelEditorIcons.h" compile="0" resource="0"
-                file="Source/UIComponents/CtrlrPanel/CtrlrPanelEditorIcons.h"/>
           <FILE id="iDNFSe" name="CtrlrPanelFindProperty.cpp" compile="1" resource="0"
                 file="Source/UIComponents/CtrlrPanel/CtrlrPanelFindProperty.cpp"/>
           <FILE id="DP5ROh" name="CtrlrPanelFindProperty.h" compile="0" resource="0"
@@ -1079,13 +1074,13 @@
               file="Source/UIComponents/CtrlrComponentSelection.cpp"/>
         <FILE id="Q0Bt0V" name="CtrlrComponentSelection.h" compile="0" resource="0"
               file="Source/UIComponents/CtrlrComponentSelection.h"/>
-        <FILE id="Ry5y5N" name="CtrlrHelpEditor.cpp" compile="1" resource="0"
+        <FILE id="ukxk0I" name="CtrlrHelpEditor.cpp" compile="1" resource="0"
               file="Source/UIComponents/CtrlrHelpEditor.cpp"/>
-        <FILE id="TMvJ7h" name="CtrlrHelpEditor.h" compile="0" resource="0"
+        <FILE id="KE6TfI" name="CtrlrHelpEditor.h" compile="0" resource="0"
               file="Source/UIComponents/CtrlrHelpEditor.h"/>
-        <FILE id="Wlz09D" name="CtrlrHelpViewer.cpp" compile="1" resource="0"
+        <FILE id="XaSdQj" name="CtrlrHelpViewer.cpp" compile="1" resource="0"
               file="Source/UIComponents/CtrlrHelpViewer.cpp"/>
-        <FILE id="pWkUxT" name="CtrlrHelpViewer.h" compile="0" resource="0"
+        <FILE id="GzZWwO" name="CtrlrHelpViewer.h" compile="0" resource="0"
               file="Source/UIComponents/CtrlrHelpViewer.h"/>
         <FILE id="T5Q5Dn" name="CtrlrLogViewer.cpp" compile="1" resource="0"
               file="Source/UIComponents/CtrlrLogViewer.cpp"/>

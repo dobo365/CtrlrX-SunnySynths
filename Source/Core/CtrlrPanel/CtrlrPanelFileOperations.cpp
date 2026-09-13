@@ -221,14 +221,15 @@ const File CtrlrPanel::savePanelAs(const CommandID saveOption)
         setProperty (Ids::panelLastSaveDir, fileToSave.getParentDirectory().getFullPathName());
         
         // Store current state panelWasDirty before changing the property panelIsDirty to false/0
-        bool panelWasDirty = isPanelDirty(); // Added v5.6.30 (removes asterisk suffix from name in panel tab). Returns getProperty(Ids::panelIsDirty,false); where false is default value if not available
+        // bool panelWasDirty = isPanelDirty(); // Added v5.6.30 (removes asterisk suffix from name in panel tab). Returns getProperty(Ids::panelIsDirty,false); where false is default value if not available
         
         setPanelDirty(false); // Updated v5.6.31. false = 0 = notDirty.
         
-        if (panelWasDirty) // Added v5.6.30. if panelPanelWasDirty = true/1
-        {
-            setPanelDirty(panelWasDirty); // Added v5.6.30. setProperty(Ids::panelIsDirty, dirty);
-        }
+		// 5.6.36.2 dobo365: as the panel is saved under a new name, the panel is not dirty anymore, so we don't need to restore the previous state of panelWasDirty. The following code is commented out. 
+		// if (panelWasDirty) // Added v5.6.30. if panelPanelWasDirty = true/1
+        // {
+        //    setPanelDirty(panelWasDirty); // Added v5.6.30. setProperty(Ids::panelIsDirty, dirty);
+        // }
         
         getUndoManager()->clearUndoHistory(); // Added v5.6.30
         updatePanelWindowTitle(); // Added v5.6.30
@@ -277,11 +278,15 @@ const File CtrlrPanel::savePanelAs(const CommandID saveOption)
 		Result res = owner.getNativeObject().exportWithDefaultPanel(this, false, false);
 		if (res.failed())
 		{
-			AlertWindow::showMessageBox (AlertWindow::WarningIcon, "Panel export", "Failed to export panel as standalone instance.\n"+res.getErrorMessage());
+			// 5.6.36.2 dobo365: notifying that the user cancelled the export as for the moment there is no way to know if the user cancelled or if there was an error.
+			// AlertWindow::showMessageBox (AlertWindow::WarningIcon, "Panel export", "Failed to export panel as standalone instance.\n"+res.getErrorMessage());
+			// notify("Failed to export panel as standalone instance: [" + res.getErrorMessage() + "]", nullptr, NotifyFailure);
+			notify("Export as instance cancelled", nullptr, NotifyInformation);
 		}
 		else
 		{
-			AlertWindow::showMessageBox (AlertWindow::InfoIcon, "Panel export", "Wrote new panel instance");
+			// AlertWindow::showMessageBox (AlertWindow::InfoIcon, "Panel export", "Wrote new panel instance");
+			notify("Panel instance successfully exported", nullptr, NotifySuccess);
 		}
 	}
 	if (saveOption == CtrlrEditor::doExportFileInstanceRestricted)
@@ -290,11 +295,15 @@ const File CtrlrPanel::savePanelAs(const CommandID saveOption)
 
 		if (res.failed())
 		{
-			AlertWindow::showMessageBox (AlertWindow::WarningIcon, "Panel export", "Failed to export panel as standalone instance.\n"+res.getErrorMessage());
+			// 5.6.36.2 dobo365: notifying that the user cancelled the export as for the moment there is no way to know if the user cancelled or if there was an error.
+			// AlertWindow::showMessageBox (AlertWindow::WarningIcon, "Panel export", "Failed to export panel as standalone restricted instance.\n"+res.getErrorMessage());
+			// notify("Failed to export panel as standalone restricted instance: [" + res.getErrorMessage() + "]", nullptr, NotifyFailure);
+			notify("Export as restricted instance cancelled", nullptr, NotifyInformation);
 		}
 		else
 		{
-			AlertWindow::showMessageBox (AlertWindow::InfoIcon, "Panel export", "Wrote new panel instance");
+			// AlertWindow::showMessageBox (AlertWindow::InfoIcon, "Panel export", "Wrote new panel instance");
+			notify("Restricted panel instance successfully exported", nullptr, NotifySuccess);
 		}
 	}
 	if (saveOption == CtrlrEditor::doExportGenerateUID)
@@ -878,7 +887,7 @@ const File CtrlrPanel::askForPanelFileToSave (CtrlrPanel *panel,
 			else
 			{
 				if (panel)
-					panel->notify ("Save file dialog failed", nullptr, NotifyFailure);
+					panel->notify ("Export as compressed XML cancelled", nullptr, NotifyInformation);
 			}
 		}
 		else
@@ -891,7 +900,7 @@ const File CtrlrPanel::askForPanelFileToSave (CtrlrPanel *panel,
 			else
 			{
 				if (panel)
-					panel->notify ("Save file dialog failed", nullptr, NotifyFailure);
+					panel->notify ("Export as XML cancelled", nullptr, NotifyInformation);
 			}
 		}
 	}
@@ -907,7 +916,7 @@ const File CtrlrPanel::askForPanelFileToSave (CtrlrPanel *panel,
 			else
 			{
 				if (panel)
-					panel->notify ("Save file dialog failed", nullptr, NotifyFailure);
+					panel->notify ("Export as compressed binary cancelled", nullptr, NotifyInformation);
 			}
 		}
 		else
@@ -920,7 +929,7 @@ const File CtrlrPanel::askForPanelFileToSave (CtrlrPanel *panel,
 			else
 			{
 				if (panel)
-					panel->notify ("Save file dialog failed", nullptr, NotifyFailure);
+					panel->notify ("Export as binary cancelled", nullptr, NotifyInformation);
 			}
 		}
 	}

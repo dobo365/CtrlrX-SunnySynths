@@ -1,3 +1,10 @@
+5.6.36.2
+========
+Dialog boxes for exports replaced by bottom notifications
+Failed export messages shown when the user cancels the export replaced by Information notification
+Adjusted VST3 export and overwriting with panel properties. Added author email and url 
+Removed isDirty flag on Panel Save As as a new file is created and the panelFilePath is replaced
+
 5.6.36.1
 ========
 Added BarelyML - Sunny Synths markdown reader library

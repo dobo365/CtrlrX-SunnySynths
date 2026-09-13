@@ -11,7 +11,7 @@
 // Audio plugin settings..
 
 #ifndef  JucePlugin_Build_VST
- #define JucePlugin_Build_VST              1
+ #define JucePlugin_Build_VST              0
 #endif
 #ifndef  JucePlugin_Build_VST3
  #define JucePlugin_Build_VST3             1
@@ -44,13 +44,13 @@
  #define JucePlugin_Desc                   "CtrlrX - Sunny Synths"
 #endif
 #ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "Sunny Synths"
+ #define JucePlugin_Manufacturer           "Sunny Synths - D.Bontemps"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
- #define JucePlugin_ManufacturerWebsite    "www.sunnysynths.com"
+ #define JucePlugin_ManufacturerWebsite    "www.sunnysynths.com      "
 #endif
 #ifndef  JucePlugin_ManufacturerEmail
- #define JucePlugin_ManufacturerEmail      "sunny.synths@gmail.com"
+ #define JucePlugin_ManufacturerEmail      "sunny.synths@gmail.com   "
 #endif
 #ifndef  JucePlugin_ManufacturerCode
  #define JucePlugin_ManufacturerCode       0x53755379
@@ -74,13 +74,13 @@
  #define JucePlugin_EditorRequiresKeyboardFocus  1
 #endif
 #ifndef  JucePlugin_Version
- #define JucePlugin_Version                5.6.36.1
+ #define JucePlugin_Version                5.6.36.2
 #endif
 #ifndef  JucePlugin_VersionCode
- #define JucePlugin_VersionCode            0x5062401
+ #define JucePlugin_VersionCode            0x5062402
 #endif
 #ifndef  JucePlugin_VersionString
- #define JucePlugin_VersionString          "5.6.36.1"
+ #define JucePlugin_VersionString          "5.6.36.2"
 #endif
 #ifndef  JucePlugin_VSTUniqueID
  #define JucePlugin_VSTUniqueID            JucePlugin_PluginCode
@@ -149,7 +149,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "Sunny Synths: CtrlrX - Sunny Synths"
+ #define JucePlugin_IAAName                "Sunny Synths - D.Bontemps: CtrlrX - Sunny Synths"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16
