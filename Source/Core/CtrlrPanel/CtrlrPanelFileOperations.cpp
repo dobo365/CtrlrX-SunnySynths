@@ -2,6 +2,7 @@
 #include "CtrlrUtilities.h"
 #include "CtrlrLog.h"
 #include "CtrlrPanel.h"
+#include "CtrlrApplicationWindow/CtrlrEditor.h"
 #include "CtrlrPanel/CtrlrPanelEditor.h"
 #include "CtrlrPanel/CtrlrPanelResourceManager.h"
 #include "CtrlrPanel/CtrlrPanelResource.h"
@@ -152,16 +153,16 @@ Result CtrlrPanel::savePanel()
             res = savePanelBin (panelFile, this, false);
         if (panelFile.hasFileExtension("bpanelz"))
             res = savePanelBin(panelFile, this, true);
-        
+
         if (getEditor())
         {
             if (res.failed())
             {
-                notify ("Panel save: ["+res.getErrorMessage()+"]", nullptr, NotifyFailure);
+                notify ("Panel Save: "+res.getErrorMessage(), nullptr, NotifyFailure);
             }
             else
             {
-                notify ("Panel saved: ["+panelFile.getFullPathName()+"]", nullptr, NotifySuccess);
+				notify ("Panel saved: "+panelFile.getFullPathName(), nullptr, NotifySuccess);
             }
         }
     }
@@ -178,17 +179,17 @@ Result CtrlrPanel::savePanel()
         {
             res = Result::fail ("Selected file is invalid");
         }
-        
+
         if (getEditor())
         {
             if (res.failed())
             {
-                notify ("Panel save: ["+res.getErrorMessage()+"]", nullptr, NotifyFailure);
+                notify ("Panel Save: "+res.getErrorMessage(), nullptr, NotifyFailure);
             }
             else
             {
-                notify ("Panel saved: ["+panelFile.getFullPathName()+"]", nullptr, NotifySuccess);
-            }
+                notify ("Panel saved: "+ret.getFullPathName(), nullptr, NotifySuccess);
+			}
         }
     }
     if (res.wasOk())
@@ -208,31 +209,59 @@ const File CtrlrPanel::savePanelAs(const CommandID saveOption)
 {
     File fileToSave;
     File f(getProperty(Ids::panelLastSaveDir));
-    
+	Result res = Result::ok();
+
     if (saveOption == CtrlrEditor::doExportFileText)
     {
         fileToSave = CtrlrPanel::askForPanelFileToSave (this, f, true, false);
         
-        if (fileToSave == File())
+		if (fileToSave == File())	// If the user cancelled the save operation, return an empty file object
             return (fileToSave);
         
-        savePanelXml (fileToSave, this);
-        setProperty (Ids::panelFilePath, fileToSave.getFullPathName());
-        setProperty (Ids::panelLastSaveDir, fileToSave.getParentDirectory().getFullPathName());
-        
-        // Store current state panelWasDirty before changing the property panelIsDirty to false/0
-        // bool panelWasDirty = isPanelDirty(); // Added v5.6.30 (removes asterisk suffix from name in panel tab). Returns getProperty(Ids::panelIsDirty,false); where false is default value if not available
-        
-        setPanelDirty(false); // Updated v5.6.31. false = 0 = notDirty.
-        
-		// 5.6.36.2 dobo365: as the panel is saved under a new name, the panel is not dirty anymore, so we don't need to restore the previous state of panelWasDirty. The following code is commented out. 
-		// if (panelWasDirty) // Added v5.6.30. if panelPanelWasDirty = true/1
-        // {
-        //    setPanelDirty(panelWasDirty); // Added v5.6.30. setProperty(Ids::panelIsDirty, dirty);
-        // }
-        
-        getUndoManager()->clearUndoHistory(); // Added v5.6.30
-        updatePanelWindowTitle(); // Added v5.6.30
+        res = savePanelXml (fileToSave, this);	// Added v5.6.36 @dobo365: check for result 
+
+		if (getEditor())
+		{
+			if (res.failed())
+			{
+				if (saveOption == CtrlrEditor::CommandIDs::doSaveAs)	// Added v5.6.36 @dobo365
+				{
+					notify("Save As: " + res.getErrorMessage(), nullptr, NotifyFailure);
+				}
+				else
+				{
+					notify("Export XML: " + res.getErrorMessage(), nullptr, NotifyFailure);
+				}
+			}
+			else
+			{
+				setProperty(Ids::panelFilePath, fileToSave.getFullPathName());
+				setProperty(Ids::panelLastSaveDir, fileToSave.getParentDirectory().getFullPathName());
+
+				// Store current state panelWasDirty before changing the property panelIsDirty to false/0
+				// bool panelWasDirty = isPanelDirty(); // Added v5.6.30 (removes asterisk suffix from name in panel tab). Returns getProperty(Ids::panelIsDirty,false); where false is default value if not available
+
+				setPanelDirty(false); // Updated v5.6.31. false = 0 = notDirty.
+
+				// Modified v5.6.36 @dobo365: as the panel is saved under a new name, the panel is not dirty anymore, so we don't need to restore the previous state of panelWasDirty. The following code is commented out. 
+				// if (panelWasDirty) // Added v5.6.30. if panelPanelWasDirty = true/1
+				// {
+				//    setPanelDirty(panelWasDirty); // Added v5.6.30. setProperty(Ids::panelIsDirty, dirty);
+				// }
+
+				getUndoManager()->clearUndoHistory(); // Added v5.6.30
+				updatePanelWindowTitle(); // Added v5.6.30
+
+				if (saveOption == CtrlrEditor::CommandIDs::doSaveAs)	// Added v5.6.36 @dobo365
+				{
+					notify("Panel saved as: " + fileToSave.getFullPathName(), nullptr, NotifySuccess);
+				}
+				else
+				{
+					notify("Panel XML exported: " + fileToSave.getFullPathName(), nullptr, NotifySuccess);
+				}
+			}
+		}
     }
     
     
@@ -240,31 +269,70 @@ const File CtrlrPanel::savePanelAs(const CommandID saveOption)
 	{
 		fileToSave = CtrlrPanel::askForPanelFileToSave (this, f, true, true);
 
-		if (fileToSave == File())
+		if (fileToSave == File())	// If the user cancelled the save operation, return an empty file object
 			return (fileToSave);
 
-		savePanelXml (fileToSave, this, true);
-		setProperty (Ids::panelFilePath, fileToSave.getFullPathName());
-		setProperty (Ids::panelLastSaveDir, fileToSave.getParentDirectory().getFullPathName());
+		res = savePanelXml(fileToSave, this);	// Added v5.6.36 @dobo365: check for result 
+
+		if (getEditor())
+		{
+			if (res.failed())
+			{
+				notify("Export compressed XML: " + res.getErrorMessage(), nullptr, NotifyFailure);
+			}
+			else
+			{
+				setProperty(Ids::panelFilePath, fileToSave.getFullPathName());
+				setProperty(Ids::panelLastSaveDir, fileToSave.getParentDirectory().getFullPathName());
+				notify("Panel compressed XML exported: " + fileToSave.getFullPathName(), nullptr, NotifySuccess);
+			}
+		}
 	}
+
 	if (saveOption == CtrlrEditor::doExportFileBin)
 	{
 		fileToSave = CtrlrPanel::askForPanelFileToSave (this, f, false, false);
 
-		if (fileToSave == File())
+		if (fileToSave == File())	// If the user cancelled the save operation, return an empty file object
 			return (fileToSave);
 
-		savePanelBin (fileToSave, this, false);
+		res = savePanelBin (fileToSave, this, false);	// Added v5.6.36 @dobo365: check for result 
+
+		if (getEditor())
+		{
+			if (res.failed())
+			{
+				notify("Export binary: " + res.getErrorMessage(), nullptr, NotifyFailure);
+			}
+			else
+			{
+				notify("Panel binary exported: " + fileToSave.getFullPathName(), nullptr, NotifySuccess);
+			}
+		}
 	}
+
 	if (saveOption == CtrlrEditor::doExportFileZBin)
 	{
 		fileToSave = CtrlrPanel::askForPanelFileToSave (this, f, false, true);
 
-		if (fileToSave == File())
+		if (fileToSave == File())	// If the user cancelled the save operation, return an empty file object
 			return (fileToSave);
 
-		savePanelBin (fileToSave, this, true);
+		res = savePanelBin (fileToSave, this, true);	// Added v5.6.36 @dobo365: check for result 
+
+		if (getEditor())
+		{
+			if (res.failed())
+			{
+				notify("Export compressed binary: " + res.getErrorMessage(), nullptr, NotifyFailure);
+			}
+			else
+			{
+				notify("Panel compressed binary exported: " + fileToSave.getFullPathName(), nullptr, NotifySuccess);
+			}
+		}
 	}
+
 	if (saveOption == CtrlrEditor::doExportFileZBinRes)
 	{
 		const String err = exportPanel(this, f);
@@ -273,39 +341,42 @@ const File CtrlrPanel::savePanelAs(const CommandID saveOption)
 			AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Panel Export", err);
 		}
 	}
+
 	if (saveOption == CtrlrEditor::doExportFileInstance)
 	{
-		Result res = owner.getNativeObject().exportWithDefaultPanel(this, false, false);
+		res = owner.getNativeObject().exportWithDefaultPanel(this, false, false);
 		if (res.failed())
 		{
-			// 5.6.36.2 dobo365: notifying that the user cancelled the export as for the moment there is no way to know if the user cancelled or if there was an error.
-			// AlertWindow::showMessageBox (AlertWindow::WarningIcon, "Panel export", "Failed to export panel as standalone instance.\n"+res.getErrorMessage());
-			// notify("Failed to export panel as standalone instance: [" + res.getErrorMessage() + "]", nullptr, NotifyFailure);
-			notify("Export as instance cancelled", nullptr, NotifyInformation);
+			// Modified v5.6.36 @dobo365: changed from AlertWindow to notify() with detection of user cancellation
+			if (res.getErrorMessage() == "User cancelled the export operation.")
+				notify("Export as instance cancelled", nullptr, NotifyInformation);
+			else
+				notify("Failed to export panel as instance: " + res.getErrorMessage(), nullptr, NotifyFailure);
 		}
 		else
 		{
-			// AlertWindow::showMessageBox (AlertWindow::InfoIcon, "Panel export", "Wrote new panel instance");
-			notify("Panel instance successfully exported", nullptr, NotifySuccess);
+			notify("Panel instance successfully exported", nullptr, NotifySuccess);	// Modified v5.6.36 @dobo365: changed from AlertWindow to notify() 
 		}
 	}
+
 	if (saveOption == CtrlrEditor::doExportFileInstanceRestricted)
 	{
-		Result res = owner.getNativeObject().exportWithDefaultPanel(this, true, true);
+		res = owner.getNativeObject().exportWithDefaultPanel(this, true, true);
 
 		if (res.failed())
 		{
-			// 5.6.36.2 dobo365: notifying that the user cancelled the export as for the moment there is no way to know if the user cancelled or if there was an error.
-			// AlertWindow::showMessageBox (AlertWindow::WarningIcon, "Panel export", "Failed to export panel as standalone restricted instance.\n"+res.getErrorMessage());
-			// notify("Failed to export panel as standalone restricted instance: [" + res.getErrorMessage() + "]", nullptr, NotifyFailure);
-			notify("Export as restricted instance cancelled", nullptr, NotifyInformation);
+			// Modified v5.6.36 @dobo365: changed from AlertWindow to notify() with detection of user cancellation
+			if (res.getErrorMessage() == "User cancelled the export operation.") 
+				notify("Export as restricted instance cancelled", nullptr, NotifyInformation);
+			else
+				notify("Failed to export panel as restricted instance: " + res.getErrorMessage(), nullptr, NotifyFailure);
 		}
 		else
 		{
-			// AlertWindow::showMessageBox (AlertWindow::InfoIcon, "Panel export", "Wrote new panel instance");
-			notify("Restricted panel instance successfully exported", nullptr, NotifySuccess);
+			notify("Restricted panel instance successfully exported", nullptr, NotifySuccess);	// Modified v5.6.36 @dobo365: changed from AlertWindow to notify() 
 		}
 	}
+
 	if (saveOption == CtrlrEditor::doExportGenerateUID)
 	{
 		setProperty (Ids::panelUID, generateRandomUnique(STR (Time::currentTimeMillis())));
@@ -619,7 +690,7 @@ Result CtrlrPanel::savePanelBin(const File &fileToSave, CtrlrPanel *panel, const
 	else
 	{
 		AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Can't save panel", "I can't write to the specified file", "OK");
-		return (Result::fail ("savePanelBin now write access to file: "+fileToSave.getFullPathName()));
+		return (Result::fail ("savePanelBin no write access to file: "+fileToSave.getFullPathName()));
 	}
 }
 
@@ -887,7 +958,7 @@ const File CtrlrPanel::askForPanelFileToSave (CtrlrPanel *panel,
 			else
 			{
 				if (panel)
-					panel->notify ("Export as compressed XML cancelled", nullptr, NotifyInformation);
+					panel->notify ("Export as compressed XML cancelled", nullptr, NotifyInformation);	// Modified v5.6.36 @dobo365: changed from NotifyFailure to NotifyInformation, as the user cancelled the operation, it is not a failure.
 			}
 		}
 		else
@@ -900,7 +971,7 @@ const File CtrlrPanel::askForPanelFileToSave (CtrlrPanel *panel,
 			else
 			{
 				if (panel)
-					panel->notify ("Export as XML cancelled", nullptr, NotifyInformation);
+					panel->notify ("Export as XML cancelled", nullptr, NotifyInformation);	// Modified v5.6.36 @dobo365: changed from NotifyFailure to NotifyInformation, as the user cancelled the operation, it is not a failure.
 			}
 		}
 	}
@@ -916,7 +987,7 @@ const File CtrlrPanel::askForPanelFileToSave (CtrlrPanel *panel,
 			else
 			{
 				if (panel)
-					panel->notify ("Export as compressed binary cancelled", nullptr, NotifyInformation);
+					panel->notify ("Export as compressed binary cancelled", nullptr, NotifyInformation);	// Modified v5.6.36 @dobo365: changed from NotifyFailure to NotifyInformation, as the user cancelled the operation, it is not a failure.
 			}
 		}
 		else
@@ -929,7 +1000,7 @@ const File CtrlrPanel::askForPanelFileToSave (CtrlrPanel *panel,
 			else
 			{
 				if (panel)
-					panel->notify ("Export as binary cancelled", nullptr, NotifyInformation);
+					panel->notify("Export as binary cancelled", nullptr, NotifyInformation);	// Modified v5.6.36 @dobo365: changed from NotifyFailure to NotifyInformation, as the user cancelled the operation, it is not a failure.
 			}
 		}
 	}
