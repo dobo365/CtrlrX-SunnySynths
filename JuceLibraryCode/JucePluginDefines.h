@@ -11,7 +11,7 @@
 // Audio plugin settings..
 
 #ifndef  JucePlugin_Build_VST
- #define JucePlugin_Build_VST              0
+ #define JucePlugin_Build_VST              1
 #endif
 #ifndef  JucePlugin_Build_VST3
  #define JucePlugin_Build_VST3             1
@@ -38,16 +38,16 @@
  #define JucePlugin_Enable_IAA             0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "CtrlrX - Sunny Synths"
+ #define JucePlugin_Name                   "CtrlrX - Sunny Synths VST3plugin"
 #endif
 #ifndef  JucePlugin_Desc
  #define JucePlugin_Desc                   "CtrlrX - Sunny Synths"
 #endif
 #ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "Sunny Synths - D.Bontemps"
+ #define JucePlugin_Manufacturer           "Sunny Synths - DominiqueBontemps"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
- #define JucePlugin_ManufacturerWebsite    "www.sunnysynths.com      "
+ #define JucePlugin_ManufacturerWebsite    "https://www.sunnysynths.com/info"
 #endif
 #ifndef  JucePlugin_ManufacturerEmail
  #define JucePlugin_ManufacturerEmail      "sunny.synths@gmail.com   "
@@ -107,7 +107,7 @@
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.SunnySynths.CtrlrX
+ #define JucePlugin_CFBundleIdentifier     com.CtrlrX.CtrlrX
 #endif
 #ifndef  JucePlugin_RTASCategory
  #define JucePlugin_RTASCategory           0
@@ -149,7 +149,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "Sunny Synths - D.Bontemps: CtrlrX - Sunny Synths"
+ #define JucePlugin_IAAName                "Sunny Synths - DominiqueBontemps: CtrlrX - Sunny Synths VST3plugin"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16

@@ -3,7 +3,8 @@
 Dialog boxes for exports replaced by bottom notifications
 Failed export messages shown when the user cancels the export replaced by Information notification
 Added checks and notifications for all commands in the Export menu
-Adjusted VST3 export and overwriting with panel properties. Added author email and url 
+Adjusted VST3 export and overwriting with panel properties. Added author email and url
+Different starting .jucer files On MacOS and Windows due to the VST3 export and overwriting 
 Removed isDirty flag on Panel Save As as a new file is created and the panelFilePath is replaced
 
 5.6.36.1

@@ -11,7 +11,7 @@ CtrlrAbout::CtrlrAbout (CtrlrManager &_owner)
     // CTRLRX LOGO SVG
     addAndMakeVisible (ctrlrLogo = gui::createDrawableButton("CtrlrX", BIN2STR(ctrlrx_logo_svg))); // Updated v5.6.31. It required to drag drop SVG file in the projucer in the icon folder to be embedded
     ctrlrLogo->addListener (this);
-    ctrlrLogo->setTooltip (TRANS("Visit ctrlr.org"));
+    ctrlrLogo->setTooltip (TRANS("Visit the Ctrlr forum on GitHub"));
     ctrlrLogo->setMouseCursor(MouseCursor::PointingHandCursor);
     
     // "Ctrlr" logo as letters
@@ -75,20 +75,33 @@ CtrlrAbout::CtrlrAbout (CtrlrManager &_owner)
     creditsLabel->setText ("CtrlrX - Sunny Synths is an adapted version of\n"
                            "CtrlrX by Damien Sellier which is an updated version of\n"
                            "Ctrlr by Roman Kubiak under BSD|GPL license.");
-   
-    // Github LOGO SVG
-    addAndMakeVisible (githubLogo = gui::createDrawableButton("Github Logo", BIN2STR(github_colour_svg))); // Updated v5.6.31. It required to drag drop SVG file in the projucer in the icon folder to be embedded
-    githubLogo->addListener (this);
-    githubLogo->setTooltip (TRANS("Visit CtrlrX github page"));
-    githubLogo->setMouseCursor(MouseCursor::PointingHandCursor);
     
-    // Github link
-    addAndMakeVisible (ctrlrxUrl = new HyperlinkButton ("Visit CtrlrX github page", URL ("https://github.com/damiensellier/CtrlrX")));
-    ctrlrxUrl->setTooltip (TRANS("Visit CtrlrX github page"));
-    ctrlrxUrl->setFont(14.00f, Font::plain);
-    ctrlrxUrl->setJustificationType(Justification::topLeft);
-    ctrlrxUrl->setColour (HyperlinkButton::textColourId, Colour(getLookAndFeel().findColour (PopupMenu::highlightedBackgroundColourId)));
-/*    
+     // Github Sunny Synths LOGO SVG
+     addAndMakeVisible (githubSSLogo = gui::createDrawableButton("GitHub Logo", BIN2STR(github_colour_svg))); // v5.6.36 @dobo365 Added
+     githubSSLogo->addListener (this);
+     githubSSLogo->setTooltip (TRANS("Visit CtrlrX - Sunny Synths github page"));
+     githubSSLogo->setMouseCursor(MouseCursor::PointingHandCursor);
+     
+     // Github Sunny Synths link
+     addAndMakeVisible (ctrlrxSSUrl = new HyperlinkButton ("Visit CtrlrX - Sunny Synths GitHub page", URL ("https://github.com/dobo365/CtrlrX-SunnySynths")));
+     ctrlrxSSUrl->setTooltip (TRANS(""));
+     ctrlrxSSUrl->setFont(14.00f, Font::plain);
+     ctrlrxSSUrl->setJustificationType(Justification::topLeft);
+     ctrlrxSSUrl->setColour (HyperlinkButton::textColourId, Colour(getLookAndFeel().findColour (PopupMenu::highlightedBackgroundColourId)));
+    
+     // Github LOGO SVG
+     addAndMakeVisible (githubLogo = gui::createDrawableButton("GitHub Logo", BIN2STR(github_colour_svg))); // Updated v5.6.31. It required to drag drop SVG file in the projucer in the icon folder to be embedded
+     githubLogo->addListener (this);
+     githubLogo->setTooltip (TRANS("Visit CtrlrX GitHub page"));
+     githubLogo->setMouseCursor(MouseCursor::PointingHandCursor);
+     
+     // Github link
+     addAndMakeVisible (ctrlrxUrl = new HyperlinkButton ("Visit CtrlrX GitHub page", URL ("https://github.com/damiensellier/CtrlrX")));
+     ctrlrxUrl->setTooltip (TRANS(""));
+     ctrlrxUrl->setFont(14.00f, Font::plain);
+     ctrlrxUrl->setJustificationType(Justification::topLeft);
+     ctrlrxUrl->setColour (HyperlinkButton::textColourId, Colour(getLookAndFeel().findColour (PopupMenu::highlightedBackgroundColourId)));
+/*
     // PayPal LOGO SVG
     addAndMakeVisible (paypalLogo = gui::createDrawableButton("PayPal Logo", BIN2STR(paypal_colour_svg))); // Updated v5.6.31. It required to drag drop SVG file in the projucer in the icon folder to be embedded
     paypalLogo->addListener (this);
@@ -356,7 +369,8 @@ CtrlrAbout::~CtrlrAbout()
 {
     
 	if (ctrlrLogo)         ctrlrLogo->removeListener(this);
-	if (githubLogo)        githubLogo->removeListener(this);
+    if (githubLogo)        githubLogo->removeListener(this);
+    if (githubSSLogo)      githubSSLogo->removeListener(this);
 	//if (paypalLogo)        paypalLogo->removeListener(this);
 	if (vst3AuJuceLogo)    vst3AuJuceLogo->removeListener(this);
     
@@ -369,6 +383,7 @@ CtrlrAbout::~CtrlrAbout()
     ctrlrxVersionLabel = nullptr;
     ctrlrxReleaseDateLabel = nullptr;
     ctrlrxUrl = nullptr;
+    ctrlrxSSUrl = nullptr;
     //ctrlrxDonateUrl = nullptr;
     descriptionLabel = nullptr;
     copyrightLabel = nullptr;
@@ -440,11 +455,17 @@ void CtrlrAbout::resized()
     int creditsLabelheight = 48;
     heightPosition += ( ctrlrxLibsVersionLabelheight + paddingSize );
     creditsLabel->setBounds (ctrlrLogoSize + paddingSize*3 + 4, heightPosition, rightColumnWidth, creditsLabelheight);
-        
-    int ctrlrxUrlHeight = 18;
+    
+    int ctrlrxSSUrlHeight = 18;
     heightPosition += ( creditsLabelheight + paddingSize );
+    githubSSLogo->setBounds (ctrlrLogoSize + paddingSize*3, heightPosition -1, ctrlrxSSUrlHeight +2, ctrlrxSSUrlHeight +2);
+    ctrlrxSSUrl->setBounds (ctrlrLogoSize + paddingSize*5 +4, heightPosition, rightColumnWidth, ctrlrxSSUrlHeight);
+
+    int ctrlrxUrlHeight = 18;
+    heightPosition += ( ctrlrxSSUrlHeight );
     githubLogo->setBounds (ctrlrLogoSize + paddingSize*3, heightPosition -1, ctrlrxUrlHeight +2, ctrlrxUrlHeight +2);
     ctrlrxUrl->setBounds (ctrlrLogoSize + paddingSize*5 +4, heightPosition, rightColumnWidth, ctrlrxUrlHeight);
+
 /*
     int ctrlrxDonateUrlHeight = 18;
     heightPosition += ( ctrlrxUrlHeight );
@@ -454,7 +475,7 @@ void CtrlrAbout::resized()
     
     // Centered
     int descriptionLabelheight = 48;
-    heightPosition = ( ctrlrLogoSize + paddingSize*4 );
+    heightPosition = ( ctrlrLogoSize + paddingSize*5 );
     descriptionLabel->setBounds (paddingSize, heightPosition, getWidth() - paddingSize*2, descriptionLabelheight);
     
     

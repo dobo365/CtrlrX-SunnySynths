@@ -52,8 +52,8 @@ const Result CtrlrMac::exportWithDefaultPanel(CtrlrPanel* panelToWrite, const bo
     File fcInitialDirectory;
     
     // Output the extension type of the exporter instance to the debug log.
-    std::cout << "CtrlrX source fileExtension is : " << fileExtension << std::endl;
-    logger.log("CtrlrX source fileExtension is :" + fileExtension);
+    std::cout << "CtrlrX - Sunny Synths source fileExtension is : " << fileExtension << std::endl;
+    logger.log("CtrlrX - Sunny Synths source fileExtension is :" + fileExtension);
     
     
     // Step 1: Determine the primary target folder based on application type.
@@ -154,7 +154,7 @@ const Result CtrlrMac::exportWithDefaultPanel(CtrlrPanel* panelToWrite, const bo
         File panelFile = newMe.getChildFile("Contents/Resources/" + String(CTRLR_MAC_PANEL_FILE));
         File resourcesFile = newMe.getChildFile("Contents/Resources/" + String(CTRLR_MAC_RESOURCES_FILE));
         File fileEncrypted = newMe.getChildFile("Contents/Resources/"+String(CTRLR_MAC_PANEL_FILE)+String("BF")); // Added v5.6.31
-        File executableFile = me.getChildFile("Contents/MacOS/CtrlrX");
+        File executableFile = me.getChildFile("Contents/MacOS/CtrlrX - Sunny Synths");  // v5.6.36 Name changed from CtrlrX to CtrlrX - Sunny Synths
         
         if (panelFile.create() && panelFile.hasWriteAccess()){ // Panel File
             if (!panelFile.replaceWithData(panelExportData.getData(), panelExportData.getSize()))
@@ -265,24 +265,15 @@ const Result CtrlrMac::exportWithDefaultPanel(CtrlrPanel* panelToWrite, const bo
                         
                         // Convert plugin name to hex for substitution
                         
-                        String pluginName32 = panelToWrite->getProperty(Ids::name).toString();
-                        int pluginNameMaxLength32 = 32; // Updated v.5.6.33. 32 char long.
-                        MemoryBlock pluginNameHex32;
-                        hexStringToBytes(pluginName32, pluginNameMaxLength32, pluginNameHex32);
-                        std::cout << "pluginName (32 char long): " << pluginName32 << std::endl;
-                        std::cout << "pluginNameHex representation (32 char long): " << bytesToHexString(pluginNameHex32) << std::endl;
-                        logger.log("pluginName (32 char long): " + pluginName32);
-                        logger.log("pluginNameHex representation (32 char long): " + bytesToHexString(pluginNameHex32));
-                        
-                        String pluginName16 = panelToWrite->getProperty(Ids::name).toString();
-                        int pluginNameMaxLength16 = 16; // Updated v.5.6.33. Only 16 char long.
-                        MemoryBlock pluginNameHex16;
-                        hexStringToBytes(pluginName16, pluginNameMaxLength16, pluginNameHex16);
-                        std::cout << "pluginName (16 char long): " << pluginName16 << std::endl;
-                        std::cout << "pluginNameHex representation (16 char long): " << bytesToHexString(pluginNameHex16) << std::endl;
-                        logger.log("pluginName (16 char long): " + pluginName16);
-                        logger.log("pluginNameHex representation (16 char long): " + bytesToHexString(pluginNameHex16));
-                        
+                        String pluginName = panelToWrite->getProperty(Ids::name).toString();
+                        int pluginNameMaxLength = 32; // Updated v.5.6.36. 32 char long.
+                        MemoryBlock pluginNameHex;
+                        hexStringToBytes(pluginName, pluginNameMaxLength, pluginNameHex);
+                        std::cout << "pluginName: " << pluginName << std::endl;
+                        std::cout << "pluginNameHex representation: " << bytesToHexString(pluginNameHex) << std::endl;
+                        logger.log("pluginName: " + pluginName);
+                        logger.log("pluginNameHex representation: " + bytesToHexString(pluginNameHex));
+
                         // Convert plugin code to hex for substitution
                         String pluginCode = panelToWrite->getProperty(Ids::panelInstanceUID).toString();
                         int pluginCodeMaxLength = 4;
@@ -295,7 +286,7 @@ const Result CtrlrMac::exportWithDefaultPanel(CtrlrPanel* panelToWrite, const bo
                         
                         // Convert manufacturer name to hex for substitution
                         String manufacturerName = panelToWrite->getProperty(Ids::panelAuthorName).toString();
-                        int manufacturerNameMaxLength = 16;
+                        int manufacturerNameMaxLength = 32;
                         MemoryBlock manufacturerNameHex;
                         hexStringToBytes(manufacturerName, manufacturerNameMaxLength, manufacturerNameHex);
                         std::cout << "manufacturerName: " << manufacturerName << std::endl;
@@ -313,6 +304,42 @@ const Result CtrlrMac::exportWithDefaultPanel(CtrlrPanel* panelToWrite, const bo
                         logger.log("manufacturerCode: " + manufacturerCode);
                         logger.log("manufacturerCodeHex representation: " + bytesToHexString(manufacturerCodeHex));
                         
+                        // v5.6.36 dobo365 Added conversion manufacturer email to hex for substitution
+                        String manufacturerEmail = panelToWrite->getProperty(Ids::panelAuthorEmail).toString();
+                        MemoryBlock manufacturerEmailPart1Hex; // First 16 bytes
+                        MemoryBlock manufacturerEmailPart2Hex; // Remaining 8 bytes
+                        if (manufacturerEmail.length() <= 16)
+                        {
+                            // When the replacement email is up to 16 bytes, the first part takes all while the second part is set to 00
+                            hexStringToBytes(manufacturerEmail, 16, manufacturerEmailPart1Hex);
+                            hexStringToBytes("", 8, manufacturerEmailPart2Hex);
+                        }
+                        else
+                        {
+                            // When longer than 16 bytes then split on 16+8 bytes
+                            String emailPart1 = manufacturerEmail.substring(0, 16);
+                            String emailPart2 = manufacturerEmail.substring(16, 24); // Maximum 8 remaining bytes
+                            
+                            hexStringToBytes(emailPart1, 16, manufacturerEmailPart1Hex);
+                            hexStringToBytes(emailPart2, 8, manufacturerEmailPart2Hex);
+                        }
+                        std::cout << "manufacturerEmail: " << manufacturerEmail << std::endl;
+                        std::cout << "manufacturerEmailPart1Hex representation: " << bytesToHexString(manufacturerEmailPart1Hex) << std::endl;
+                        std::cout << "manufacturerEmailPart2Hex representation: " << bytesToHexString(manufacturerEmailPart2Hex) << std::endl;
+                        logger.log("manufacturerEmail: " + manufacturerEmail);
+                        logger.log("manufacturerEmailPart1Hex representation: " + bytesToHexString(manufacturerEmailPart1Hex));
+                        logger.log("manufacturerEmailPart2Hex representation: " + bytesToHexString(manufacturerEmailPart2Hex));
+
+                        // v5.6.36 dobo365 Added conversion manufacturer URL to hex for substitution
+                        String manufacturerUrl = panelToWrite->getProperty(Ids::panelAuthorUrl).toString();
+                        int manufacturerUrlMaxLength = 32;
+                        MemoryBlock manufacturerUrlHex;
+                        hexStringToBytes(manufacturerUrl, manufacturerUrlMaxLength, manufacturerUrlHex);
+                        std::cout << "manufacturerUrl: " << manufacturerUrl << std::endl;
+                        std::cout << "manufacturerUrlHex representation: " << bytesToHexString(manufacturerUrlHex) << std::endl;
+                        logger.log("manufacturerUrl: " + manufacturerUrl);
+                        logger.log("manufacturerUrlHex representation: " + bytesToHexString(manufacturerUrlHex));
+
                         // Convert version Major to hex for substitution
                         String versionMajor = panelToWrite->getProperty(Ids::panelVersionMajor).toString();
                         int versionMajorMaxLength = 2;
@@ -345,49 +372,61 @@ const Result CtrlrMac::exportWithDefaultPanel(CtrlrPanel* panelToWrite, const bo
                         
                         
                         // Substitution process
-                        // Replace CtrlrX plugin name
-                        String searchPluginName32 = "43 74 72 6C 72 58 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20"; // Updated v5.6.33. Only for 32 bytes name length. "CtrlrX                                 "
-                        if (isStringPresent(executableData, searchPluginName32)) {
-                            // if the searched identifier is present in the executable data
-                            // Replace CtrlrX plugin name "CtrlrX                                 "
-                            MemoryBlock searchPluginNameHex32;
-                            hexStringToBytes(searchPluginName32, searchPluginNameHex32);
-                            replaceOccurrences(executableData, searchPluginNameHex32, pluginNameHex32, -1);
-                            std::cout << "Plugin name (32 char) replacement process complete." << std::endl;
-                            logger.log("Plugin name (32 char) replacement process complete.");
-                        } else {
-                            // if the searched identifier is NOT present in the executable data
-                            // Replace CtrlrX plugin name "CtrlrX            "
-                            String searchPluginName16 = "43 74 72 6C 72 58 20 20 20 20 20 20 20 20 20 20"; // Updated v5.6.33. Only for 16 bytes name length. "CtrlrX            "
-                            MemoryBlock searchPluginNameHex16;
-                            hexStringToBytes(searchPluginName16, searchPluginNameHex16); // Corrected call
-                            replaceOccurrences(executableData, searchPluginNameHex16, pluginNameHex16, -1);
-                            std::cout << "Plugin name (16 char) replacement process complete." << std::endl;
-                            logger.log("Plugin name (16 char) replacement process complete.");
-                        }
+                        // Replace plugin name "CtrlrX - Sunny Synths VST3plugin"
+                        String searchPluginName = "43 74 72 6C 72 58 20 2D 20 53 75 6E 6E 79 20 53 79 6E 74 68 73 20 56 53 54 33 70 6C 75 67 69 6E"; // Updated v5.6.36 @dobo365 to be exactly 32 bytes
+                        MemoryBlock searchPluginNameHex;
+                        hexStringToBytes(searchPluginName, searchPluginNameHex);
+                        replaceOccurrences(executableData, searchPluginNameHex, pluginNameHex, -1);
+                        std::cout << "Plugin name replacement process complete." << std::endl;
+                        logger.log("Plugin name replacement process complete.");
                         
-                        // Replace CtrlrX plugin manufacturer code "cTrX"
+                        // Replace plugin code "cTrX" by the one of the panel to export
                         MemoryBlock searchPluginCodeHex;
                         hexStringToBytes("63 54 72 58", searchPluginCodeHex);
                         replaceOccurrences(executableData, searchPluginCodeHex, pluginCodeHex, -1);
                         std::cout << "Plugin code replacement complete." << std::endl;
                         logger.log("Plugin code replacement complete.");
                         
-                        // Replace "CtrlrX Project  "
+                        // Replace plugin manufacturer name "Sunny Synths - DominiqueBontemps" by the one of the panel to export (Updated v5.6.36 @dobo365 to be exactly 32 bytes)
                         MemoryBlock searchManufacturerNameHex;
-                        hexStringToBytes("43 74 72 6C 72 58 20 50 72 6F 6A 65 63 74 20 20", searchManufacturerNameHex);
+                        hexStringToBytes("53 75 6E 6E 79 20 53 79 6E 74 68 73 20 2D 20 44 6F 6D 69 6E 69 71 75 65 42 6F 6E 74 65 6D 70 73", searchManufacturerNameHex);
                         replaceOccurrences(executableData, searchManufacturerNameHex, manufacturerNameHex, -1);
                         std::cout << "Manufacturer name replacement complete." << std::endl;
                         logger.log("Manufacturer name replacement complete.");
                         
-                        // Replace CtrlrX plugin code "cTrl"
+                        // Replace plugin manufacturer code "SuSy" by the one of the panel to export
                         MemoryBlock searchManufacturerCodeHex;
-                        hexStringToBytes("63 54 72 6C", searchManufacturerCodeHex);
+                        hexStringToBytes("53 75 53 79", searchManufacturerCodeHex);
                         replaceOccurrences(executableData, searchManufacturerCodeHex, manufacturerCodeHex, -1);
                         std::cout << "Manufacturer code replacement complete." << std::endl;
                         logger.log("Manufacturer code replacement complete.");
                         
-                        
+                        // v5.6.36 Added replacement of plugin manufacturer email "sunny.synths@gmail.com" 22 bytes that will become 16+8 bytes
+                        // Part1 : "sunny.synths@gm" (16 bytes)
+                        String searchEmailPart1 = "73 75 6E 6E 79 2E 73 79 6E 74 68 73 40 67 6D 61";
+                        MemoryBlock searchEmailPart1Hex;
+                        hexStringToBytes(searchEmailPart1, searchEmailPart1Hex);
+                        replaceOccurrences(executableData, searchEmailPart1Hex, manufacturerEmailPart1Hex, -1);
+                        std::cout << "Manufacturer email Part1 replacement process complete." << std::endl;
+                        logger.log("Manufacturer email Part1 replacement process complete.");
+                        // Part2 : "il.com  " (8 bytes)
+                        String searchEmailPart2 = "69 6C 2E 63 6F 6D 20 20";
+                        MemoryBlock searchEmailPart2Hex;
+                        hexStringToBytes(searchEmailPart2, searchEmailPart2Hex);
+                        replaceOccurrences(executableData, searchEmailPart2Hex, manufacturerEmailPart2Hex, -1);
+                        std::cout << "Manufacturer email Part2 replacement process complete." << std::endl;
+                        logger.log("Manufacturer email Part2 replacement process complete.");
+                        std::cout << "Manufacturer email replacement process complete." << std::endl;
+                        logger.log("Manufacturer email replacement process complete.");
+
+                        // v5.6.36 Added replacement of plugin manufacturer Url "https://www.sunnysynths.com/info" Exactly 32 bytes
+                        String searchManufacturerUrl = "68 74 74 70 73 3A 2F 2F 77 77 77 2E 73 75 6E 6E 79 73 79 6E 74 68 73 2E 63 6F 6D 2F 69 6E 66 6F"; // Updated v5.6.36 @dobo365 to be exactly 32 bytes
+                        MemoryBlock searchManufacturerUrlHex;
+                        hexStringToBytes(searchManufacturerUrl, searchManufacturerUrlHex);
+                        replaceOccurrences(executableData, searchManufacturerUrlHex, manufacturerUrlHex, -1);
+                        std::cout << "Manufacturer Url replacement process complete." << std::endl;
+                        logger.log("Manufacturer Url replacement process complete.");
+
                         // Replace plugType
                         
                         // If searchData is in one block, not split
@@ -418,7 +457,7 @@ const Result CtrlrMac::exportWithDefaultPanel(CtrlrPanel* panelToWrite, const bo
                         }
                         
                         // Save the modified executable
-                        File newExecutableFile = newMe.getChildFile("Contents/MacOS/CtrlrX");
+                        File newExecutableFile = newMe.getChildFile("Contents/MacOS/CtrlrX - Sunny Synths");    // v5.6.36 Name adapted to CtrlrX - Sunny Synths
                         if (!newExecutableFile.replaceWithData(executableData.getData(), executableData.getSize()))
                         {
                             std::cout << "Failed to write modified executable data." << std::endl;

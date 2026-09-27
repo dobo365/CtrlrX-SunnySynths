@@ -8,7 +8,7 @@
     <key>CFBundleIconFile</key>
     <string>Icon.icns</string>
     <key>CFBundleIdentifier</key>
-    <string>com.SunnySynths.CtrlrX</string>
+    <string>com.CtrlrX.CtrlrX</string>
     <key>CFBundleName</key>
     <string>CtrlrX - Sunny Synths</string>
     <key>CFBundleDisplayName</key>
@@ -29,7 +29,7 @@
     <array>
       <dict>
         <key>name</key>
-        <string>Sunny Synths - D.Bontemps: CtrlrX - Sunny Synths</string>
+        <string>Sunny Synths - DominiqueBontemps: CtrlrX - Sunny Synths VST3plugin</string>
         <key>description</key>
         <string>CtrlrX - Sunny Synths</string>
         <key>factoryFunction</key>
