@@ -597,15 +597,17 @@
   <id name="uiXYSurfaceModulatorOutlineThickness"     text="Modulator outline thickness"        type="Numeric" max="255"/>
   <id name="uiXYSurfaceModulatorWidth"                text="Modulator width"                    type="Numeric" max="255"/>
   <id name="uiXYSurfaceModulatorHeight"               text="Modulator height"                   type="Numeric" max="255"/>
-  <id name="uiXYSurfaceMaxX"                          text="Max value for X"                    type="Numeric" min="-65536" max="65536"/>
-  <id name="uiXYSurfaceDestinationX"                  text="Destination modulator for X axis"   type="ModulatorList"/>
-  <id name="uiXYSurfaceMaxY"                          text="Max value for Y"                    type="Numeric" min="-65536" max="65536"/>
-  <id name="uiXYSurfaceDestinationY"                  text="Destination modulator for Y axis"   type="ModulatorList"/>
   <id name="uiXYSurfaceGradientColour"                text="Rulers colour"                      type="Colour"/>
   <id name="uiXYSurfaceGradientGrain"                 text="Rulers density"                     type="Numeric" max="255"/>
-  <id name="uiXYSuraceXFlip"                          text="Reverse the value propagation on X" type="Bool" />
-  <id name="uiXYSuraceYFlip"                          text="Reverse the value propagation on Y" type="Bool" />
-  <id name="uiXYSuraceShowRightClickMenu"             text="Show a modulator selection menu"    type="Bool" />
+  <id name="uiXYSurfaceMaxX"                          text="Max value for X"                    type="Numeric" min="-65536" max="65536"/>
+  <id name="uiXYSurfaceDestinationX"                  text="Destination modulator for X axis"   type="ModulatorList"/>
+  <id name="uiXYSurfaceXFlip"                          text="Reverse the value propagation on X" type="Bool" />
+  <id name="uiXYSurfaceCurrentValueX"                 text="Current X axis value"               type="ReadOnly"/>
+  <id name="uiXYSurfaceMaxY"                          text="Max value for Y"                    type="Numeric" min="-65536" max="65536"/>
+  <id name="uiXYSurfaceDestinationY"                  text="Destination modulator for Y axis"   type="ModulatorList"/>
+  <id name="uiXYSurfaceYFlip"                          text="Reverse the value propagation on Y" type="Bool" />
+  <id name="uiXYSurfaceCurrentValueY"                 text="Current Y axis value"               type="ReadOnly"/>
+  <id name="uiXYSurfaceShowRightClickMenu"            text="Show a modulator selection menu"    type="Bool" />
   <id name="uiXYSurfaceDestinationXGroupFilter"       text="Use only modulators for X axis with this custom group name"   type="Text" />
   <id name="uiXYSurfaceDestinationYGroupFilter"       text="Use only modulators for Y axis with this custom group name"   type="Text" />
 

@@ -17,6 +17,7 @@
 #include "CtrlrComponents/Specials/CtrlrWaveform.h"
 #include "CtrlrComponents/Specials/CtrlrListBox.h"
 #include "CtrlrComponents/Specials/CtrlrFileListBox.h"
+#include "CtrlrComponents/Specials/CtrlrXYSurface.h"
 #include "CtrlrComponents/CtrlrCustomComponent.h"
 #include "CtrlrComponents/CtrlrCombo.h"
 #include "CtrlrComponents/Labels/CtrlrLabel.h"
@@ -231,7 +232,8 @@ void CtrlrLuaManager::wrapCtrlrClasses(lua_State* L)
 	CtrlrWaveform::wrapForLua (L);
 	CtrlrCombo::wrapForLua (L);
 	CtrlrListBox::wrapForLua (L);
-	CtrlrFileListBox::wrapForLua (L);
+	CtrlrFileListBox::wrapForLua(L);
+	CtrlrXYSurface::wrapForLua(L);
 	CtrlrFixedImageSlider::wrapForLua (L);
 	CtrlrImageSlider::wrapForLua (L);
 	CtrlrFixedSlider::wrapForLua (L);
@@ -684,6 +686,20 @@ CtrlrFileListBox *CtrlrPanel::getFileListBoxComponent (const String &componentNa
 	return (nullptr);
 }
 
+CtrlrXYSurface *CtrlrPanel::getXYSurfaceComponent (const String &componentName)
+{
+	CtrlrModulator *m = getModulator(componentName);
+
+	if (m)
+	{
+		if (m->getComponent())
+		{
+			return (dynamic_cast<CtrlrXYSurface*>(m->getComponent()));
+		}
+	}
+	return (nullptr);
+}
+
 CtrlrSlider *CtrlrPanel::getSliderComponent (const String &componentName)
 {
 	CtrlrModulator *m = getModulator(componentName);
@@ -896,6 +912,8 @@ void CtrlrPanel::wrapForLua (lua_State *L)
 		.def("getListBox", &CtrlrPanel::getListBoxComponent)
 		.def("getFileListBoxComponent", &CtrlrPanel::getFileListBoxComponent)
 		.def("getFileListBox", &CtrlrPanel::getFileListBoxComponent)
+		.def("getXYSurfaceComponent", &CtrlrPanel::getXYSurfaceComponent)
+		.def("getXYSurface", &CtrlrPanel::getXYSurfaceComponent)
 		.def("getSliderComponent", &CtrlrPanel::getSliderComponent)
 		.def("getSlider", &CtrlrPanel::getSliderComponent)
 		.def("getFixedImageSliderComponent", &CtrlrPanel::getFixedImageSliderComponent)

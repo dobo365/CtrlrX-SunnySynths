@@ -1,3 +1,9 @@
+5.6.36.3
+========
+XYSurface component: added current value X and current value Y properties
+XYSurface component: added getCurrentValueX() and getCurrentValueY() functions
+XYSurface component: added setPositionForValues (int X, int Y, bool syncDestinations) function
+
 5.6.36.2
 ========
 Dialog boxes for exports replaced by bottom notifications

@@ -35,6 +35,7 @@ class CtrlrButton;
 class CtrlrCombo;
 class CtrlrListBox;
 class CtrlrFileListBox;
+class CtrlrXYSurface;
 class CtrlrPanelCapabilities;
 class CtrlrSlider;
 class CtrlrFixedImageSlider;
@@ -106,6 +107,7 @@ class CtrlrPanel:	public ValueTree::Listener,
 		CtrlrCombo *getComboComponent (const String &componentName);
 		CtrlrListBox *getListBoxComponent (const String &componentName);
 		CtrlrFileListBox *getFileListBoxComponent (const String &componentName);
+		CtrlrXYSurface *getXYSurfaceComponent (const String &componentName);
 		CtrlrSlider *getSliderComponent (const String &componentName);
 		CtrlrFixedImageSlider *getFixedImageSliderComponent (const String &componentName);
 		CtrlrFixedSlider *getFixedSliderComponent (const String &componentName);

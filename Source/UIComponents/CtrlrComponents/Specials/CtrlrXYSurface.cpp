@@ -1,26 +1,7 @@
 #include "stdafx.h"
-/*
-  ==============================================================================
+#include "stdafx_luabind.h"
+#include "CtrlrLuaObjectWrapper.h"
 
-  This is an automatically generated file created by the Jucer!
-
-  Creation date:  7 Oct 2011 4:24:16pm
-
-  Be careful when adding custom code to these files, as only the code within
-  the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
-  and re-saved.
-
-  Jucer version: 1.12
-
-  ------------------------------------------------------------------------------
-
-  The Jucer is part of the JUCE library - "Jules' Utility Class Extensions"
-  Copyright 2004-6 by Raw Material Software ltd.
-
-  ==============================================================================
-*/
-
-//[Headers] You can add your own extra header files here...
 #include "CtrlrManager/CtrlrManager.h"
 #include "../CtrlrComponentTypeManager.h"
 #include "CtrlrModulator/CtrlrModulator.h"
@@ -71,13 +52,16 @@ CtrlrXYSurface::CtrlrXYSurface (CtrlrModulator &owner)
 	setProperty (Ids::uiXYSurfaceInfoLabelLocation, "bottomRight");
 	setProperty (Ids::uiXYSurfaceInfoLabelColour, "0xffffffff");
 	setProperty (Ids::uiXYSurfaceInfoLabelFont, FONT2STR (Font(12)));
+
 	setProperty (Ids::uiXYSurfaceMaxX, 127);
 	setProperty (Ids::uiXYSurfaceDestinationX, COMBO_NONE_ITEM);
+	setProperty (Ids::uiXYSurfaceCurrentValueX, 0);
 	setProperty (Ids::uiXYSurfaceMaxY, 127);
 	setProperty (Ids::uiXYSurfaceDestinationY, COMBO_NONE_ITEM);
+	setProperty (Ids::uiXYSurfaceCurrentValueY, 0);
+
 	setProperty (Ids::uiXYSurfaceGradientColour, "0x10ffffff");
 	setProperty (Ids::uiXYSurfaceGradientGrain, 8);
-
 	setProperty (Ids::uiXYSurfaceModulatorBgGradientType, "None");
 	setProperty (Ids::uiXYSurfaceModulatorBgColour1, "0xffff0000");
 	setProperty (Ids::uiXYSurfaceModulatorBgColour2, "0xff900000");
@@ -87,9 +71,9 @@ CtrlrXYSurface::CtrlrXYSurface (CtrlrModulator &owner)
 	setProperty (Ids::uiXYSurfaceModulatorOutlineThickness, 1);
 	setProperty (Ids::uiXYSurfaceModulatorWidth, 16);
 	setProperty (Ids::uiXYSurfaceModulatorHeight, 16);
-	setProperty (Ids::uiXYSuraceXFlip, false);
-	setProperty (Ids::uiXYSuraceYFlip, false);
-	setProperty (Ids::uiXYSuraceShowRightClickMenu, true);
+	setProperty (Ids::uiXYSurfaceXFlip, false);
+	setProperty (Ids::uiXYSurfaceYFlip, false);
+	setProperty (Ids::uiXYSurfaceShowRightClickMenu, true);
 	setProperty (Ids::uiXYSurfaceDestinationXGroupFilter, "");
 	setProperty (Ids::uiXYSurfaceDestinationYGroupFilter, "");
     //[/UserPreSize]
@@ -255,6 +239,31 @@ double CtrlrXYSurface::getComponentMaxValue()
 	return (1);
 }
 
+int CtrlrXYSurface::getCurrentValueX()
+{
+	return (getProperty(Ids::uiXYSurfaceCurrentValueX));
+}
+
+int CtrlrXYSurface::getCurrentValueY()
+{
+	return (getProperty(Ids::uiXYSurfaceCurrentValueY));
+}
+
+void CtrlrXYSurface::setPositionForValues(const int newValueX, const int newValueY, const bool syncDestinations)
+{
+	int	xPos = getPositionForValue(newValueX, true);
+	int yPos = getPositionForValue(newValueY, false);
+	surfaceModulator->setCentrePosition(xPos, yPos);
+
+	setProperty(Ids::uiXYSurfaceCurrentValueX, newValueX, true);
+	setProperty(Ids::uiXYSurfaceCurrentValueY, newValueY, false);
+
+	if (syncDestinations)
+	{
+		syncDestination();
+	}
+}
+
 void CtrlrXYSurface::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
 {
 	if (property == Ids::uiXYSurfaceBgImageResource)
@@ -282,6 +291,10 @@ void CtrlrXYSurface::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasCh
 void CtrlrXYSurface::modulatorMoved()
 {
 	const Point<int> c	= surfaceModulator->getBounds().getCentre();
+
+	// Set the read only properties for the current values of X and Y
+	setProperty(Ids::uiXYSurfaceCurrentValueX, getValueForPosition(c.getX(), true));
+	setProperty(Ids::uiXYSurfaceCurrentValueY, getValueForPosition(c.getY(), false));
 
 	if (destinationX)
 	{
@@ -326,7 +339,7 @@ void CtrlrXYSurface::allModulatorsInitialized()
 
 void CtrlrXYSurface::showPopupMenu()
 {
-	if (!(bool)getProperty(Ids::uiXYSuraceShowRightClickMenu))
+	if (!(bool)getProperty(Ids::uiXYSurfaceShowRightClickMenu))
 		return;
 
 	rebuildModulatorList();
@@ -334,8 +347,8 @@ void CtrlrXYSurface::showPopupMenu()
 	PopupMenu m;
 	PopupMenu modsX = getModulatorListAsMenu(3, getProperty(Ids::uiXYSurfaceDestinationX));
 	PopupMenu modsY = getModulatorListAsMenu(3+modsX.getNumItems(), getProperty(Ids::uiXYSurfaceDestinationY));
-	m.addItem (1, "Flip min/max for X axis",true, (bool)getProperty(Ids::uiXYSuraceXFlip));
-	m.addItem (2, "Flip min/max for Y axis",true, (bool)getProperty(Ids::uiXYSuraceYFlip));
+	m.addItem (1, "Flip min/max for X axis",true, (bool)getProperty(Ids::uiXYSurfaceXFlip));
+	m.addItem (2, "Flip min/max for Y axis",true, (bool)getProperty(Ids::uiXYSurfaceYFlip));
 
 	m.addSectionHeader ("Assign modulators");
 	m.addSubMenu ("X Axis", modsX);
@@ -345,13 +358,13 @@ void CtrlrXYSurface::showPopupMenu()
 
 	if (ret == 1)
 	{
-		setProperty (Ids::uiXYSuraceXFlip, !getProperty(Ids::uiXYSuraceXFlip));
+		setProperty (Ids::uiXYSurfaceXFlip, !getProperty(Ids::uiXYSurfaceXFlip));
 		return;
 	}
 
 	if (ret == 2)
 	{
-		setProperty (Ids::uiXYSuraceYFlip, !getProperty(Ids::uiXYSuraceYFlip));
+		setProperty (Ids::uiXYSurfaceYFlip, !getProperty(Ids::uiXYSurfaceYFlip));
 		return;
 	}
 
@@ -404,7 +417,7 @@ void CtrlrXYSurface::rebuildModulatorList()
 
 const int CtrlrXYSurface::getValueForPosition(const int position, const bool forX)
 {
-	const bool flip		= forX ? (bool)getProperty(Ids::uiXYSuraceXFlip) : (bool)getProperty(Ids::uiXYSuraceYFlip);
+	const bool flip		= forX ? (bool)getProperty(Ids::uiXYSurfaceXFlip) : (bool)getProperty(Ids::uiXYSurfaceYFlip);
 	const float scale	= forX ? (float)getProperty(Ids::uiXYSurfaceMaxX) : (float)getProperty(Ids::uiXYSurfaceMaxY);
 	const float dim		= forX ? (float)usableRectangle.getWidth() : (float)usableRectangle.getHeight();
 
@@ -436,6 +449,19 @@ void CtrlrXYSurface::reloadResources(Array <CtrlrPanelResource*> resourcesThatCh
 			setResource();
 		}
 	}
+}
+
+void CtrlrXYSurface::wrapForLua(lua_State* L)
+{
+	using namespace luabind;
+
+	module(L)
+		[
+			class_<CtrlrXYSurface, bases<CtrlrComponent, CtrlrLuaObject> >("CtrlrXYSurface")
+				.def("getCurrentValueX", &CtrlrXYSurface::getCurrentValueX)
+				.def("getCurrentValueY", &CtrlrXYSurface::getCurrentValueY)
+				.def("setPositionForValues", &CtrlrXYSurface::setPositionForValues)
+		];
 }
 //[/MiscUserCode]
 

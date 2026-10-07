@@ -2,6 +2,12 @@ Ctrlrx - Sunny Synths backlog
 =============================
 
 . Panel Open: should remove the isDirty as the panel just opened
+. Should add method completion as done in CtrlrX
+
+Done 5.6.36.3:
+. XYSurface component: added current value X and current value Y properties
+. XYSurface component: added getCurrentValueX and getCurrentValueY functions
+. XYSurface component: added setPositionForValues function
 
 Done 5.6.36.2:
 . Panel Save As: should remove the isDirty as the panelFilePath is replaced

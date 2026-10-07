@@ -629,15 +629,17 @@ namespace Ids
     DECLARE_ID (uiXYSurfaceModulatorOutlineThickness);
     DECLARE_ID (uiXYSurfaceModulatorWidth);
     DECLARE_ID (uiXYSurfaceModulatorHeight);
-    DECLARE_ID (uiXYSurfaceMaxX);
-    DECLARE_ID (uiXYSurfaceDestinationX);
-    DECLARE_ID (uiXYSurfaceMaxY);
-    DECLARE_ID (uiXYSurfaceDestinationY);
     DECLARE_ID (uiXYSurfaceGradientColour);
     DECLARE_ID (uiXYSurfaceGradientGrain);
-    DECLARE_ID (uiXYSuraceXFlip);
-    DECLARE_ID (uiXYSuraceYFlip);
-    DECLARE_ID (uiXYSuraceShowRightClickMenu);
+    DECLARE_ID (uiXYSurfaceMaxX);
+    DECLARE_ID (uiXYSurfaceDestinationX);
+    DECLARE_ID (uiXYSurfaceXFlip);
+    DECLARE_ID (uiXYSurfaceCurrentValueX);
+    DECLARE_ID (uiXYSurfaceMaxY);
+    DECLARE_ID (uiXYSurfaceDestinationY);
+    DECLARE_ID (uiXYSurfaceYFlip);
+    DECLARE_ID (uiXYSurfaceCurrentValueY);
+    DECLARE_ID (uiXYSurfaceShowRightClickMenu);
     DECLARE_ID (uiXYSurfaceDestinationXGroupFilter);
     DECLARE_ID (uiXYSurfaceDestinationYGroupFilter);
     
