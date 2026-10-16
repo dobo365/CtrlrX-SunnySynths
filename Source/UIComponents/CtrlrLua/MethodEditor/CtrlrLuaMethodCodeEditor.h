@@ -43,7 +43,8 @@ public:
 	void findInOpened(const String &search);
 	void reportFoundMatch (CodeDocument &document, const String &methodName, const Range<int> range);
 	const Array<Range<int> > searchForMatchesInDocument(CodeDocument &doc, const String &search);
-
+	void commentLine();
+	void commentBlock();
 
 	JUCE_LEAK_DETECTOR(CtrlrLuaMethodCodeEditor)
 

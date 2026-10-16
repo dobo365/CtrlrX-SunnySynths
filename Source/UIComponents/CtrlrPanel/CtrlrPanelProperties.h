@@ -23,6 +23,7 @@ public:
 private:
 	CtrlrPanelEditor &owner;
     TabbedComponent* tabbedComponent;
+    Label* propLabel; // Added v5.6.36.4
     CtrlrPanelProperties (const CtrlrPanelProperties&);
 	std::unique_ptr<CtrlrPanelFindProperty> ctrlrPanelFindProperty;
 	const CtrlrPanelProperties& operator= (const CtrlrPanelProperties&);

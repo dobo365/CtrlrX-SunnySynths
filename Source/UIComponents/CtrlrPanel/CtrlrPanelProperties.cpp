@@ -13,8 +13,13 @@ CtrlrPanelProperties::CtrlrPanelProperties (CtrlrPanelEditor &_owner)
       owner(_owner),
       tabbedComponent (0)
 {
+    // Added v5.6.36.4 @dobo365
+    addAndMakeVisible(propLabel = new Label("propLabel", "PROPERTIES"));
+    propLabel->setFont(Font(14, Font::bold));
+    propLabel->setJustificationType(Justification::centred);
+    propLabel->setColour(Label::backgroundColourId, Colour(0xffcccccc));
+    propLabel->setColour(Label::textColourId, Colours::black);
 
-    
     addAndMakeVisible (tabbedComponent = new TabbedComponent (TabbedButtonBar::TabsAtRight));
     
     tabbedComponent->setTabBarDepth (owner.getOwner().getOwner().getProperty(Ids::ctrlrTabBarDepth));
@@ -44,7 +49,7 @@ CtrlrPanelProperties::CtrlrPanelProperties (CtrlrPanelEditor &_owner)
     tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::frontTextColourId, findColour(Label::textColourId)); // Added v5.6.31
     tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabTextColourId, findColour(Label::textColourId).withAlpha(0.6f)); // Added v5.6.31
     tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabOutlineColourId, findColour(Slider::textBoxOutlineColourId)); // Added v5.6.31
-    
+    tabbedComponent->getTabbedButtonBar().addChangeListener(this);
     
 	ctrlrPanelFindProperty.reset(new CtrlrPanelFindProperty(owner, props));
 	addAndMakeVisible(ctrlrPanelFindProperty.get());
@@ -53,7 +58,9 @@ CtrlrPanelProperties::CtrlrPanelProperties (CtrlrPanelEditor &_owner)
 
 CtrlrPanelProperties::~CtrlrPanelProperties()
 {
-	CtrlrPanelComponentProperties *p = dynamic_cast <CtrlrPanelComponentProperties*>(tabbedComponent->getTabContentComponent (0));
+    tabbedComponent->getTabbedButtonBar().removeChangeListener(this);
+
+    CtrlrPanelComponentProperties *p = dynamic_cast <CtrlrPanelComponentProperties*>(tabbedComponent->getTabContentComponent (0));
 	if (p)
 	{
 		owner.getOwner().getCtrlrManagerOwner().removeListener (p);
@@ -64,7 +71,52 @@ CtrlrPanelProperties::~CtrlrPanelProperties()
 void CtrlrPanelProperties::paint (Graphics& g)
 {
     g.fillAll(findColour(DocumentWindow::backgroundColourId));
- 
+}
+
+void CtrlrPanelProperties::resized()    	// Adapted v5.6.36.4 @dobo365
+{
+    const int labelHeight = 24;  // Height for the top label
+    const int findHeight = 24;   // Height for the Search box
+    const int currentTab = tabbedComponent->getCurrentTabIndex();
+
+    propLabel->setBounds(0, 0, getWidth(), labelHeight);
+
+    if (currentTab == 0)
+    {
+        propLabel->setText("PROPERTIES", dontSendNotification);
+    }
+    else if (currentTab == 1)
+    {
+        propLabel->setText("RESOURCES", dontSendNotification);
+    }
+    else if (currentTab == 2)
+    {
+        propLabel->setText("PANEL XML FILE", dontSendNotification);
+    }
+
+    if (currentTab == 0)
+    {
+        ctrlrPanelFindProperty->setVisible(true);
+        ctrlrPanelFindProperty->setBounds(0, labelHeight, getWidth() - (int)owner.getOwner().getOwner().getProperty(Ids::ctrlrTabBarDepth), findHeight);
+        tabbedComponent->setBounds(0, labelHeight + findHeight, getWidth() - 0, getHeight() - labelHeight - findHeight);
+    }
+    else
+    {
+        ctrlrPanelFindProperty->setVisible(false);
+        tabbedComponent->setBounds(0, labelHeight, getWidth() - 0, getHeight() - labelHeight);
+    }
+}
+
+void CtrlrPanelProperties::lookAndFeelChanged() // Added v5.6.31
+{
+    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::frontTextColourId, findColour(Label::textColourId)); // Added v5.6.31
+    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabTextColourId, findColour(Label::textColourId).withAlpha(0.6f)); // Added v5.6.31
+    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabOutlineColourId, findColour(Slider::textBoxOutlineColourId)); // Added v5.6.31
+    repaint(); // Added v5.6.31
+}
+
+void CtrlrPanelProperties::changeListenerCallback(ChangeBroadcaster* source)
+{
     for (int i = 0; i < tabbedComponent->getNumTabs(); i++)
     {
         if (i == tabbedComponent->getTabbedButtonBar().getCurrentTabIndex())
@@ -77,25 +129,11 @@ void CtrlrPanelProperties::paint (Graphics& g)
             tabbedComponent->getTabbedButtonBar().setTabBackgroundColour(i, getLookAndFeel().findColour(TabbedComponent::backgroundColourId));
         }
     }
-}
 
-void CtrlrPanelProperties::resized()
-{
-	ctrlrPanelFindProperty->setBounds(0,0,getWidth() - (int)owner.getOwner().getOwner().getProperty(Ids::ctrlrTabBarDepth),32);
-    tabbedComponent->setBounds (0, 32, getWidth() - 0, getHeight() - 32);
-    repaint();
-}
-
-void CtrlrPanelProperties::lookAndFeelChanged() // Added v5.6.31
-{
-    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::frontTextColourId, findColour(Label::textColourId)); // Added v5.6.31
-    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabTextColourId, findColour(Label::textColourId).withAlpha(0.6f)); // Added v5.6.31
-    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabOutlineColourId, findColour(Slider::textBoxOutlineColourId)); // Added v5.6.31
-    repaint(); // Added v5.6.31
-}
-
-void CtrlrPanelProperties::changeListenerCallback (ChangeBroadcaster* source)
-{
+    if (source == &tabbedComponent->getTabbedButtonBar())
+    {
+        resized(); // Re-trigger the layout update cleanly
+    }
 }
 
 void CtrlrPanelProperties::refreshAll()

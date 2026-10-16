@@ -20,7 +20,7 @@ CtrlrPanelFindProperty::CtrlrPanelFindProperty(CtrlrPanelEditor &_owner, CtrlrPa
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
 	filterInput.reset(new TextEditor("Filter Input"));
-	filterInput->setFont(filterInput->getFont().withHeight(24.0));
+	filterInput->setFont(filterInput->getFont().withHeight(15.0));
 	filterInput->addListener(this);
 	filterButton.reset(gui::createDrawableButton("Filter", BIN2STR(search_svg)));
 	addAndMakeVisible(filterInput.get());
@@ -38,8 +38,11 @@ void CtrlrPanelFindProperty::paint (juce::Graphics& g)
 
 void CtrlrPanelFindProperty::resized()
 {
-	filterButton->setBounds(0,0,32,32);
-	filterInput->setBounds(32,0,getWidth()-32,32);
+	int buttonWidth = 24;
+	int buttonHeight = 24;
+
+	filterButton->setBounds(0, 0, buttonWidth, buttonHeight);
+	filterInput->setBounds(buttonWidth, 0, getWidth() - buttonWidth, buttonHeight);
 }
 
 void CtrlrPanelFindProperty::textEditorReturnKeyPressed (TextEditor &e)

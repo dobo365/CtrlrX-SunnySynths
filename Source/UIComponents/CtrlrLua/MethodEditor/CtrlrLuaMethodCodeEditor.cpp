@@ -540,10 +540,171 @@ void CtrlrLuaMethodCodeEditor::gotoLine(int position, const bool selectLine)
 	editorComponent->hideGoTOPanel();
 }
 
+void CtrlrLuaMethodCodeEditor::commentLine()
+{
+	if (!editorComponent)
+		return;
+
+	Range<int> selection = editorComponent->getHighlightedRegion();
+	CodeDocument::Position startPos(document, selection.getStart());
+	CodeDocument::Position endPos(document, selection.getEnd());
+
+	int startLine = startPos.getLineNumber();
+	int endLine = endPos.getLineNumber();
+
+	// If the selection ends exactly at the start of a new line, 
+	// don't include that extra line in the operation.
+	if (endLine > startLine && endPos.getIndexInLine() == 0) // fix comments -- including subsequent line
+	{
+		endLine--;
+	}
+
+	document.newTransaction();
+
+	// Check if we should comment or uncomment
+	bool allLinesCommented = true;
+	for (int lineNum = startLine; lineNum <= endLine; ++lineNum)
+	{
+		String line = document.getLine(lineNum);
+		if (line.trimStart().isEmpty() || !line.trimStart().startsWith("--"))
+		{
+			allLinesCommented = false;
+			break;
+		}
+	}
+
+	// Comment or uncomment
+	for (int lineNum = startLine; lineNum <= endLine; ++lineNum)
+	{
+		CodeDocument::Position lineStart(document, lineNum, 0);
+		String line = document.getLine(lineNum);
+
+		if (allLinesCommented)
+		{
+			// Uncomment: Find and remove the first "-- "
+			int commentPos = line.trimStart().indexOf("-- ");
+			if (commentPos >= 0)
+			{
+				int actualCommentPos = line.indexOf("-- ");
+				document.deleteSection(lineStart.getPosition() + actualCommentPos,
+					lineStart.getPosition() + actualCommentPos + 3);
+			}
+		}
+		else
+		{
+			// Comment: Find the first non-whitespace character and insert "-- "
+			int firstNonWhitespace = 0;
+			while (firstNonWhitespace < line.length() && iswspace(line[firstNonWhitespace]))
+				++firstNonWhitespace;
+
+			document.insertText(lineStart.getPosition() + firstNonWhitespace, "-- ");
+		}
+	}
+
+	// Restore caret position and selection
+	if (allLinesCommented)
+	{
+		editorComponent->setHighlightedRegion(Range<int>(startPos.getPosition(), endPos.getPosition() - (endLine - startLine + 1) * 3));
+	}
+	else
+	{
+		editorComponent->setHighlightedRegion(Range<int>(startPos.getPosition(), endPos.getPosition() + (endLine - startLine + 1) * 3));
+	}
+	documentChanged(false, false);
+}
+
+void CtrlrLuaMethodCodeEditor::commentBlock()
+{
+	if (!editorComponent)
+		return;
+
+	Range<int> selection = editorComponent->getHighlightedRegion();
+	CodeDocument::Position startPos(document, selection.getStart());
+	CodeDocument::Position endPos(document, selection.getEnd());
+
+	// If no selection, select the current line
+	if (selection.isEmpty())
+	{
+		int currentLine = startPos.getLineNumber();
+		startPos = CodeDocument::Position(document, currentLine, 0);
+		endPos = CodeDocument::Position(document, currentLine + 1, 0);
+		selection = Range<int>(startPos.getPosition(), endPos.getPosition());
+	}
+
+	document.newTransaction();
+
+	// Get the selected text
+	String selectedText = document.getTextBetween(startPos, endPos);
+
+	// Check if the selection is already block commented
+	String trimmedStart = selectedText.trimStart();
+	String trimmedEnd = selectedText.trimEnd();
+
+	bool isBlockCommented = trimmedStart.startsWith("--[[") && trimmedEnd.endsWith("--]]");
+
+	// Store the original caret position
+	CodeDocument::Position originalCaret = editorComponent->getCaretPos();
+
+	if (isBlockCommented)
+	{
+		// Uncomment: Remove --[[ from start and --]] from end
+		String uncommentedText = selectedText;
+
+		// Remove --[[ from the beginning
+		int startCommentPos = uncommentedText.indexOf("--[[");
+		if (startCommentPos >= 0)
+		{
+			uncommentedText = uncommentedText.substring(0, startCommentPos) +
+				uncommentedText.substring(startCommentPos + 4);
+		}
+
+		// Remove --]] from the end
+		int endCommentPos = uncommentedText.lastIndexOf("--]]");
+		if (endCommentPos >= 0)
+		{
+			uncommentedText = uncommentedText.substring(0, endCommentPos) +
+				uncommentedText.substring(endCommentPos + 4);
+		}
+
+		// Replace the selected text
+		document.replaceSection(startPos.getPosition(), endPos.getPosition(), uncommentedText);
+
+		// Adjust caret position (moved back by the length of removed comment markers)
+		int caretAdjustment = -8; // Length of "--[[" + "--]]"
+		if (originalCaret.getPosition() > startPos.getPosition())
+		{
+			int newCaretPos = jmax(startPos.getPosition(), originalCaret.getPosition() + caretAdjustment);
+			CodeDocument::Position newCaret(document, newCaretPos);
+			editorComponent->moveCaretTo(newCaret, false);
+		}
+	}
+	else
+	{
+		// Comment: Add --[[ at start and --]] at end
+		String commentedText = "--[[\n" + selectedText + "\n--]]";
+
+		// Replace the selected text
+		document.replaceSection(startPos.getPosition(), endPos.getPosition(), commentedText);
+
+		// Adjust caret position (moved forward by the length of added comment markers)
+		int caretAdjustment = 6; // Length of "--[[\n"
+		if (originalCaret.getPosition() >= startPos.getPosition())
+		{
+			int newCaretPos = originalCaret.getPosition() + caretAdjustment;
+			CodeDocument::Position newCaret(document, newCaretPos);
+			editorComponent->moveCaretTo(newCaret, false);
+		}
+	}
+
+	documentChanged(false, false);
+
+}
+
 CtrlrLuaMethodEditor &CtrlrLuaMethodCodeEditor::getOwner()
 {
     return  (owner);
 }
+
 
 //==============================================================================
 class GenericCodeEditorComponent::GoToPanel  : public Component,

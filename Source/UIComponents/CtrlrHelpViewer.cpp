@@ -310,11 +310,11 @@ void CtrlrHelpViewer::menuItemSelected(int menuItemID, int topLevelMenuIndex)
 
                         if (hasHelp)
                         {
-                            markdown << "- [" << idname << "](help://" << idname << ") — " << (idtext.isNotEmpty() ? idtext : "No description") << "\n";
+                            markdown << "- [" << idname << "](help://" << idname << ") â€” " << (idtext.isNotEmpty() ? idtext : "No description") << "\n";
                         }
                         else
                         {
-                            markdown << "- " << idname << " — " << (idtext.isNotEmpty() ? idtext : "No description") << "\n";
+                            markdown << "- " << idname << " â€” " << (idtext.isNotEmpty() ? idtext : "No description") << "\n";
                         }
                     }
                 }

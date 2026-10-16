@@ -34,7 +34,7 @@ CtrlrLuaMethodEditor::CtrlrLuaMethodEditor (CtrlrPanel &_owner)
 	getMethodManager().setMethodEditor (this);
        
 	layoutManager.setItemLayout (0, -0.001, -1.0, -0.29);
- 	layoutManager.setItemLayout (1, 8, 8, 8);
+	layoutManager.setItemLayout (1, 8, 8, 8);
  	layoutManager.setItemLayout (2, -0.001, -1.0, -0.69);
 
     addKeyListener (this);
@@ -1089,23 +1089,24 @@ PopupMenu CtrlrLuaMethodEditor::getMenuForIndex(int topLevelMenuIndex, const Str
 		menu.addItem (3, "Save and compile");
 		menu.addItem (4, "Save and compile all");
 		menu.addSeparator();
-		menu.addItem(5, "Close current tab");
+		menu.addItem (5, "Close current tab");
 		menu.addItem(6, "Close all tabs");
 		menu.addSeparator ();
-		menu.addItem(7, "Convert to files...");
+		menu.addItem (7, "Convert to files...");
 		menu.addSeparator();
 		menu.addItem (1, "Close");
 	}
 	else if (topLevelMenuIndex == 1)
 	{
+		menu.addItem (2, "Comment line(s)");
+		menu.addItem (3, "Comment block");
 		menu.addItem (4, "Find and replace");
-		menu.addItem (7, "Debugger");
-		menu.addItem (8, "Console");
-
 		menu.addItem (5, "Clear Output");
 		menu.addSeparator();
-        // menu.addItem (6, "Settings"); // Removed v5.6.31
-		menu.addItem (6, "Preferences"); // Added v5.6.31
+		menu.addItem (7, "Debugger");
+		menu.addItem (8, "Console");
+		menu.addSeparator();
+		menu.addItem (6, "Preferences");
 	}
 	return (menu);
 }
@@ -1152,6 +1153,22 @@ void CtrlrLuaMethodEditor::menuItemSelected(int menuItemID, int topLevelMenuInde
 	else if (menuItemID == 7 && topLevelMenuIndex == 0)
 	{
 		convertToFiles();
+	}
+	else if (menuItemID == 2 && topLevelMenuIndex == 1)
+	{
+		CtrlrLuaMethodCodeEditor* editor = getCurrentEditor();
+		if (editor)
+		{
+			editor->commentLine();
+		}
+	}
+	else if (menuItemID == 3 && topLevelMenuIndex == 1)
+	{
+		CtrlrLuaMethodCodeEditor* editor = getCurrentEditor();
+		if (editor)
+		{
+			editor->commentBlock();
+		}
 	}
 	else if (menuItemID == 4 && topLevelMenuIndex == 1)
 	{
