@@ -91,7 +91,7 @@ void CtrlrPanelProperties::resized()    	// Adapted v5.6.36.4 @dobo365
     }
     else if (currentTab == 2)
     {
-        propLabel->setText("PANEL XML FILE", dontSendNotification);
+        propLabel->setText("XML DATA", dontSendNotification);
     }
 
     if (currentTab == 0)

@@ -64,6 +64,8 @@ namespace Ids
     
     DECLARE_ID (uiPanelViewPortBackgroundColour);
     
+    DECLARE_ID(uiPanelCanvasLayerIsIsolated); // Added v5.6.34
+
     DECLARE_ID (uiPanelImageAlpha);
     DECLARE_ID (uiPanelImageLayout);
     DECLARE_ID (uiPanelImageResource);
@@ -297,6 +299,18 @@ namespace Ids
     DECLARE_ID (componentLookAndFeel);
     DECLARE_ID (componentLookAndFeelIsCustom);
     
+    // v5.6.36.5 Added for component Tooltip (Bubble Help). thx to @dnaldoog
+    DECLARE_ID(componentTooltipTrigger);
+    DECLARE_ID(componentTooltipEnabled);
+    DECLARE_ID(componentTooltipTitle);
+    DECLARE_ID(componentTooltipText);
+    DECLARE_ID(componentTooltipTimeout);
+    DECLARE_ID(componentTooltipDismissOnExit);
+    DECLARE_ID(componentTooltipBackgroundColour);
+    DECLARE_ID(componentTooltipTextColour);
+    DECLARE_ID(componentTooltipFont);
+    DECLARE_ID(componentTooltipJustification);
+
     DECLARE_ID (uiSliderLookAndFeel);
     DECLARE_ID (uiSliderLookAndFeelIsCustom);
     DECLARE_ID (uiSliderStyle);
@@ -545,7 +559,7 @@ namespace Ids
     DECLARE_ID (uiArrowHeadHeight);
     DECLARE_ID (uiArrowOrientation);
     DECLARE_ID (uiArrowRotation);
-    DECLARE_ID (uiArrowStokeThickness);
+    DECLARE_ID (uiArrowStrokeThickness);
     
     DECLARE_ID (uiCustomResizedCallback);
     DECLARE_ID (uiCustomPaintCallback);
@@ -806,7 +820,7 @@ namespace Ids
     DECLARE_ID (ctrlrAutoSaveInterval);
     DECLARE_ID (ctrlrLastBrowsedFileDirectory);
     DECLARE_ID (ctrlrOpenWindowState);
-    DECLARE_ID (ctrlrRecenetOpenedPanelFiles);
+    DECLARE_ID (ctrlrRecentOpenedPanelFiles);
     DECLARE_ID (ctrlrPropertiesAreURLs);
     DECLARE_ID (ctrlrKeyboardMapping);
     DECLARE_ID (ctrlrCapabilities);
@@ -831,6 +845,7 @@ namespace Ids
     DECLARE_ID (ctrlrPrivateKey);
     DECLARE_ID (ctrlrFontSizeBaseValue);
     DECLARE_ID (ctrlrPropertyLineheightBaseValue); // Added v5.6.33
+    DECLARE_ID (ctrlrPropertyLineImprovedLegibility); // Added v5.6.34
     DECLARE_ID (ctrlrScrollbarThickness);
     DECLARE_ID (ctrlrLegacyMode);
     DECLARE_ID (ctrlrColourScheme);

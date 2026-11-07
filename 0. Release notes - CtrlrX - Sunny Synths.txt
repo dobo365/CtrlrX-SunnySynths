@@ -1,3 +1,19 @@
+5.6.36.5
+========
+Corrected property name: ctrlrRecentOpenedPanelFiles thus modified CtrlrManager.cpp, CtrlrEditorApplicationCommandsMenus.cpp
+Corrected property name: uiArrowStrokeThickness thus modified CtrlrArrow.cpp
+Renamed Preferences popup to CtrlX - Preferences
+Display Preferences in horizontal tabs (added section tag in CtrlrIds.xml). Adapted CtrlrSettings.cpp/.h
+Preferences popup displayed only when Preferences are changed
+Commit 8b1e149: fixed LGraphics.cpp Typo for getDefaultMonospacedFontName
+
+5.6.36.4
+========
+Added panel property header based on selected tab
+Hide Find property search box if not on Main tab
+Ability to Comment/Uncomment lines in code editor
+Ability to Comment/Uncomment block of lines in code editor
+
 5.6.36.3
 ========
 XYSurface component: added current value X and current value Y properties

@@ -1,0 +1,51 @@
+Ctrlrx - Sunny Synths backlog
+=============================
+
+. Panel Open: should remove the isDirty as the panel just opened; even in v3 with Legacy mode ON
+. Should add method auto-completion as done in CtrlrX
+. Add CLAP plugin export
+. Develop Help pages using AI and BarelyML - Sunny Synths
+. Use installer as done for CtrlrX
+. Light purple methods on mouse over. May be difficult because there is no JUCE ItemMouseOver for Treeview Items
+. Use tree full width CtrlrValueTreeEditorItem::getItemWidth () in CtrlrValueTreeEditor.cpp
+. Code editor preferences window: add OK / Apply / Cancel buttons in order to test different combinations
+. Linux version
+. Commit b6bdf42 and previous ones from 5.6.34 : added Layer drag/drop in Layer Editor
+. Commit e9a6058 Added Bubble Help tooltip (but adapted the code to use the word Tooltip instead of Bubble Help
+
+. From CtrlrX 5.6.36: check https://github.com/damiensellier/CtrlrX/compare/v5.6.35...v5.6.36
+.. Evaluate:
+.. Commit a77a961 ADDED uiLabel showTextEditor() to display the text field editor
+.. Commit 3f4987f ADDED uiSlider showTextEditor() to display the value field editor
+.. Commit 461fad3 FIXED Slider not reacting on Midi channel different than 1
+.. Commit 3a076d3 FIXED leakage between multiple panels
+.. Commit d911881 FIXED CtrlrPropertyComponent.cpp Label component leak on exit
+.. Commit 4347f83 FIXED CtrlrManager.cpp modulator duplicated on load
+.. Commit a38cf90 FIXED Modulator List configuration being lost
+.. Commit 6203e4e FIXED Typo InstanceSingleRestriced vs InstanceSingleRestricted
+.. Commit f03412e ADDED uiSliderBackgroundColour property to uiSlider & uiFixedSlider
+
+
+Done 5.6.36.5:
+. Corrected property name: ctrlrRecentOpenedPanelFiles thus modified CtrlrManager.cpp, CtrlrEditorApplicationCommandsMenus.cpp
+. Corrected property name: uiArrowStrokeThickness thus modified CtrlrArrow.cpp
+. Renamed Preferences popup to CtrlX - Preferences
+. Display Preferences in horizontal tabs (added section tag in CtrlrIds.xml). Adapted CtrlrSettings.cpp/.h
+. Preferences popup displayed only when Preferences are changed
+. Commit 8b1e149: fixed LGraphics.cpp Typo for getDefaultMonospacedFontName
+
+Done 5.6.36.4:
+. Added panel property header based on selected tab
+. Hide Find property search box if not on Main tab
+. Ability to Comment/Uncomment lines in code editor
+. Ability to Comment/Uncomment block of lines in code editor
+
+Done 5.6.36.3:
+. XYSurface component: added current value X and current value Y properties
+. XYSurface component: added getCurrentValueX and getCurrentValueY functions
+. XYSurface component: added setPositionForValues function
+
+Done 5.6.36.2:
+. Panel Save As: remove the isDirty as the panelFilePath is replaced
+. Panel export restricted: pressing cancel in dialog box should not return any error
+. Panel export compressed binary: pressing cancel in dialog box should not return any error

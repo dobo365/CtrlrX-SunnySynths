@@ -303,3 +303,43 @@ ValueTree CtrlrIDManager::getVendorTree()
 {
 	return (vendorTree);
 }
+
+// Added 5.6.36.5 Returns the section name assigned to an ID in the XML
+String CtrlrIDManager::getSectionForXmlId(const Identifier& xmlId) const
+{
+	// Search the parsed XML tree for a child node where the 'name' attribute matches our property
+	ValueTree idDef = ctrlrIdTree.getChildWithProperty(Ids::name, xmlId.toString());
+
+	if (idDef.isValid())
+	{
+		// Read the 'section' attribute from the matched tree node
+		return idDef.getProperty("section", String());
+	}
+
+	return String();
+}
+
+// Added 5.6.36.5 Retrieves the explicit list of sections defined in the XML to preserve their layout order
+std::vector<std::pair<String, String>> CtrlrIDManager::getRegisteredSections() const
+{
+	std::vector<std::pair<String, String>> sections;
+
+	// Locate the master <sections> block inside the root ID tree
+	ValueTree sectionsNode = ctrlrIdTree.getChildWithName("sections");
+
+	if (sectionsNode.isValid())
+	{
+		for (int i = 0; i < sectionsNode.getNumChildren(); ++i)
+		{
+			ValueTree section = sectionsNode.getChild(i);
+			if (section.hasType("section"))
+			{
+				String id = section.getProperty("id").toString();
+				String text = section.getProperty("text", id).toString(); // Fallback to ID if display text is omitted
+				sections.push_back({ id, text });
+			}
+		}
+	}
+
+	return sections;
+}

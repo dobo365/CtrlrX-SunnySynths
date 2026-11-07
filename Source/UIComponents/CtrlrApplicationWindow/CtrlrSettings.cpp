@@ -1,123 +1,163 @@
 #include "stdafx.h"
 #include "CtrlrSettings.h"
 
-CtrlrSettings::CtrlrSettings (CtrlrManager &_owner) : Component ("Global Properties"), owner(_owner), propertyPanel (0)
+CtrlrSettings::CtrlrSettings (CtrlrManager &_owner) : Component ("Global Properties"), owner(_owner)
 {
-    addAndMakeVisible (propertyPanel = new PropertyPanel());
-    
-    propertyPanel->setName ("propertyPanel");
-    
-    Array <PropertyComponent*> globalProperties;
-    Array <PropertyComponent*> midiProperties;
-    Array <PropertyComponent*> guiProperties;
-    Array <PropertyComponent*> debugProperties;
-    Array <PropertyComponent*> directoriesProperties;
-    
-    Array <PropertyComponent*> emptyProperties; // Placeholder
-    Array <PropertyComponent*> instanceProperties; // Useless
-    
-// Removed v5.6.31
-//	for (int i=0; i<owner.getManagerTree().getNumProperties(); i++)
-//	{
-//		globalProperties.add
-//		(
-//			// owner.getIDManager().createComponentForProperty (owner.getManagerTree().getPropertyName(i), owner.getManagerTree(), nullptr)
-//		);
-//	}
-    
-    // Ctrlr Behaviour section
-    globalProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrVersionSeparator"), owner.getManagerTree(), nullptr));
-    globalProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrVersionCompressed"), owner.getManagerTree(), nullptr));
-    if (JUCEApplication::isStandaloneApp()) // Added v5.6.34.4
+    //addAndMakeVisible (propertyPanel = new PropertyPanel());  
+    //propertyPanel->setName ("propertyPanel");
+ 
+    auto& idManager = owner.getIDManager();
+    ValueTree managerTree = owner.getManagerTree();
+
+    tabbedComponent = std::make_unique<TabbedComponent>(TabbedButtonBar::TabsAtTop);
+    addAndMakeVisible(tabbedComponent.get());
+
+    tabbedComponent->setTabBarDepth(managerTree.getProperty(Ids::ctrlrTabBarDepth));
+    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::frontTextColourId, findColour(Label::textColourId));
+    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabTextColourId, findColour(Label::textColourId).withAlpha(0.6f));
+    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabOutlineColourId, findColour(Slider::textBoxOutlineColourId));
+
+    // Fetch sections in their precise XML declaration order
+    auto registeredSections = idManager.getRegisteredSections();
+ 
+    // Fallback if no explicit <sections> tag is declared in CtrlrIDs.xml
+    if (registeredSections.empty())
     {
-        globalProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrAutoSave"), owner.getManagerTree(), nullptr));
-        globalProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrAutoSaveInterval"), owner.getManagerTree(), nullptr));
+        registeredSections = { {"Global", "Global"}, {"MIDI", "MIDI"}, {"GUI", "GUI"}, {"Debug", "Debug"}, {"Paths", "Paths"} };
     }
 
-    // Useless because ctrlrShutdownDelay is overriden in ctrlrProcessor.cpp to 512
-    // #ifdef JUCE_MAC
-    // globalProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrShutdownDelay"), owner.getManagerTree(), nullptr)); // ifdef JUCE_OSX not working
-    // #endif
-    
-    globalProperties.add(owner.getIDManager().createComponentForProperty(Identifier("luaCtrlrSaveState"), owner.getManagerTree(), nullptr));
-    globalProperties.add(owner.getIDManager().createComponentForProperty(Identifier("luaCtrlrRestoreState"), owner.getManagerTree(), nullptr));
+    // Temporary buckets storing components associated with each section key
+    std::map<String, Array<PropertyComponent*>> propertiesBySection;
 
-    // Midi section
-    // midiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrLogMidiInput"), owner.getManagerTree(), nullptr)); // Useless, not assigned
-    // midiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrLogMidiOutput"), owner.getManagerTree(), nullptr)); // Useless, not assigned
-    // midiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrLogOptions"), owner.getManagerTree(), nullptr)); // Useless because it helps storing Monitor Log options as Byte value
-    midiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrMidiMonInputBufferSize"), owner.getManagerTree(), nullptr));
-    midiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrMidiMonOutputBufferSize"), owner.getManagerTree(), nullptr));
-
-    // GUI section
-    // guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrPropertiesAreURLs"), owner.getManagerTree(), nullptr)); // Useless, not assigned
-    guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrNativeFileDialogs"), owner.getManagerTree(), nullptr));
-    guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrNativeAlerts"), owner.getManagerTree(), nullptr));
-    // guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrUseEditorWrapper"), owner.getManagerTree(), nullptr)); // Useless, only for Ableton live.  Automatically set to true via CtrlrProcessor.cpp OS & DAW detection
-    
-    if (JUCEApplication::isStandaloneApp())
+    // Scan all settings inside the Manager Tree
+    for (int i = 0; i < managerTree.getNumProperties(); ++i)
     {
-        guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrLookAndFeel"), owner.getManagerTree(), nullptr));
-        guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrColourScheme"), owner.getManagerTree(), nullptr));
+        Identifier propName = managerTree.getPropertyName(i);
+
+        // Skip obsolete configurations
+        if (propName == Identifier("ctrlrShutdownDelay") || propName == Identifier("ctrlrUseEditorWrapper"))
+            continue;
+
+        // Apply Standalone application visibility conditions
+        if (!JUCEApplication::isStandaloneApp())
+        {
+            if (propName == Identifier("ctrlrAutoSave") || propName == Identifier("ctrlrAutoSaveInterval") ||
+                propName == Identifier("ctrlrLookAndFeel") || propName == Identifier("ctrlrColourScheme"))
+                continue;
+        }
+
+        PropertyComponent* propComp = idManager.createComponentForProperty(propName, managerTree, nullptr);
+        if (propComp != nullptr)
+        {
+            String sectionName = idManager.getSectionForXmlId(propName);
+            if (sectionName.isEmpty())
+                sectionName = "Global";
+
+            propertiesBySection[sectionName].add(propComp);
+        }
     }
 
-    guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrFontSizeBaseValue"), owner.getManagerTree(), nullptr));
-    guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrScrollbarThickness"), owner.getManagerTree(), nullptr));
-    guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrMenuBarHeight"), owner.getManagerTree(), nullptr));
-    guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrTabBarDepth"), owner.getManagerTree(), nullptr));
-    guiProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrPropertyLineheightBaseValue"), owner.getManagerTree(), nullptr)); // Added v5.6.33.
-    
-    // Debug section
-    debugProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrLogToFile"), owner.getManagerTree(), nullptr));
-    debugProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrWarningInBootstrapState"), owner.getManagerTree(), nullptr));
-    debugProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrLuaDebug"), owner.getManagerTree(), nullptr));
-    debugProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrLuaDisabled"), owner.getManagerTree(), nullptr));
-    debugProperties.add(owner.getIDManager().createComponentForProperty(Identifier("uiLuaConsoleInputRemoveAfterRun"), owner.getManagerTree(), nullptr)); // Clear Console After Execute
-    
-    // Directory section
-    directoriesProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrRecenetOpenedPanelFiles"), owner.getManagerTree(), nullptr));
-    directoriesProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrLastBrowsedFileDirectory"), owner.getManagerTree(), nullptr));
-    directoriesProperties.add(owner.getIDManager().createComponentForProperty(Identifier("ctrlrLastBrowsedResourceDir"), owner.getManagerTree(), nullptr));
-    
-    // propertyPanel->addSection("Global | Restart to apply settings", globalProperties, true);
-    propertyPanel->addSection("Global", globalProperties, true);
-    propertyPanel->addSection("MIDI", midiProperties, true);
-    propertyPanel->addSection("GUI", guiProperties, true);
-    propertyPanel->addSection("Debug", debugProperties, true);
-    propertyPanel->addSection("Paths", directoriesProperties, true);
-    
-	propertyPanel->getViewport().setScrollBarThickness(owner.getManagerTree().getProperty(Ids::ctrlrScrollbarThickness));
-    
-    const int totalContentHeight = propertyPanel->getTotalContentHeight(); // Added v5.6.31. Returns totalContentHeight
-    setSize (600, totalContentHeight);
+    auto tabColor = getLookAndFeel().findColour(DocumentWindow::backgroundColourId);
+    auto scrollbarThickness = managerTree.getProperty(Ids::ctrlrScrollbarThickness);
+
+    // Construct tabs sequentially following the registered layout order
+    for (const auto& sectionInfo : registeredSections)
+    {
+        const String& sectionId = sectionInfo.first;
+        const String& sectionTitle = sectionInfo.second;
+        Array<PropertyComponent*>& fields = propertiesBySection[sectionId];
+
+        // Only instantiate the tab if there are components visible inside it
+        if (fields.size() > 0)
+        {
+            auto panel = std::make_unique<PropertyPanel>();
+
+            // Use addProperties to prevent font scaling glitches
+            panel->addProperties(fields);
+            panel->getViewport().setScrollBarThickness(scrollbarThickness);
+
+            // Transfer ownership to the persistent class lifecycle container
+            sectionPanels[sectionId] = std::move(panel);
+
+            // Append the component to the layout view
+            tabbedComponent->addTab(sectionTitle, tabColor, sectionPanels[sectionId].get(), false);
+        }
+    }
+
+    // Set stable proportions for a side-by-side preference setup view
+    setSize(700, 540);
+
+    // Activating the listener here at the end of the constructor.
+    // ÀAt this tage, the GUI has finished to sync with the managerTree.
+    owner.getManagerTree().addListener(this);
+}
+
+// Added v5.6.36.5 to only react when a Preference has been modified
+void CtrlrSettings::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+{
+    settingsChanged = true;
+}
+
+void CtrlrSettings::lookAndFeelChanged() // Added v5.6.36.5
+{
+    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::frontTextColourId, findColour(Label::textColourId));
+    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabTextColourId, findColour(Label::textColourId).withAlpha(0.6f));
+    tabbedComponent->getTabbedButtonBar().setColour(TabbedButtonBar::tabOutlineColourId, findColour(Slider::textBoxOutlineColourId));
+    repaint();
 }
 
 void CtrlrSettings::paint (Graphics& g)
 {
     g.fillAll (getLookAndFeel().findColour (DocumentWindow::backgroundColourId)); // Added v5.6.31
+
+    // Added v5.6.36.5 @dobo365
+    for (int i = 0; i < tabbedComponent->getNumTabs(); i++)
+    {
+        if (i == tabbedComponent->getTabbedButtonBar().getCurrentTabIndex())
+        {
+            // This is for v3 where the color is forced. Should add an If..then..else checking v4 LnF
+            tabbedComponent->getTabbedButtonBar().setTabBackgroundColour(i, Colour(0xffcccccc));   // Set to Light grey
+        }
+        else
+        {
+            tabbedComponent->getTabbedButtonBar().setTabBackgroundColour(i, getLookAndFeel().findColour(TabbedComponent::backgroundColourId));
+        }
+    }
+
 }
 
 void CtrlrSettings::resized()
 {
-    propertyPanel->setBounds (0, 0, getWidth() - 0, getHeight() - 0);
+    //propertyPanel->setBounds (0, 0, getWidth() - 0, getHeight() - 0);
+    tabbedComponent->setBounds(0, 0, getWidth(), getHeight());
 }
 
 CtrlrSettings::~CtrlrSettings()
 {
-    deleteAndZero (propertyPanel);
+    //deleteAndZero (propertyPanel);
     
-    if (JUCEApplication::isStandaloneApp())
+    owner.getManagerTree().removeListener(this);
+
+    // Memory release is automated safely through standard std::unique_ptr stack mechanics
+    if (settingsChanged)
     {
-    // Show Ok/Cancel dialog to confirm restart
-    const auto callbackRestart = juce::ModalCallbackFunction::create([this] (int resultBox){
-        if (resultBox == 0){nullptr;} // for Cancel
-        if (resultBox == 1){restart();} // for OK
-    });
-    juce::NativeMessageBox::showOkCancelBox(juce::AlertWindow::QuestionIcon,"CtrlrX", "Restarting CtrlrX is required to apply new settings.", nullptr, callbackRestart);
+        if (JUCEApplication::isStandaloneApp())
+        {
+            // Show Ok/Cancel dialog to confirm restart
+            const auto callbackRestart = juce::ModalCallbackFunction::create([this](int resultBox) {
+                //            if (resultBox == 0){nullptr;} // for Cancel
+                if (resultBox == 1) { restart(); } // for OK
+                });
+            juce::AlertWindow::showOkCancelBox(juce::AlertWindow::QuestionIcon, "PREFERENCES", "A restart is required to apply your changes.", "Restart now", "Maybe later", nullptr, callbackRestart);
+        }
+        else {
+            // For VST/AU instances
+            AlertWindow::showMessageBox(AlertWindow::WarningIcon, "PREFERENCES", "A restart is required to apply your changes."); // Added v5.6.31
+        }
     }
-    else{
-        // For VST/AU instances
-        AlertWindow::showMessageBox (AlertWindow::WarningIcon, "CtrlrX", "Restart to apply new settings."); // Added v5.6.31
+    else {
+        // Added 5.6.36.5 Don't disturb the user when no changes...
+        //AlertWindow::showMessageBox (AlertWindow::InfoIcon, "CtrlrX Preferences", "No property changed...");
     }
 }
 
@@ -130,7 +170,7 @@ void CtrlrSettings::restart()
     if (multiInstance) {
         Logger::writeToLog("Multiple instances allowed.");
     }
-    else{
+    else {
         Logger::writeToLog("Multiple instances not allowed.");
     }
     

@@ -179,7 +179,7 @@
   <id name="panelScheme"					text="Panel scheme" type="ReadOnly" />
   <id name="panelShowDialogs"				text="Show dialogs during panel lifetime" type="Bool" />
   <id name="panelMessageTime"               text="How long messages should appear on screen (ms)"  type="Numeric" min="0" max="100000" />
-  <id name="panelLastSaveDir"               text="Directory last used for panel save" type="Text" />
+  <id name="panelLastSaveDir"               text="Directory last used for panel save" type="Text" section="Paths" />
   <id name="panelExportPublicKey"           text="Registration Public key" type="Text" />
   <id name="panelExportPrivateKey"          text="Registration Private key" type="Text" />
   <id name="panelExportServerAuthURL"       text="Registration server url" type="Text" />
@@ -227,8 +227,19 @@
   <id name="componentBubbleValueJustification"    text="Bubble: Value text justification" type="VarText" defaults="@justification" />
   <id name="componentBubbleNameColour"            text="Bubble: Name text colour" type="Colour" />
   <id name="componentBubbleNameFont"              text="Bubble: Name text font" type="Font" />
-  <id name="componentBubbleNameJustification"     text="Bubble: Nam text justification" type="VarText" defaults="@justification" />
-  
+  <id name="componentBubbleNameJustification"     text="Bubble: Name text justification" type="VarText" defaults="@justification" />
+
+  <id name="componentTooltipTrigger"           text="Tooltip trigger" type="VarNumeric" defaults="Mouse Down=0,Mouse Hover=1,Ctrl + Click=2,Shift + Click=3" />
+  <id name="componentTooltipEnabled"           text="Tooltip enabled" type="Bool" />
+  <id name="componentTooltipTitle"             text="Tooltip title" type="Text" />
+  <id name="componentTooltipText"              text="Tooltip description" type="MultiLineSmall" />
+  <id name="componentTooltipTimeout"           text="Tooltip timeout [ms]" type="Numeric" min="500" max="30000" />
+  <id name="componentTooltipDismissOnExit"     text="Tooltip dismiss on mouse exit" type="Bool" />
+  <id name="componentTooltipBackgroundColour"  text="Tooltip background colour" type="Colour"/>
+  <id name="componentTooltipTextColour"        text="Tooltip text colour" type="Colour"/>
+  <id name="componentTooltipFont"              text="Tooltip text font" type="Font" />
+  <id name="componentTooltipJustification"     text="Tooltip text justification" type="VarText" defaults="@justification" />
+
   <id name="componentLookAndFeel"                 text="Component LookAndFeel type" type="VarText" defaults="@componentlookandfeel" />
   <id name="componentLookAndFeelIsCustom"         text="Component LookAndFeel is customized" type="Bool" defaults="Custom Colours/Default Colours" />
   
@@ -743,14 +754,14 @@
   <id name="ctrlrInstanceIsResiazble"         text="Exported instance will be resizable" type="Bool" defaults="Resizable/Not Resizable" />
 
   <!-- Global Ctrlr settings -->
-  <id name="ctrlrMaxExportedVstParameters"    text="Max exported VST params" type="Numeric" min="0" max="999999" int="1" />
-  <id name="ctrlrLogToFile"                   text="Log everything to file" type="Bool" />
-  <id name="ctrlrWarningInBootstrapState"     text="Run modulator valueChange LUA callback in Bootstrap state" type="Bool" />
-  <id name="ctrlrLuaDebug"                    text="Enable LUA debugging" type="Bool" />
+  <id name="ctrlrMaxExportedVstParameters"    text="Max exported VST params" type="Numeric" min="0" max="999999" int="1" section="Global" />
+  <id name="ctrlrLogToFile"                   text="Log everything to file" type="Bool" section="Debug" />
+  <id name="ctrlrWarningInBootstrapState"     text="Run modulator valueChange LUA callback in Bootstrap state" type="Bool" section="Global" />
+  <id name="ctrlrLuaDebug"                    text="Enable LUA debugging" type="Bool" section="Debug" />
   <id name="ctrlrShutdownDelay"               text="Plugin shutdown delay" type="Numeric" min="0" max="10000" int="1" />
   <id name="ctrlrUseEditorWrapper"            text="Wrap the VST2.4 plugin on Ableton Live for Windows" type="Bool"/>
-  <id name="ctrlrVersionSeparator"            text="Version field separator" type="Text"/>
-  <id name="ctrlrVersionCompressed"           text="Save versioned panels compressed" type="Bool"/>
+  <id name="ctrlrVersionSeparator"            text="Version field separator" type="Text" section="Global" />
+  <id name="ctrlrVersionCompressed"           text="Save versioned panels compressed" type="Bool" section="Global" />
   <id name="ctrlrVstFile"                     text="VST File" type="FileProperty" />
   <id name="ctrlrAuFile"                      text="AU File"  type="FileProperty" />
   <id name="ctrlrAppFile"                     text="APP File" type="FileProperty" />
@@ -770,33 +781,33 @@
   <id name="time"                             text="Timestamp" type="Timestamp" />
   <id name="number"                           text="Number" type="Numeric" min="-65535" max="65535" />
   <id name="uuid"                             text="Unique identifier" type="ReadOnly" />
-  <id name="ctrlrScrollbarThickness"          text="Thickness for all scrollbars" type="Numeric" min="8" max="128"/>
-  <id name="ctrlrLegacyMode"                  text="LookAndFeel V3 for older panels" type="Bool" defaults="Legacy Mode/Disabled" />
-  <id name="ctrlrColourScheme"                text="Default lookAndFeel V4 colourScheme" type="VarText" defaults="@ctrlrColourSchemes"/>
-  <id name="ctrlrLookAndFeel"                 text="Default lookAndFeel Version" type="VarText" defaults="@lookandfeel"/>
+  <id name="ctrlrScrollbarThickness"          text="Thickness for all scrollbars" type="Numeric" min="8" max="128" section="GUI" />
+  <id name="ctrlrLegacyMode"                  text="LookAndFeel V3 for older panels" type="Bool" defaults="Legacy Mode/Disabled" section="GUI" />
+  <id name="ctrlrColourScheme"                text="Default lookAndFeel V4 colourScheme" type="VarText" defaults="@ctrlrColourSchemes" section="GUI" />
+  <id name="ctrlrLookAndFeel"                 text="Default lookAndFeel Version" type="VarText" defaults="@lookandfeel" section="GUI" />
   
 
 
   <!-- Logging settings  -->
-  <id name="ctrlrMidiMonInputBufferSize"    text="MIDI Mon input buffer size"       type="Numeric" min="512" max="65535"/>
-  <id name="ctrlrMidiMonOutputBufferSize"   text="MIDI Mon output buffer size"      type="Numeric" min="512" max="65535"/>
-  <id name="ctrlrLogMidiInput"              text="Toggle MIDI Input logging"        type="Bool" />
-  <id name="ctrlrLogMidiOutput"             text="Toggle MIDI output logging"       type="Bool" />
-  <id name="ctrlrLogOptions"                text="MIDI Log options" type="Numeric" />
-  <id name="ctrlrLogToFile"                 text="Log debug messages to a file" type="Bool"/>
+  <id name="ctrlrMidiMonInputBufferSize"    text="MIDI Mon input buffer size"       type="Numeric" min="512" max="65535" section="MIDI" />
+  <id name="ctrlrMidiMonOutputBufferSize"   text="MIDI Mon output buffer size"      type="Numeric" min="512" max="65535" section="MIDI" />
+  <id name="ctrlrLogMidiInput"              text="Toggle MIDI Input logging"        type="Bool" section="MIDI" />
+  <id name="ctrlrLogMidiOutput"             text="Toggle MIDI output logging"       type="Bool" section="MIDI" />
+  <id name="ctrlrLogOptions"                text="MIDI Log options" type="Numeric" section="Debug" />
+  <id name="ctrlrLogToFile"                 text="Log debug messages to a file" type="Bool" section="Debug" />
 
   <id name="ctrlrMidiDeviceManagerSavedGlobaly" text="How the state of the device manager is remembered" type="Bool"/>
-  <id name="ctrlrLuaDisabled"               text="LUA is disabled" type="Bool"/>
-  <id name="ctrlrLuaBootstrapFile"          text="LUA script loaded on Ctrlr start" type="Text"/>
-  <id name="ctrlrLastBrowsedResourceDir"    text="Last directory browsed for resources" type="Text"/>
+  <id name="ctrlrLuaDisabled"               text="LUA is disabled" type="Bool" section="Debug" />
+  <id name="ctrlrLuaBootstrapFile"          text="LUA script loaded on Ctrlr start" type="Text"  section="Debug"/>
+  <id name="ctrlrLastBrowsedResourceDir"    text="Last directory browsed for resources" type="Text" section="Paths" />
 
-  <id name="ctrlrOverwriteResources"        text="Overwrite imported resources" type="Bool"/>
-  <id name="ctrlrAutoSave"                  text="Autosave enabled" type="Bool"/>
-  <id name="ctrlrAutoSaveInterval"          text="Autosave interval in seconds" type="Numeric" min="1" max="999999" int="1"/>
+  <id name="ctrlrOverwriteResources"        text="Overwrite imported resources" type="Bool" section="Global"/>
+  <id name="ctrlrAutoSave"                  text="Autosave enabled" type="Bool" section="Global"/>
+  <id name="ctrlrAutoSaveInterval"          text="Autosave interval in seconds" type="Numeric" min="1" max="999999" int="1" section="Global"/>
   <id name="ctrlrOpenWindowState"           text="Open panel dialog state" type="Text"/>
   <id name="ctrlrPropertiesAreURLs"         text="When editing a panel the property names can be clickable URLs to relevant WIKI pages" type="Bool" />
-  <id name="ctrlrRecenetOpenedPanelFiles"   text="Recent opened Panel files" type="Text" />
-  <id name="ctrlrLastBrowsedFileDirectory"  text="Last browsed file directory" type="Text" />
+  <id name="ctrlrRecentOpenedPanelFiles"   text="Recent opened Panel files" type="Text" section="Paths" />
+  <id name="ctrlrLastBrowsedFileDirectory"  text="Last browsed file directory" type="Text" section="Paths" />
 
   <id name="ctrlrMenuItemBackgroundColour"  	text="Menu item background colour" type="Colour" />
   <id name="ctrlrMenuItemTextColour" 			text="Menu item text colour" type="Colour" />
@@ -813,13 +824,14 @@
   <id name="ctrlrMenuBarHighlightColour" 		text="Menu bar highlight colour" type="Colour" />
   <id name="ctrlrMenuBarFont" 					text="Menu bar font" type="Font" />
   <id name="ctrlrMenuBarHeight" 				text="Menu bar height" type="Numeric" min="4" max="128"/>
-  <id name="ctrlrNativeAlerts"					text="Use OS native dialog windows" type="Bool" />
-  <id name="ctrlrNativeFileDialogs"             text="Use OS native file open/save dialogs (disable for Linux)" type="Bool" />
+  <id name="ctrlrNativeAlerts"					text="Use OS native dialog windows" type="Bool" section="GUI" />
+  <id name="ctrlrNativeFileDialogs"             text="Use OS native file open/save dialogs (disable for Linux)" type="Bool" section="GUI" />
   <id name="ctrlrPrivateKey"                    text="RSA private key used to sign exported panels" type="FileProperty" />
-  <id name="ctrlrFontSizeBaseValue"             text="Base value for all font sizes (won't affect panel UI)" type="Numeric" min="6.0" max="128.0" int="0.1"/>
-  <id name="ctrlrTabBarDepth"                   text="Depth of all tab bars" type="Numeric" min="6" max="128" int="1"/>
-  <id name="ctrlrPropertyLineheightBaseValue"   text="Base value for property line height" type="Numeric" min="24" max="72" int="1"/>
-
+  <id name="ctrlrFontSizeBaseValue"             text="Base value for all font sizes (won't affect panel UI)" type="Numeric" min="6.0" max="128.0" int="0.1" section="GUI" />
+  <id name="ctrlrTabBarDepth"                   text="Depth of all tab bars" type="Numeric" min="6" max="128" int="1" section="GUI" />
+  <id name="ctrlrPropertyLineheightBaseValue"   text="Base value for property line height" type="Numeric" min="24" max="72" int="1" section="GUI" />
+  <id name="ctrlrPropertyLineImprovedLegibility"   text="Improve legibility of property fields" type="Bool"/>
+	
   <!-- LUA callbacks -->
   <id name="luaManagerMethods"                text="luaManagerMethods"                                    type="Text" />
   <id name="luaMethodCode"                    text="luaMethodCode"                                        type="Text" />

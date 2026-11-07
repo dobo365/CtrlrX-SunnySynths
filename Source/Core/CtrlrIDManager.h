@@ -68,6 +68,12 @@ class CtrlrIDManager
 		ValueTree getVendorTree();
 		JUCE_LEAK_DETECTOR(CtrlrIDManager);
 
+		// Added 5.6.36.5 Returns the custom section attribute string linked to an XML ID definition
+		String getSectionForXmlId(const Identifier& xmlId) const;
+
+		// Added 5.6.36.5 Returns an array of pairs (id, text) mapping out all sections inside the XML definition
+		std::vector<std::pair<String, String>> getRegisteredSections() const;
+
 	private:
 		ValueTree ctrlrIdTree;
 		ValueTree constantsTree;

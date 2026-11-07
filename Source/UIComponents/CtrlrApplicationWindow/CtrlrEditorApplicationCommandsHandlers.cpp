@@ -68,7 +68,7 @@ bool CtrlrEditor::perform (const InvocationInfo &info)
 			break;
 
 		 case showGlobalSettingsDialog:
-			owner.getWindowManager().showModalDialog ("CtrlrX - Settings", ScopedPointer <CtrlrSettings> (new CtrlrSettings(owner)), true, this);
+			owner.getWindowManager().showModalDialog ("CtrlrX - Preferences", ScopedPointer <CtrlrSettings> (new CtrlrSettings(owner)), true, this);
 			break;
 		 
 

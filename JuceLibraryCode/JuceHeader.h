@@ -51,7 +51,7 @@ namespace ProjectInfo
 {
     const char* const  projectName    = "CtrlrX - Sunny Synths";
     const char* const  companyName    = "Sunny Synths";
-    const char* const  versionString  = "5.6.36.4";
-    const int          versionNumber  = 0x5062404;
+    const char* const  versionString  = "5.6.36.5";
+    const int          versionNumber  = 0x5062405;
 }
 #endif
