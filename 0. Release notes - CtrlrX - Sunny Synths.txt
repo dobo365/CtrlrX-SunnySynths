@@ -1,3 +1,12 @@
+5.6.36.6
+========
+Commit e9a6058: Added Component tooltip properties and handling. Used tooltip wording instead of Bubble Help (also in properties)
+Corrected CtrlrIDs.xml
+. Line 338 uiComboSelectedIndex removed space after "Readonly"
+. Line 490 uiTabsOrientation added "t" to TabsAtLeft
+. Line 522 uiArrowOrientation added "n" to PointingRight
+. Line 524 uiArrowStokeThickness added "r" to get uiArrowStrokeThickness
+
 5.6.36.5
 ========
 Corrected property name: ctrlrRecentOpenedPanelFiles thus modified CtrlrManager.cpp, CtrlrEditorApplicationCommandsMenus.cpp

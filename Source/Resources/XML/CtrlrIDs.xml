@@ -487,7 +487,7 @@
 
   <!-- Tabs -->
   <id name="uiTabsNumberOfTabs" text="Number of tabs" type="Numeric" min="1" max="64" int="1"/>
-  <id name="uiTabsOrientation" text="Tabs orientation" type="VarNumeric" defaults="TabsAtTop=0,TabsAtBottom=1,TabsAtLef=2,TabsAtRight=3"/>
+  <id name="uiTabsOrientation" text="Tabs orientation" type="VarNumeric" defaults="TabsAtTop=0,TabsAtBottom=1,TabsAtLeft=2,TabsAtRight=3"/>
   <id name="uiTabsDepth" text="Tabs depth" type="Numeric" min="0" max="1024" int="1" />
   <id name="uiTabsOutlineThickness" text="Outline thickness component" type="Numeric" min="0" max="1024" int="1" />
   <id name="uiTabsFrontTabOutline" text="Outline thickness (current tab)" type="Numeric" min="0" max="1024" int="1" />
@@ -519,9 +519,9 @@
   <id name="uiArrowLineThickness" text="Arrow line thickness" type="Numeric" min="0" max="4096" int="1" />
   <id name="uiArrowHeadWidth" text="Arrow head width" type="Numeric" min="0" max="4096" int="1" />
   <id name="uiArrowHeadHeight" text="Arrow head height" type="Numeric" min="0" max="4096" int="1" />
-  <id name="uiArrowOrientation" text="Arrow orientation" type="VarNumeric" defaults="PointingTop=0,PointingBottom=1,PointingLeft=2,PointigRight=3"/>
+  <id name="uiArrowOrientation" text="Arrow orientation" type="VarNumeric" defaults="PointingTop=0,PointingBottom=1,PointingLeft=2,PointingRight=3"/>
   <id name="uiArrowRotation" text="Arrow rotation" type="Numeric" min="0" max="360" int="1" />
-  <id name="uiArrowStokeThickness" text="Arrow stroke thickness" type="Numeric" min="1" max="255" int="1" />
+  <id name="uiArrowStrokeThickness" text="Arrow stroke thickness" type="Numeric" min="1" max="255" int="1" />
 
   <!-- Custom component -->
   <id name="uiCustomResizedCallback" text="Resized callback" type="LuaMethod"/>

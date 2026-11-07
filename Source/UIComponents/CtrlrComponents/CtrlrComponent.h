@@ -119,6 +119,8 @@ class CtrlrComponent : public Component,
         void setCustomLookAndFeel (LookAndFeelBase *customLookAndFeel);
         virtual void customLookAndFeelChanged(LookAndFeelBase *customLookAndFeel = nullptr) = 0;
         bool isInternal();
+        void triggerTooltip(const MouseEvent& e, int requiredTrigger);
+        std::unique_ptr<BubbleMessageComponent> tooltipMessage;
         JUCE_LEAK_DETECTOR(CtrlrComponent)
 
     protected:

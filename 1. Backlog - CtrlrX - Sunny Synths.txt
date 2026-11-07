@@ -11,7 +11,6 @@ Ctrlrx - Sunny Synths backlog
 . Code editor preferences window: add OK / Apply / Cancel buttons in order to test different combinations
 . Linux version
 . Commit b6bdf42 and previous ones from 5.6.34 : added Layer drag/drop in Layer Editor
-. Commit e9a6058 Added Bubble Help tooltip (but adapted the code to use the word Tooltip instead of Bubble Help
 
 . From CtrlrX 5.6.36: check https://github.com/damiensellier/CtrlrX/compare/v5.6.35...v5.6.36
 .. Evaluate:

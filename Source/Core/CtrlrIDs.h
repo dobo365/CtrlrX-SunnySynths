@@ -299,7 +299,7 @@ namespace Ids
     DECLARE_ID (componentLookAndFeel);
     DECLARE_ID (componentLookAndFeelIsCustom);
     
-    // v5.6.36.5 Added for component Tooltip (Bubble Help). thx to @dnaldoog
+    // v5.6.36.6 Added for component Tooltip (Bubble Help). Thx to @dnaldoog
     DECLARE_ID(componentTooltipTrigger);
     DECLARE_ID(componentTooltipEnabled);
     DECLARE_ID(componentTooltipTitle);

@@ -110,18 +110,42 @@ CtrlrComponent::CtrlrComponent(CtrlrModulator &_owner)
     setProperty (Ids::componentLuaMouseDoubleClick, COMBO_ITEM_NONE);
     setProperty (Ids::componentLuaMouseEnter, COMBO_ITEM_NONE);
     setProperty (Ids::componentLuaMouseExit, COMBO_ITEM_NONE);
+
+    // Added v5.6.36.6 Thanks to @dnaldoog
+    setProperty (Ids::componentTooltipEnabled, false);
+    setProperty (Ids::componentTooltipTitle, "");
+    setProperty (Ids::componentTooltipText, "");
+    setProperty (Ids::componentTooltipTimeout, 5000);
+    setProperty (Ids::componentTooltipTrigger, 0);
+    setProperty (Ids::componentTooltipDismissOnExit, false);
+    setProperty (Ids::componentTooltipBackgroundColour, "0xFFE6DCB6");
+    //setProperty(Ids::componentTooltipBackgroundColour, (String)findColour(Slider::textBoxTextColourId).toString());
+    setProperty (Ids::componentTooltipTextColour, "0xff000000");
+    //setProperty(Ids::componentTooltipTextColour, (String)findColour(Slider::textBoxTextColourId).toString());
+    setProperty (Ids::componentTooltipFont, FONT2STR(Font(14)));
+    setProperty (Ids::componentTooltipJustification, "centred");
 }
 
 CtrlrComponent::~CtrlrComponent()
 {
+    if (tooltipMessage != nullptr) // Added v5.6.36.6 Thanks to @dnaldoog
+    {
+        tooltipMessage->setVisible(false);
+        if (auto* p = tooltipMessage->getParentComponent())
+            p->removeChildComponent(tooltipMessage.get());
+        tooltipMessage.reset();
+    }
+
     if (shadowEffect)
     {
         delete (shadowEffect.release());
     }
+
     if (glowEffect)
     {
         delete (glowEffect.release());
     }
+
     if (selectionBorder.get())
         delete selectionBorder.release();
     componentTree.removeListener (this);
@@ -203,6 +227,16 @@ void CtrlrComponent::mouseDown(const MouseEvent &e)
             owner.getOwnerPanel().getCtrlrLuaManager().getMethodManager().call (mouseDownCbk, this, e);
         }
     }
+    
+    // Added v5.6.36.6 Handle component tooltip display
+    if (e.mods.isAltDown())
+        triggerTooltip(e, 4); // Alt check goes first since on some platforms Alt+Click can also register as a plain click depending on event ordering.
+    if (e.mods.isCtrlDown())
+        triggerTooltip(e, 2);
+    else if (e.mods.isShiftDown())
+        triggerTooltip(e, 3);
+    else
+        triggerTooltip(e, 0);
 }
 
 void CtrlrComponent::mouseUp(const MouseEvent &e)
@@ -225,6 +259,8 @@ void CtrlrComponent::mouseEnter (const MouseEvent &e)
             owner.getOwnerPanel().getCtrlrLuaManager().getMethodManager().call (mouseEnterCbk, this, e);
         }
     }
+    // Added v5.6.36.6 Handle component tooltip display. Thx to @dnaldoog
+    triggerTooltip(e, 1);
 }
 
 void CtrlrComponent::mouseExit (const MouseEvent &e)
@@ -234,6 +270,18 @@ void CtrlrComponent::mouseExit (const MouseEvent &e)
         if (mouseExitCbk->isValid())
         {
             owner.getOwnerPanel().getCtrlrLuaManager().getMethodManager().call (mouseExitCbk, this, e);
+        }
+    }
+
+    // Added v5.6.36.6 Handle component tooltip display. Thx to @dnaldoog
+    if ((bool)componentTree.getProperty(Ids::componentTooltipDismissOnExit, false))
+    {
+        if (tooltipMessage != nullptr)
+        {
+            tooltipMessage->setVisible(false);
+            if (auto* p = tooltipMessage->getParentComponent())
+                p->removeChildComponent(tooltipMessage.get());
+            tooltipMessage.reset();
         }
     }
 }
@@ -426,6 +474,16 @@ void CtrlrComponent::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasCh
     else if (property == Ids::componentLabelFont)
     {
         componentNameLabel.setFont (getFontManager().getFontFromString (getProperty(Ids::componentLabelFont)));
+    }
+    else if (property == Ids::componentTooltipEnabled) // Added v5.6.36.6 Thanks to @dnaldoog
+    {
+        if (!(bool)getProperty(property) && tooltipMessage != nullptr)
+        {
+            tooltipMessage->setVisible(false);
+            if (auto* p = tooltipMessage->getParentComponent())
+                p->removeChildComponent(tooltipMessage.get());
+            tooltipMessage.reset();
+        }
     }
     else if (property == Ids::componentRectangle)
     {
@@ -787,6 +845,61 @@ bool CtrlrComponent::isInternal()
 CtrlrLuaRectangle CtrlrComponent::getLuaBounds() const
 {
     return (CtrlrLuaRectangle(getBounds()));
+}
+
+// Added v5.6.36.6 Component tooltip handling. Thx to @dnaldoog
+void CtrlrComponent::triggerTooltip(const MouseEvent& e, int requiredTrigger)
+{
+    // Don't re-trigger if tooltip is already visible
+    if (tooltipMessage != nullptr && tooltipMessage->isVisible())
+        return;
+    if (!(bool)componentTree.getProperty(Ids::componentTooltipEnabled, false))
+        return;
+
+    if ((int)componentTree.getProperty(Ids::componentTooltipTrigger, 0) != requiredTrigger)
+        return;
+
+    if (restoreStateInProgress)
+        return;
+
+    CtrlrPanelEditor* editor = owner.getOwnerPanel().getEditor();
+    if (editor == nullptr)
+        return;
+
+    String title = componentTree.getProperty(Ids::componentTooltipTitle).toString();
+    String body = componentTree.getProperty(Ids::componentTooltipText).toString();
+    int    timeout = componentTree.getProperty(Ids::componentTooltipTimeout, 5000);
+    Colour textColour = VAR2COLOUR(getProperty(Ids::componentTooltipTextColour));
+    Font   textFont = getFontManager().getFontFromString(getProperty(Ids::componentTooltipFont));
+    Justification justification = justificationFromProperty(getProperty(Ids::componentTooltipJustification));
+    Colour bgColour = VAR2COLOUR(getProperty(Ids::componentTooltipBackgroundColour));
+
+    if (body.isEmpty())
+        return;
+
+    if (tooltipMessage != nullptr)
+    {
+        tooltipMessage->setVisible(false);
+        if (auto* p = tooltipMessage->getParentComponent())
+            p->removeChildComponent(tooltipMessage.get());
+        tooltipMessage.reset();
+    }
+
+    String completeMessage = title.isNotEmpty() ? (title + "\n\n" + body) : body;
+
+    AttributedString attrStr(completeMessage);
+    attrStr.setJustification(justification);
+    attrStr.setFont(textFont);
+    attrStr.setColour(textColour);
+
+    tooltipMessage.reset(new BubbleMessageComponent(200));
+    tooltipMessage->setColour(BubbleComponent::backgroundColourId, bgColour);
+    editor->addChildComponent(tooltipMessage.get());
+    tooltipMessage->setAlwaysOnTop(true);
+    tooltipMessage->setVisible(true);
+
+    Rectangle<int> boundsInEditor = editor->getLocalArea(this, getLocalBounds());
+    tooltipMessage->showAt(boundsInEditor, attrStr, timeout, true, false);
 }
 
 void CtrlrComponent::wrapForLua (lua_State *L)
