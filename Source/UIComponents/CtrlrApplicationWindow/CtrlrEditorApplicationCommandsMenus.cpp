@@ -266,6 +266,9 @@ PopupMenu CtrlrEditor::getMenuForIndex(int topLevelMenuIndex, const String &menu
     else if ((!isRestricted() && (topLevelMenuIndex == MenuHelp))
         || (isRestricted() && (topLevelMenuIndex == (hideProgramsMenu ? (MenuRestrictedHelp - 1) : MenuRestrictedHelp)))) // Help
 	{
+        menu.addCommandItem(commandManager, showOnlineHelp);
+        menu.addCommandItem(commandManager, showOfflineHelp);
+        menu.addSeparator();
 		menu.addCommandItem(commandManager, showHelpViewer);
 		menu.addCommandItem(commandManager, showHelpEditor);
 		menu.addSeparator();

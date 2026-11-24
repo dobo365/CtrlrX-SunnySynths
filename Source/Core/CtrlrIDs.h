@@ -811,6 +811,7 @@ namespace Ids
     DECLARE_ID (ctrlrLogMidiOutput);
     DECLARE_ID (ctrlrLogOptions);
     DECLARE_ID (ctrlrLuaDisabled);
+    DECLARE_ID (ctrlrLuaMethodSelection); // Added v5.6.36.7
     DECLARE_ID (ctrlrLastBrowsedResourceDir);
     DECLARE_ID (ctrlrLogToFile);
     DECLARE_ID (ctrlrWarningInBootstrapState); // Added v5.6.32

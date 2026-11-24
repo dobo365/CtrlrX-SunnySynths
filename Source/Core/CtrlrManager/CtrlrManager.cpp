@@ -71,6 +71,7 @@ void CtrlrManager::setDefaults()
     setProperty (Ids::ctrlrMidiMonInputBufferSize, 8192);
     setProperty (Ids::ctrlrMidiMonOutputBufferSize, 8192);
     setProperty (Ids::ctrlrLuaDisabled, false);
+    setProperty (Ids::ctrlrLuaMethodSelection, "Single click");
     setProperty (Ids::ctrlrOverwriteResources, true);
 	if (JUCEApplication::isStandaloneApp()) // Added v5.6.34.4
 	{

@@ -6,6 +6,7 @@
 
  Different adaptations to extend the possibilities of the library (see below)
 
+ Version: 0.9 23 November 2026
  Version: 0.8 17 June 2026
  Version: 0.7 10 June 2026
  Version: 0.6 06 June 2026
@@ -212,7 +213,13 @@ class BarelyMLDisplay  : public juce::Component
             this->adlinewidth = newAdLineWidth;
             setMarkupString(markupString);
         };
-
+        void setImageScale(float newScale)
+        {
+            imageScale = newScale;
+            resized(); // Only the layout changes: no need to parse the markup again
+            repaint();
+        }
+    
         // MARK: - Format Conversion (static methods)
         static juce::String convertFromMarkdown(juce::String md);
         static juce::String convertToMarkdown(juce::String bml);
@@ -457,6 +464,7 @@ class BarelyMLDisplay  : public juce::Component
                 juce::AttributedString imageMissingMessage;
                 std::unique_ptr<juce::Drawable> drawable;
                 int maxWidth;
+                float getDisplayWidth(float availableWidth) const;
         };
   
         class ListItem : public Block
@@ -501,6 +509,7 @@ class BarelyMLDisplay  : public juce::Component
         FileSource* fileSource;               // data source for image files, etc.
         URLHandler* urlHandler;               // URL handler for custom URLs
         juce::Font font;                      // default font for regular text
-  
+        float imageScale = 1.0f;              // zoom applied to the widths requested with "?N"
+    
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BarelyMLDisplay)
 };

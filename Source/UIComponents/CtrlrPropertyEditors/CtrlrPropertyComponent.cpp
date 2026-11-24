@@ -2229,23 +2229,37 @@ class CtrlrTextPropLabel  : public Label  // Text Box for Type In Properties suc
 			setColour(Label::backgroundWhenEditingColourId, Colour(0xfffffefa)); // The background colour when the label is being edited. No change in comparison to not edited (half white)
 			setColour(Label::textWhenEditingColourId, findColour(Label::textWhenEditingColourId).withAlpha(0.7f)); // The colour for the text when the label is being edited
             setColour(Label::outlineWhenEditingColourId, findColour(Slider::textBoxOutlineColourId)); // An optional border colour when the label is being edited
-		}
 
-		TextEditor* createEditorComponent()
+            if (isMultiline)
+            {
+                // Give unselected multiline text the same top/left padding as the single line text
+                setBorderSize (BorderSize<int> (5, 5, 5, 5)); // top,left,bottom,right. Added v5.6.36.7
+            }
+            else
+            {
+                // Keep single-line borders tight so centredLeft stays vertically centered
+                setBorderSize(BorderSize<int>(1, 5, 1, 5)); // top,left,bottom,right. Added v5.6.36.7
+            }
+        }
+    
+		TextEditor* createEditorComponent() override
 		{
 			TextEditor* const textEditor = Label::createEditorComponent();
 			textEditor->setInputRestrictions (maxChars);
-			textEditor->setJustification(juce::Justification::centredLeft); // Added v5.6.34.
+ 
+            if (isMultiline)
+            {
+                  textEditor->setMultiLine (true, true);
+                  textEditor->setReturnKeyStartsNewLine (true);
+                  textEditor->setJustification(juce::Justification::topLeft); // Added v5.6.34.
+            }
+            else
+            {
+                  textEditor->setJustification(juce::Justification::centredLeft); // Added v5.6.34.
+                  // Remove top indent so single-line text stays at the same vertical position as the unselected text. The default top indent is 4 pixels in Juce 6, which makes the text jump down when editing.
+                  textEditor->setIndents(4, 0);    // left,top. Added v5.6.36.7
+            }
 
-			if (isMultiline)
-			{
-				textEditor->setMultiLine (true, true);
-				textEditor->setReturnKeyStartsNewLine (true);
-				textEditor->setJustification(juce::Justification::topLeft); // Added v5.6.34.
-                // IMPORTANT: Adjust the TextEditor's internal indents
-				// The default indents might push the text from the top-left. Experiment with these values, that will shift text position on focus/edit.
-				// textEditor->setIndents(0, 0); // Set left and top indents.
-	        }
 
 		    return textEditor;
 		}

@@ -53,7 +53,9 @@ class CtrlrEditor  : public AudioProcessorEditor,
 			showHelpViewer				= 0x2009,
 			showKeyboardMappingDialog	= 0x200a,
 			doRefreshDeviceList			= 0x200b,
-			showHelpEditor				= 0x200c,
+            showHelpEditor              = 0x200c,
+            showOnlineHelp              = 0x200d,
+            showOfflineHelp             = 0x200e,
 
 			/* Panel commands */
 

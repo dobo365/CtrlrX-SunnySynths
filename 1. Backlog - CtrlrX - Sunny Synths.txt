@@ -6,8 +6,6 @@ Ctrlrx - Sunny Synths backlog
 . Add CLAP plugin export
 . Develop Help pages using AI and BarelyML - Sunny Synths
 . Use installer as done for CtrlrX
-. Light purple methods on mouse over. May be difficult because there is no JUCE ItemMouseOver for Treeview Items
-. Use tree full width CtrlrValueTreeEditorItem::getItemWidth () in CtrlrValueTreeEditor.cpp
 . Code editor preferences window: add OK / Apply / Cancel buttons in order to test different combinations
 . Linux version
 . Commit b6bdf42 and previous ones from 5.6.34 : added Layer drag/drop in Layer Editor
@@ -24,6 +22,18 @@ Ctrlrx - Sunny Synths backlog
 .. Commit 6203e4e FIXED Typo InstanceSingleRestriced vs InstanceSingleRestricted
 .. Commit f03412e ADDED uiSliderBackgroundColour property to uiSlider & uiFixedSlider
 
+Done 5.6.36.7:
+. Added online (CtrlrX) and offline help (CtrlrX - Sunny Synths)
+. Adapted image handling in BarelyML - Sunny Synths
+. Correct display of images in Help viewer
+. Develop Help pages using AI and BarelyML - Sunny Synths (Phase 1)
+. Single line text and multiline text property not moving anymore when selected
+. Light purple methods on mouse hover
+. Use tree full width to show selected method or mouse hover method
+
+Done 5.6.36.6:
+. Added Component tooltip properties and handling
+. Corrected CtrlrIDs.xml (4 typos)
 
 Done 5.6.36.5:
 . Corrected property name: ctrlrRecentOpenedPanelFiles thus modified CtrlrManager.cpp, CtrlrEditorApplicationCommandsMenus.cpp

@@ -820,6 +820,14 @@ Drawable* CtrlrLuaMethodEditor::getIconForItem (const ValueTree &item) const
 	return gui::createDrawable(BIN2STR(radio_svg));
 }
 
+bool CtrlrLuaMethodEditor::isOpenOnSingleClick() const  // Added v5.6.36.7 Way of opening methods
+{
+    const String mode = owner.getCtrlrManagerOwner().getProperty (Ids::ctrlrLuaMethodSelection).toString();
+
+    // Anything other than "Double click" (including a missing property) means single click
+    return (mode != "Double click");
+}
+
 void CtrlrLuaMethodEditor::itemClicked (const MouseEvent &e, ValueTree &item)
 {
 	if (e.mods.isPopupMenu())
@@ -947,10 +955,21 @@ void CtrlrLuaMethodEditor::itemClicked (const MouseEvent &e, ValueTree &item)
 			}
 		}
 	}
+    else if (item.hasType (Ids::luaMethod)
+             && isOpenOnSingleClick()
+             && !e.mods.isShiftDown()
+             && !e.mods.isCommandDown())
+    {
+        // Single click mode: open the method. Shift/Ctrl+click are kept for multi-selection.
+        setEditedMethod (Uuid (item.getProperty (Ids::uuid).toString()));
+    }
 }
 
 void CtrlrLuaMethodEditor::itemDoubleClicked (const MouseEvent &e, ValueTree &item)
 {
+    if (isOpenOnSingleClick())
+        return; // The method was already opened by the single click
+
     setEditedMethod (Uuid(item.getProperty(Ids::uuid).toString()));
 }
 

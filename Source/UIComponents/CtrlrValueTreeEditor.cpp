@@ -21,7 +21,34 @@ bool CtrlrValueTreeEditorTree::keyPressed (const KeyPress &key)
 	return (TreeView::keyPressed(key));
 }
 
+void CtrlrValueTreeEditorTree::mouseMove (const MouseEvent &e)
+{
+    TreeView::mouseMove (e);
 
+    // Convert to this tree's coordinates, since the event may come from a nested child
+    const Point<int> pos = e.getEventRelativeTo (this).getPosition();
+    setHoveredItem (getItemAt (pos.y));
+}
+
+void CtrlrValueTreeEditorTree::mouseExit (const MouseEvent &e)
+{
+    TreeView::mouseExit (e);
+
+    // Ignore exits towards a nested child (viewport, content), only clear when really leaving the tree
+    if (!contains (e.getEventRelativeTo (this).getPosition()))
+    {
+        setHoveredItem (nullptr);
+    }
+}
+
+void CtrlrValueTreeEditorTree::setHoveredItem (const TreeViewItem *newItem)
+{
+    if (hoveredItem != newItem)
+    {
+        hoveredItem = newItem;
+        repaint();
+    }
+}
 
 //=========================================================================================================
 
@@ -29,6 +56,7 @@ CtrlrValueTreeEditorItem::CtrlrValueTreeEditorItem(CtrlrValueTreeEditorLookProvi
 	: treeToEdit(_treeToEdit), provider(_provider), nameIdentifier(_nameIdentifier)
 {
 	treeToEdit.addListener (this);
+    setDrawsInLeftMargin (true); // Allow the item to paint over the indent area, up to the tree's left edge
 }
 
 CtrlrValueTreeEditorItem::~CtrlrValueTreeEditorItem()
@@ -52,7 +80,8 @@ void CtrlrValueTreeEditorItem::itemSelectionChanged (bool isNowSelected)
 
 int	CtrlrValueTreeEditorItem::getItemWidth () const
 {
-	return (jmax<int>(152, 48 + provider.getItemFont(treeToEdit).getStringWidth (provider.getUniqueName(treeToEdit)))); // Updated v5.6.31
+	//return (jmax<int>(152, 48 + provider.getItemFont(treeToEdit).getStringWidth (provider.getUniqueName(treeToEdit)))); // Updated v5.6.31
+    return -1;
 }
 
 int	CtrlrValueTreeEditorItem::getItemHeight () const
@@ -119,20 +148,43 @@ bool CtrlrValueTreeEditorItem::isInterestedInDragSource (const DragAndDropTarget
 	return (provider.isInterestedInDragSource (treeToEdit, dragSourceDetails));
 }
 
-// GUI For TreeView Items. Updated v5.6.31
+// GUI For TreeView Items. Updated v5.6.31 then v5.6.36.7 completely adapted for mouse hover
 void CtrlrValueTreeEditorItem::paintItem (Graphics &g, int width, int height)
 {
     std::unique_ptr<Drawable> icon(provider.getIconForItem (treeToEdit));
 	auto &currentLnF = getDefaultLookAndFeel(); // Added v5.6.31
-    
-    if (isSelected())
-	{
-        g.setColour(currentLnF.findColour(TextEditor::highlightedTextColourId));
-        gui::drawSelectionRectangle (g, width, height, currentLnF.findColour(CodeEditorComponent::lineNumberBackgroundId), 1.0f, 1.0f, 0.0f, 0.0f); // Updated v5.6.31
-        // gui::drawSelectionRectangle (g, width, height)); // Removed v5.6.31
-	}
-	// g.setColour (Colours::black); // Removed v5.6.31
-    g.setColour(currentLnF.findColour(TextEditor::textColourId)); // Added v5.6.31
+
+    // Default (V3 and lower): soft lavender with black text
+    Colour selectedFill (0xFFADADCC);
+    Colour selectedText (Colours::black);
+
+    // V4: take the colours from the active colour scheme
+    if (auto *view = getOwnerView())
+    {
+        if (auto *lfV4 = dynamic_cast<LookAndFeel_V4*> (&view->getLookAndFeel()))
+        {
+            auto &scheme = lfV4->getCurrentColourScheme();
+            selectedFill = scheme.getUIColour (LookAndFeel_V4::ColourScheme::highlightedFill);
+            selectedText = scheme.getUIColour (LookAndFeel_V4::ColourScheme::highlightedText);
+        }
+    }
+
+    // Hover state is tracked by the tree
+    bool isHovered = false;
+    if (auto *tree = dynamic_cast<CtrlrValueTreeEditorTree*> (getOwnerView()))
+    {
+        isHovered = canBeSelected() && (tree->getHoveredItem() == this);
+    }
+
+    if (isSelected() || isHovered)
+    {
+        // Paint from the left edge of the tree (setDrawsInLeftMargin(true) must be set in the constructor)
+        const int indentX = getItemPosition (false).getX();
+
+        g.setColour (isSelected() ? selectedFill : selectedFill.withAlpha (0.45f));
+        g.fillRect (-indentX, 0, width + indentX, height);
+    }
+    g.setColour(currentLnF.findColour(TextEditor::textColourId)); // Added v5.6.31. Was g.setColour (Colours::black);
        
 	AttributedString as = provider.getDisplayString(treeToEdit);
 	as.setJustification (Justification (Justification::centredLeft));
@@ -140,7 +192,6 @@ void CtrlrValueTreeEditorItem::paintItem (Graphics &g, int width, int height)
 
 	if (icon)
 		icon->drawWithin(g, Rectangle<float>(4,0, 16, height), RectanglePlacement::centred, 1.0f);
-	// g.drawImageWithin (icon, 4, 0, 16, height, RectanglePlacement (RectanglePlacement::centred));
 }
 
 void CtrlrValueTreeEditorItem::itemDropped (const DragAndDropTarget::SourceDetails &dragSourceDetails, int insertIndex)

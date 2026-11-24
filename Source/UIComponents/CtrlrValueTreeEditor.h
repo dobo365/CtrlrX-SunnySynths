@@ -24,14 +24,27 @@ class CtrlrValueTreeEditorLookProvider : public AsyncUpdater
 		virtual var						getDragSourceDescription(Array <ValueTree> &selectedTreeItems)	{ return (""); }
 };
 
-class CtrlrValueTreeEditorTree : public TreeView, public LookAndFeel_V4 // Updated v5.6.31
+class CtrlrValueTreeEditorTree : public TreeView, public LookAndFeel_V4 // Updated v5.6.31 then v5.6.36.7 for the mouse hover
 {
-	public:
-		CtrlrValueTreeEditorTree(const String &name, CtrlrPanel &_owner) : TreeView(name), owner(_owner) {}
-		bool keyPressed (const KeyPress &key);
+    public:
+        CtrlrValueTreeEditorTree(const String &name, CtrlrPanel &_owner) : TreeView(name), owner(_owner)
+        {
+            // Receive mouse events from the nested viewport/content components too (needed for hover)
+            addMouseListener (this, true);
+        }
 
-	private:
-		CtrlrPanel &owner;
+        bool keyPressed (const KeyPress &key);
+        void mouseMove (const MouseEvent &e) override;
+        void mouseExit (const MouseEvent &e) override;
+
+        // Only compare this pointer, never dereference it: the item may have been deleted
+        const TreeViewItem *getHoveredItem() const { return hoveredItem; }
+
+    private:
+        void setHoveredItem (const TreeViewItem *newItem);
+
+        CtrlrPanel &owner;
+        const TreeViewItem *hoveredItem = nullptr;
 };
 
 class CtrlrValueTreeEditorItem : public TreeViewItem, public ValueTree::Listener, public LookAndFeel_V4 // Updated v5.6.31

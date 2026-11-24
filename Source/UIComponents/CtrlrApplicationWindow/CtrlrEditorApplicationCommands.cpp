@@ -12,7 +12,9 @@ void CtrlrEditor::getAllCommands (Array< CommandID > &commands)
                                 showGlobalSettingsDialog,
                                 showMidiMonitor,
                                 showLogViewer,
-								showHelpViewer,
+                                showOnlineHelp,
+                                showOfflineHelp,
+                                showHelpViewer,
 								showHelpEditor,
 								showMidiCalculator,
                                 showAboutDialog,
@@ -125,14 +127,24 @@ void CtrlrEditor::getCommandInfo (CommandID commandID, ApplicationCommandInfo &r
 			result.addDefaultKeypress ('l', ModifierKeys::commandModifier);
 			break;
 
-		case showHelpViewer:
-			result.setInfo("Help Viewer", "You can get help on the meaning of properties and get some code snippets", globalCategory, 0);
-			result.addDefaultKeypress('h', ModifierKeys::commandModifier);
-			break;
+        case showOnlineHelp:
+            result.setInfo("Online Help (CtrlrX)", "CtrlrX online help", globalCategory, 0);
+            result.addDefaultKeypress('h', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
+            break;
+
+        case showOfflineHelp:
+            result.setInfo("Offline Help (CtrlrX - Sunny Synths)", "CtrlrX - Sunny Synths offline help", globalCategory, 0);
+            result.addDefaultKeypress('o', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
+            break;
+
+        case showHelpViewer:
+            result.setInfo("Help Viewer", "You can get help on the meaning of properties and get some code snippets", globalCategory, 0);
+            result.addDefaultKeypress('v', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
+            break;
 
 		case showHelpEditor:
 			result.setInfo("Help Editor", "A markdown text editor to build help pages", globalCategory, 0);
-			result.addDefaultKeypress('h', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
+			result.addDefaultKeypress('e', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
 			break;
 
 		case showMidiCalculator:

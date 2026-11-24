@@ -1,3 +1,14 @@
+
+5.6.36.7
+========
+. Added online (CtrlrX) and offline help (CtrlrX - Sunny Synths)
+. Adapted image handling in BarelyML - Sunny Synths
+. Correct display of images in Help viewer
+. Develop Help pages using AI and BarelyML - Sunny Synths (Phase 1)
+. Single line text and multiline text property not moving anymore when selected
+. Light purple methods on mouse hover
+. Use tree full width to show selected method or mouse hover method
+
 5.6.36.6
 ========
 Commit e9a6058: Added Component tooltip properties and handling. Used tooltip wording instead of Bubble Help (also in properties)

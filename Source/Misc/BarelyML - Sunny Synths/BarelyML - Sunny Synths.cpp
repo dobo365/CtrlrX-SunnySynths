@@ -5,9 +5,12 @@
  Created: 10 May 2026
  Author:  Dominique Bontemps - Sunny Synths
 
+ Version: 0.9 23 November 2026
+ - Adapted to secure the display of images with correct width
+
  Version: 0.8 17 June 2026
  - Changed inline code tagging to "`" and code blocks tagging with "```", which is the standard markdown syntax
- 
+
  Version: 0.7 10 June 2026
  - Task lists showing icons instead of [x] text
  - Handles links in list items
@@ -482,8 +485,22 @@ String BarelyMLDisplay::convertFromMarkdown(String md)
             int idx1 = line.indexOf("![");
             int idx2 = line.indexOf(idx1+2, "](");
             int idx3 = line.indexOf(idx2+2, ")");
-            String address = line.substring(idx2+2, idx3);
-            line = line.substring(0, idx1) + "{{" + address + "}}" + line.substring(idx3+2);
+            String address = line.substring(idx2+2, idx3).trim();
+
+            // Optional markdown title used as a width hint: ![alt](path "w=371")
+            int requestedWidth = 0;
+            const int quoteIndex = address.indexOfChar('"');
+            if (quoteIndex > 0)
+            {
+                String title = address.substring(quoteIndex + 1).upToLastOccurrenceOf("\"", false, false).trim();
+                address = address.substring(0, quoteIndex).trim();
+                if (title.startsWithIgnoreCase("w="))
+                    requestedWidth = title.substring(2).getIntValue();
+            }
+            if (requestedWidth > 0)
+                address += "?" + String(requestedWidth);
+
+            line = line.substring(0, idx1) + "{{" + address + "}}" + line.substring(idx3+1);
         }
 
         // Replace links with labels
@@ -2675,41 +2692,41 @@ void BarelyMLDisplay::ImageBlock::parseImageMarkup(const String& line, FileSourc
     }
 }
 
-float BarelyMLDisplay::ImageBlock::getHeightRequired(float width) 
+// Width used to display the image: the requested width is multiplied by the image scale of the display,
+// without ever exceeding the available width nor (for bitmaps) the native size of the image
+float BarelyMLDisplay::ImageBlock::getDisplayWidth(float availableWidth) const
 {
-    if (drawable && drawable->getDrawableBounds().getWidth()>0.f) 
-    {
-        float w = drawable->getDrawableBounds().getWidth();
-        float h = drawable->getDrawableBounds().getHeight();
+    const float scale = (bmlDisplay != nullptr) ? bmlDisplay->imageScale : 1.0f;
+    const float nativeWidth = (drawable != nullptr) ? drawable->getDrawableBounds().getWidth() : 0.0f;
+    const bool isBitmap = (dynamic_cast<juce::DrawableImage*>(drawable.get()) != nullptr);
 
-        if (maxWidth>0) 
-        {
-            return jmin((float)maxWidth,width)*h/w;
-        } 
-        else
-        {
-            return width*h/w;
-        }
-    }
-    else
-    {
-        return 20.f;
-    }
+    float w = (maxWidth > 0) ? (float)maxWidth * scale : nativeWidth;
+
+    if (isBitmap && nativeWidth > 0.0f)
+        w = jmin(w, nativeWidth);
+
+    return (w > 0.0f) ? jmin(w, availableWidth) : availableWidth;
 }
 
-void BarelyMLDisplay::ImageBlock::paint(juce::Graphics& g) 
+float BarelyMLDisplay::ImageBlock::getHeightRequired(float width)
 {
-    if (drawable) 
+    if (drawable && drawable->getDrawableBounds().getWidth() > 0.f)
     {
-        float w = getWidth();
+        const float w = drawable->getDrawableBounds().getWidth();
+        const float h = drawable->getDrawableBounds().getHeight();
+        return getDisplayWidth(width) * h / w;
+    }
+    return 20.f;
+}
 
-        if (maxWidth>0) 
-        {
-            w = jmin((float)maxWidth,w);
-        }
+void BarelyMLDisplay::ImageBlock::paint(juce::Graphics& g)
+{
+    if (drawable)
+    {
+        const float w = getDisplayWidth((float)getWidth());
         drawable->drawWithin(g, Rectangle<float>(0, 0, w, getHeight()), RectanglePlacement::centred, 1.0f);
-    } 
-    else 
+    }
+    else
     {
         g.setColour(defaultColour);
         g.drawRect(getLocalBounds());
@@ -2719,7 +2736,7 @@ void BarelyMLDisplay::ImageBlock::paint(juce::Graphics& g)
     }
 }
 
-void BarelyMLDisplay::ImageBlock::resized() 
+void BarelyMLDisplay::ImageBlock::resized()
 {
 }
 

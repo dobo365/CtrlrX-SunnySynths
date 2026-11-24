@@ -35,7 +35,7 @@ ifeq ($(CONFIG),Debug)
     TARGET_ARCH := 
   endif
 
-  JUCE_CPPFLAGS := $(DEPFLAGS) "-DLINUX=1" "-DDEBUG=1" "-D_DEBUG=1" "-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1" "-DBOOST_BIND_GLOBAL_PLACEHOLDERS=1" "-DJUCER_LINUX_MAKE_6D53C8B4=1" "-DJUCE_APP_VERSION=5.6.36.6" "-DJUCE_APP_VERSION_HEX=0x5062406" $(shell pkg-config --cflags alsa freetype2 libcurl) -pthread -I../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK -I../../Source/Misc/vst2sdk -I../../JuceLibraryCode -I../../JUCE/modules -I../../Source -I../../Source/Misc -I../../Source/Misc/include -I../../Source/Misc/lua/include -I../../Source/Misc/luabind -I../../Source/Misc/libusb/include -I../../Source/Misc/boost -I../../Source/MIDI -I../../Source/Core -I../../Source/Native -I../../Source/Plugin -I../../Source/UIComponents -I../../Source/Lua $(CPPFLAGS)
+  JUCE_CPPFLAGS := $(DEPFLAGS) "-DLINUX=1" "-DDEBUG=1" "-D_DEBUG=1" "-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1" "-DBOOST_BIND_GLOBAL_PLACEHOLDERS=1" "-DJUCER_LINUX_MAKE_6D53C8B4=1" "-DJUCE_APP_VERSION=5.6.36.7" "-DJUCE_APP_VERSION_HEX=0x5062407" $(shell pkg-config --cflags alsa freetype2 libcurl) -pthread -I../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK -I../../Source/Misc/vst2sdk -I../../JuceLibraryCode -I../../JUCE/modules -I../../Source -I../../Source/Misc -I../../Source/Misc/include -I../../Source/Misc/lua/include -I../../Source/Misc/luabind -I../../Source/Misc/libusb/include -I../../Source/Misc/boost -I../../Source/MIDI -I../../Source/Core -I../../Source/Native -I../../Source/Plugin -I../../Source/UIComponents -I../../Source/Lua $(CPPFLAGS)
 
   JUCE_CPPFLAGS_VST3 :=  "-DJucePlugin_Build_VST=0" "-DJucePlugin_Build_VST3=1" "-DJucePlugin_Build_AU=0" "-DJucePlugin_Build_AUv3=0" "-DJucePlugin_Build_RTAS=0" "-DJucePlugin_Build_AAX=0" "-DJucePlugin_Build_Standalone=0" "-DJucePlugin_Build_Unity=0"
   JUCE_CFLAGS_VST3 := -fPIC -fvisibility=hidden
@@ -70,7 +70,7 @@ ifeq ($(CONFIG),Release)
     TARGET_ARCH := 
   endif
 
-  JUCE_CPPFLAGS := $(DEPFLAGS) "-DLINUX=1" "-DNDEBUG=1" "-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1" "-DBOOST_BIND_GLOBAL_PLACEHOLDERS=1" "-DJUCER_LINUX_MAKE_6D53C8B4=1" "-DJUCE_APP_VERSION=5.6.36.6" "-DJUCE_APP_VERSION_HEX=0x5062406" $(shell pkg-config --cflags alsa freetype2 libcurl) -pthread -I../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK -I../../Source/Misc/vst2sdk -I../../JuceLibraryCode -I../../JUCE/modules -I../../Source -I../../Source/Misc -I../../Source/Misc/include -I../../Source/Misc/lua/include -I../../Source/Misc/luabind -I../../Source/Misc/libusb/include -I../../Source/Misc/boost -I../../Source/MIDI -I../../Source/Core -I../../Source/Native -I../../Source/Plugin -I../../Source/UIComponents -I../../Source/Lua $(CPPFLAGS)
+  JUCE_CPPFLAGS := $(DEPFLAGS) "-DLINUX=1" "-DNDEBUG=1" "-DJUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1" "-DBOOST_BIND_GLOBAL_PLACEHOLDERS=1" "-DJUCER_LINUX_MAKE_6D53C8B4=1" "-DJUCE_APP_VERSION=5.6.36.7" "-DJUCE_APP_VERSION_HEX=0x5062407" $(shell pkg-config --cflags alsa freetype2 libcurl) -pthread -I../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK -I../../Source/Misc/vst2sdk -I../../JuceLibraryCode -I../../JUCE/modules -I../../Source -I../../Source/Misc -I../../Source/Misc/include -I../../Source/Misc/lua/include -I../../Source/Misc/luabind -I../../Source/Misc/libusb/include -I../../Source/Misc/boost -I../../Source/MIDI -I../../Source/Core -I../../Source/Native -I../../Source/Plugin -I../../Source/UIComponents -I../../Source/Lua $(CPPFLAGS)
 
   JUCE_CPPFLAGS_VST3 :=  "-DJucePlugin_Build_VST=0" "-DJucePlugin_Build_VST3=1" "-DJucePlugin_Build_AU=0" "-DJucePlugin_Build_AUv3=0" "-DJucePlugin_Build_RTAS=0" "-DJucePlugin_Build_AAX=0" "-DJucePlugin_Build_Standalone=0" "-DJucePlugin_Build_Unity=0"
   JUCE_CFLAGS_VST3 := -fPIC -fvisibility=hidden
@@ -280,7 +280,6 @@ OBJECTS_SHARED_CODE := \
   $(JUCE_OBJDIR)/CtrlrPanelCanvasLayers_24f6490d.o \
   $(JUCE_OBJDIR)/CtrlrPanelComponentProperties_a6700c67.o \
   $(JUCE_OBJDIR)/CtrlrPanelEditor_b6d0d2c0.o \
-  $(JUCE_OBJDIR)/CtrlrPanelEditorIcons_1dd7a784.o \
   $(JUCE_OBJDIR)/CtrlrPanelFindProperty_6784c901.o \
   $(JUCE_OBJDIR)/CtrlrPanelLayerList_8154b2e6.o \
   $(JUCE_OBJDIR)/CtrlrPanelLayerListItem_f5855019.o \
@@ -1248,11 +1247,6 @@ $(JUCE_OBJDIR)/CtrlrPanelComponentProperties_a6700c67.o: ../../Source/UIComponen
 $(JUCE_OBJDIR)/CtrlrPanelEditor_b6d0d2c0.o: ../../Source/UIComponents/CtrlrPanel/CtrlrPanelEditor.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CtrlrPanelEditor.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_SHARED_CODE) $(JUCE_CFLAGS_SHARED_CODE) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CtrlrPanelEditorIcons_1dd7a784.o: ../../Source/UIComponents/CtrlrPanel/CtrlrPanelEditorIcons.cpp
-	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CtrlrPanelEditorIcons.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_SHARED_CODE) $(JUCE_CFLAGS_SHARED_CODE) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CtrlrPanelFindProperty_6784c901.o: ../../Source/UIComponents/CtrlrPanel/CtrlrPanelFindProperty.cpp

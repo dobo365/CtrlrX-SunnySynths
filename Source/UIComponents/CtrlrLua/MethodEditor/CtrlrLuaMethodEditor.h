@@ -59,8 +59,8 @@ class CtrlrLuaMethodEditor  : public CtrlrChildWindowContent,
 		void setPositionLabelText (const String &text);
 
 		void addNewMethod(ValueTree parentGroup=ValueTree());
-        void renameMethod(ValueTree currentMethod = ValueTree()); // Added 5.6.34. Thanks to @dobo365
-		// void addNewClass(ValueTree parentGroup=ValueTree()); // Removed 5.6.34. Thanks to @dobo365
+        void renameMethod(ValueTree currentMethod = ValueTree()); // Added v5.6.34. Thanks to @dobo365
+		// void addNewClass(ValueTree parentGroup=ValueTree()); // Removed v5.6.34. Thanks to @dobo365
 		void addMethodFromFile(ValueTree parentGroup=ValueTree());
 
 		void addNewGroup(ValueTree parentGroup=ValueTree());
@@ -71,7 +71,8 @@ class CtrlrLuaMethodEditor  : public CtrlrChildWindowContent,
 		Drawable* getIconForItem(const ValueTree &item)	const;
 		void itemClicked (const MouseEvent &e, ValueTree &item);
 		void itemDoubleClicked (const MouseEvent &e, ValueTree &item);
-		const bool renameItem(const ValueTree &item, const String &newName) const;
+        bool isOpenOnSingleClick() const; // Added v5.6.36.7 @dobo365. Reads the "Lua method selection" preference (default: single click)
+        const bool renameItem(const ValueTree &item, const String &newName) const;
 		const bool canBeRenamed(const ValueTree &item) const;
 		const AttributedString	getDisplayString(const ValueTree &item)	const;
 		const Font getItemFont(const ValueTree &item) const;

@@ -5,6 +5,7 @@
 #include "CtrlrPanel/CtrlrPanelEditor.h"
 #include "CtrlrWindowManagers/CtrlrDialogWindow.h"
 #include "CtrlrMIDI/CtrlrMIDISettingsDialog.h"
+#include "CtrlrHelpViewer.h"
 
 bool CtrlrEditor::perform (const InvocationInfo &info)
 {
@@ -29,10 +30,22 @@ bool CtrlrEditor::perform (const InvocationInfo &info)
 			owner.getWindowManager().toggle(CtrlrManagerWindowManager::LogViewer, true);
 			break;
 
-		case showHelpViewer:
-			owner.getWindowManager().toggle(CtrlrManagerWindowManager::HelpViewer, true);
-			break;
+        case showHelpViewer:
+        case showOfflineHelp:
+        case showOnlineHelp:
+            owner.getWindowManager().toggle (CtrlrManagerWindowManager::HelpViewer, true);
 
+            if (CtrlrHelpViewer* viewer = dynamic_cast<CtrlrHelpViewer*> (owner.getWindowManager().getContent (CtrlrManagerWindowManager::HelpViewer)))
+            {
+                if (info.commandID == showOfflineHelp)
+                    viewer->showOfflineHelp();
+                else if (info.commandID == showOnlineHelp)
+                    viewer->showOnlineHelp();
+                else
+                    viewer->showPropertiesHelp();
+            }
+            break;
+            
 		case showHelpEditor:
 			owner.getWindowManager().toggle(CtrlrManagerWindowManager::HelpEditor, true);
 			break;

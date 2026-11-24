@@ -786,8 +786,7 @@
   <id name="ctrlrColourScheme"                text="Default lookAndFeel V4 colourScheme" type="VarText" defaults="@ctrlrColourSchemes" section="GUI" />
   <id name="ctrlrLookAndFeel"                 text="Default lookAndFeel Version" type="VarText" defaults="@lookandfeel" section="GUI" />
   
-
-
+  
   <!-- Logging settings  -->
   <id name="ctrlrMidiMonInputBufferSize"    text="MIDI Mon input buffer size"       type="Numeric" min="512" max="65535" section="MIDI" />
   <id name="ctrlrMidiMonOutputBufferSize"   text="MIDI Mon output buffer size"      type="Numeric" min="512" max="65535" section="MIDI" />
@@ -800,6 +799,7 @@
   <id name="ctrlrLuaDisabled"               text="LUA is disabled" type="Bool" section="Debug" />
   <id name="ctrlrLuaBootstrapFile"          text="LUA script loaded on Ctrlr start" type="Text"  section="Debug"/>
   <id name="ctrlrLastBrowsedResourceDir"    text="Last directory browsed for resources" type="Text" section="Paths" />
+  <id name="ctrlrLuaMethodSelection"        text="Lua Method Selection" type="VarText" defaults="@clickType" section="GUI"/>
 
   <id name="ctrlrOverwriteResources"        text="Overwrite imported resources" type="Bool" section="Global"/>
   <id name="ctrlrAutoSave"                  text="Autosave enabled" type="Bool" section="Global"/>
@@ -939,6 +939,7 @@
     <const name="colourSchemes"        value="Default,Light,Grey,Dark,Midnight" />
     <const name="ctrlrColourSchemes"   value="Light,Grey,Dark,Midnight,Classic,JetBlack,YamDX,AkAPC,AkMPC,LexiBlue,KurzGreen,KorGrey,KorGold,ArturOrange,AiraGreen" />
     <const name="plugType"        value="Instrument|Drum,Instrument|Piano,Instrument|Synth,Instrument|Tools,Fx|Delay,Fx|Distortion,Fx|Dynamics,Fx|EQ,Fx|Filter,Fx|Instrument,Fx|Mastering,Fx|Modulation,Fx|Pitch Shift,Fx|Restoration,Fx|Reverb,Fx|Spatial,Fx|Synth,Fx|Tools" />
+    <const name="clickType" value="Single click,Double click" />
   </constants>
 
 </ctrlrIds>

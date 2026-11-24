@@ -1,6 +1,71 @@
 #include "stdafx.h"
 #include "CtrlrSettings.h"
 
+// Added v5.6.36.7 @dobo365 One file per line in Recent opened files property
+namespace
+{
+    // Read-only list of the recent panel files (display only, for the Preferences).
+    // One path per line, long paths wrap, and the property height follows the number of wrapped lines.
+    // The stored value is untouched: it keeps its ';' separated format.
+    class RecentFilesPropertyComponent : public PropertyComponent,
+                                         private AsyncUpdater
+    {
+    public:
+        RecentFilesPropertyComponent (const String& name, const ValueTree& treeToRead, const Identifier& propertyToRead)
+            : PropertyComponent (name), tree (treeToRead), propertyId (propertyToRead)
+        {
+            addAndMakeVisible (editor);
+            editor.setMultiLine (true, true);   // Multi-line with word wrap
+            editor.setReadOnly (true);
+            editor.setCaretVisible (false);
+            editor.setScrollbarsShown (false);
+            refresh();
+        }
+
+        ~RecentFilesPropertyComponent() override
+        {
+            cancelPendingUpdate();
+        }
+
+        void refresh() override
+        {
+            StringArray files;
+            files.addTokens (tree.getProperty (propertyId).toString(), ";", "\"'");
+            files.removeEmptyStrings (true);
+            editor.setText (files.joinIntoString ("\n"), false);
+            triggerAsyncUpdate();
+        }
+
+        void resized() override
+        {
+            editor.setBounds (getLookAndFeel().getPropertyComponentContentPosition (*this));
+            triggerAsyncUpdate(); // The width changed, so the wrapping (and the height) may change
+        }
+
+    private:
+        // Height is adjusted asynchronously to avoid re-entering the panel layout while it is running
+        void handleAsyncUpdate() override
+        {
+            if (editor.getWidth() <= 0)
+                return;
+
+            const int needed = jmax (24, editor.getTextHeight() + 8);
+
+            if (needed != getPreferredHeight())
+            {
+                setPreferredHeight (needed);
+
+                if (auto* panel = findParentComponentOfClass<PropertyPanel>())
+                    panel->resized(); // Lay out the panel again with the new height
+            }
+        }
+
+        ValueTree tree;
+        Identifier propertyId;
+        TextEditor editor;
+    };
+}
+
 CtrlrSettings::CtrlrSettings (CtrlrManager &_owner) : Component ("Global Properties"), owner(_owner)
 {
     //addAndMakeVisible (propertyPanel = new PropertyPanel());  
@@ -46,7 +111,13 @@ CtrlrSettings::CtrlrSettings (CtrlrManager &_owner) : Component ("Global Propert
                 continue;
         }
 
-        PropertyComponent* propComp = idManager.createComponentForProperty(propName, managerTree, nullptr);
+        PropertyComponent* propComp = nullptr;
+
+        if (propName == Ids::ctrlrRecentOpenedPanelFiles)
+            propComp = new RecentFilesPropertyComponent ("Recent opened Panel files", managerTree, propName); // Read-only, one path per line
+        else
+            propComp = idManager.createComponentForProperty(propName, managerTree, nullptr);
+
         if (propComp != nullptr)
         {
             String sectionName = idManager.getSectionForXmlId(propName);
@@ -88,13 +159,18 @@ CtrlrSettings::CtrlrSettings (CtrlrManager &_owner) : Component ("Global Propert
     setSize(700, 540);
 
     // Activating the listener here at the end of the constructor.
-    // ÀAt this tage, the GUI has finished to sync with the managerTree.
+    // At this stage, the GUI has finished to sync with the managerTree.
     owner.getManagerTree().addListener(this);
 }
 
 // Added v5.6.36.5 to only react when a Preference has been modified
 void CtrlrSettings::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
 {
+    // Preferences that are applied immediately and don't require a restart.
+    // Add other identifiers here with "||" when needed.
+    if (property == Ids::ctrlrLuaMethodSelection) // Added v5.6.36.7
+        return;
+
     settingsChanged = true;
 }
 
